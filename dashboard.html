@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Man-to-Man — Seller Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/dashboard.css"/>
+
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ═══════ SIDEBAR ═══════ -->
+  <aside class="sidebar" id="sidebar">
+    <a href="index.html" class="sidebar-logo">
+      <span class="sidebar-logo-dot"></span>
+      <span class="sidebar-logo-text">M</span>
+    </a>
+
+    <div class="sidebar-seller">
+      <div class="seller-av">T</div>
+      <div class="seller-id-name">Thandi's Closet</div>
+      <div class="seller-id-badge"><span class="verified-pip"></span>Verified Seller</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a class="nav-item active" onclick="showView('overview')">
+        <span class="nav-icon">⊞</span>
+        <span class="nav-label">Overview</span>
+      </a>
+      <a class="nav-item" onclick="showView('listings')">
+        <span class="nav-icon">📋</span>
+        <span class="nav-label">My Listings</span>
+      </a>
+      <a class="nav-item" onclick="showView('orders')">
+        <span class="nav-icon">📦</span>
+        <span class="nav-label">Orders</span>
+        <span class="nav-badge">3</span>
+      </a>
+      <a class="nav-item" onclick="showView('wallet')">
+        <span class="nav-icon">💳</span>
+        <span class="nav-label">Wallet</span>
+      </a>
+
+      <div class="nav-section-label">Manage</div>
+      <a class="nav-item" onclick="showView('analytics')">
+        <span class="nav-icon">📈</span>
+        <span class="nav-label">Analytics</span>
+      </a>
+      <a class="nav-item" onclick="showView('messages')">
+        <span class="nav-icon">💬</span>
+        <span class="nav-label">Messages</span>
+        <span class="nav-badge" style="background:var(--sky);">5</span>
+      </a>
+      <a class="nav-item" onclick="showView('reviews')">
+        <span class="nav-icon">⭐</span>
+        <span class="nav-label">Reviews</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <a class="nav-item" onclick="showView('settings')">
+        <span class="nav-icon">⚙️</span>
+        <span class="nav-label">Settings</span>
+      </a>
+      <a class="nav-item" href="index.html">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Back to Site</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ═══════ MAIN ═══════ -->
+  <div class="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:.8rem;">
+        <button class="hamburger" id="hamburger" onclick="toggleSidebar()">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="topbar-left">
+          <div class="page-title" id="pageTitle">Dashboard Overview</div>
+          <div class="page-sub" id="pageSub">Good morning, Thandi 👋</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <span class="date-pill" id="datePill"></span>
+        <div class="notif-btn" onclick="toast('🔔 You have 3 unread notifications')">
+          🔔<span class="notif-dot"></span>
+        </div>
+        <button class="topbar-btn topbar-btn-green" onclick="newListing()">+ New Listing</button>
+      </div>
+    </header>
+
+    <!-- ═══════ PAGE CONTENT ═══════ -->
+    <div class="page-content">
+
+      <!-- ── ALERTS ── -->
+      <div id="alerts">
+        <div class="alert-bar success" id="alert1">
+          <span class="alert-icon">✅</span>
+          Your FICA verification is complete. Your trust badge is live on all listings.
+          <button class="alert-dismiss" onclick="document.getElementById('alert1').remove()">✕</button>
+        </div>
+        <div class="alert-bar warn" id="alert2">
+          <span class="alert-icon">⚠️</span>
+          3 orders are awaiting your confirmation. Confirm dispatch to release escrow payments.
+          <button class="alert-dismiss" onclick="document.getElementById('alert2').remove()">✕</button>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════
+           VIEW: OVERVIEW
+      ══════════════════════════════ -->
+      <div id="view-overview">
+
+        <!-- KPI ROW -->
+        <div class="section-hd"><span class="section-hd-title">This Month</span><button class="section-hd-action">View report →</button></div>
+        <div class="kpi-row">
+          <div class="kpi-card green">
+            <div class="kpi-icon green">💰</div>
+            <div class="kpi-label">Total Revenue</div>
+            <div class="kpi-value">R 8 420</div>
+            <span class="kpi-delta up">↑ 23% vs last month</span>
+          </div>
+          <div class="kpi-card lime">
+            <div class="kpi-icon lime">🛍️</div>
+            <div class="kpi-label">Items Sold</div>
+            <div class="kpi-value">34</div>
+            <span class="kpi-delta up">↑ 8 vs last month</span>
+          </div>
+          <div class="kpi-card amber">
+            <div class="kpi-icon amber">👁️</div>
+            <div class="kpi-label">Listing Views</div>
+            <div class="kpi-value">1 247</div>
+            <span class="kpi-delta up">↑ 41% this month</span>
+          </div>
+          <div class="kpi-card sky">
+            <div class="kpi-icon sky">⭐</div>
+            <div class="kpi-label">Avg. Rating</div>
+            <div class="kpi-value">4.8</div>
+            <span class="kpi-delta neutral">28 reviews total</span>
+          </div>
+        </div>
+
+        <!-- CHART ROW -->
+        <div class="chart-row">
+          <!-- Revenue bar chart -->
+          <div class="chart-card">
+            <div class="chart-hd">
+              <div>
+                <div class="chart-title">Revenue Over Time</div>
+                <div class="chart-sub">Daily earnings this month</div>
+              </div>
+              <div class="chart-tabs">
+                <div class="chart-tab active">30D</div>
+                <div class="chart-tab" onclick="switchChartTab(this)">90D</div>
+                <div class="chart-tab" onclick="switchChartTab(this)">1Y</div>
+              </div>
+            </div>
+            <div class="bar-chart-wrap">
+              <svg class="bar-chart-svg" id="barChart" viewBox="0 0 600 160" preserveAspectRatio="none"></svg>
+            </div>
+            <div class="bar-chart-labels" id="barLabels"></div>
+          </div>
+
+          <!-- Category donut -->
+          <div class="chart-card">
+            <div class="chart-hd">
+              <div>
+                <div class="chart-title">Sales by Category</div>
+                <div class="chart-sub">What's selling most</div>
+              </div>
+            </div>
+            <div class="donut-wrap">
+              <svg width="140" height="140" viewBox="0 0 140 140" id="donutSvg"></svg>
+              <div class="donut-center" style="top:50%;left:50%;transform:translate(-50%,-50%);">
+                <div class="donut-center-val">34</div>
+                <div class="donut-center-label">sold</div>
+              </div>
+              <div class="donut-legend" id="donutLegend"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MINI STATS ROW -->
+        <div class="mini-stats-row">
+          <div class="mini-stat">
+            <div class="mini-stat-icon" style="background:var(--green-dim);">🏦</div>
+            <div>
+              <div class="mini-stat-val">R 5 200</div>
+              <div class="mini-stat-label">Wallet balance available</div>
+            </div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-icon" style="background:var(--amber-dim);">⏳</div>
+            <div>
+              <div class="mini-stat-val">R 1 680</div>
+              <div class="mini-stat-label">Pending escrow release</div>
+            </div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-icon" style="background:var(--sky-dim);">📋</div>
+            <div>
+              <div class="mini-stat-val">12</div>
+              <div class="mini-stat-label">Active listings right now</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RECENT ORDERS (condensed) -->
+        <div class="section-hd">
+          <span class="section-hd-title">Recent Orders</span>
+          <button class="section-hd-action" onclick="showView('orders')">See all →</button>
+        </div>
+        <div class="orders-list" id="recentOrders"></div>
+
+      </div><!-- /view-overview -->
+
+      <!-- ══════════════════════════════
+           VIEW: LISTINGS
+      ══════════════════════════════ -->
+      <div id="view-listings" style="display:none;">
+        <div class="section-hd">
+          <span class="section-hd-title">My Listings <span style="color:var(--green);margin-left:.4rem;">12 active</span></span>
+          <button class="section-hd-action" onclick="newListing()">+ Add listing</button>
+        </div>
+        <div class="listings-card">
+          <div class="listings-card-hd">
+            <span class="listings-card-title">All Listings</span>
+            <div class="listings-tabs">
+              <div class="lst-tab active" onclick="filterListings(this,'all')">All <span class="lst-count">18</span></div>
+              <div class="lst-tab" onclick="filterListings(this,'active')">Active <span class="lst-count">12</span></div>
+              <div class="lst-tab" onclick="filterListings(this,'sold')">Sold <span class="lst-count">4</span></div>
+              <div class="lst-tab" onclick="filterListings(this,'paused')">Paused <span class="lst-count">2</span></div>
+            </div>
+          </div>
+          <div id="listingsTableWrap"></div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════
+           VIEW: ORDERS
+      ══════════════════════════════ -->
+      <div id="view-orders" style="display:none;">
+        <div class="section-hd">
+          <span class="section-hd-title">Orders <span style="color:var(--rust);margin-left:.4rem;">3 need action</span></span>
+        </div>
+        <div id="ordersListFull" class="orders-list"></div>
+      </div>
+
+      <!-- ══════════════════════════════
+           VIEW: WALLET
+      ══════════════════════════════ -->
+      <div id="view-wallet" style="display:none;">
+        <div class="section-hd">
+          <span class="section-hd-title">Digital Wallet</span>
+          <button class="section-hd-action" onclick="toast('📥 Downloading statement PDF...')">Download statement ↓</button>
+        </div>
+        <div class="wallet-row">
+          <!-- Balance card -->
+          <div class="wallet-card primary">
+            <div class="wallet-label">Available Balance</div>
+            <div class="wallet-balance"><sup>R</sup> 5 200</div>
+            <div class="wallet-pending">+ R 1 680 pending release from escrow</div>
+            <div class="wallet-actions">
+              <button class="wallet-btn wallet-btn-primary" onclick="toast('💸 Withdrawal initiated — arrives in 1-2 business days')">Withdraw</button>
+              <button class="wallet-btn wallet-btn-outline" onclick="toast('📊 Generating report...')">Download Report</button>
+            </div>
+          </div>
+          <!-- Recent transactions -->
+          <div class="wallet-card">
+            <div class="wallet-label">Recent Transactions</div>
+            <div class="tx-list" id="txListFull" style="margin-top:.8rem;"></div>
+          </div>
+        </div>
+
+        <!-- Full history table -->
+        <div class="section-hd" style="margin-top:.5rem;"><span class="section-hd-title">Transaction History</span></div>
+        <div class="listings-card">
+          <div id="txTableWrap"></div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════
+           VIEW: ANALYTICS
+      ══════════════════════════════ -->
+      <div id="view-analytics" style="display:none;">
+        <div class="section-hd"><span class="section-hd-title">Performance Analytics</span></div>
+        <div class="kpi-row">
+          <div class="kpi-card green"><div class="kpi-icon green">📈</div><div class="kpi-label">Conversion Rate</div><div class="kpi-value">2.7%</div><span class="kpi-delta up">↑ 0.4% this month</span></div>
+          <div class="kpi-card lime"><div class="kpi-icon lime">👁️</div><div class="kpi-label">Total Views</div><div class="kpi-value">4 821</div><span class="kpi-delta up">↑ 18% vs last month</span></div>
+          <div class="kpi-card amber"><div class="kpi-icon amber">❤️</div><div class="kpi-label">Saves / Wishlist</div><div class="kpi-value">187</div><span class="kpi-delta up">↑ 32 this month</span></div>
+          <div class="kpi-card sky"><div class="kpi-icon sky">💬</div><div class="kpi-label">Messages Received</div><div class="kpi-value">54</div><span class="kpi-delta neutral">avg 1.8/day</span></div>
+        </div>
+
+        <!-- Profile completion -->
+        <div class="profile-card">
+          <div class="chart-hd">
+            <div><div class="chart-title">Profile Strength</div><div class="chart-sub">Complete your profile to rank higher in search</div></div>
+            <span style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:var(--lime);">82%</span>
+          </div>
+          <div class="profile-progress-list">
+            <div class="pp-item"><span class="pp-icon">🪪</span><span class="pp-label">Identity Verified</span><div class="pp-bar-wrap"><div class="pp-bar" style="width:100%;background:var(--green);"></div></div><span class="pp-pct">100%</span><span class="pp-status pp-done">✓ Done</span></div>
+            <div class="pp-item"><span class="pp-icon">📸</span><span class="pp-label">Profile Photo Added</span><div class="pp-bar-wrap"><div class="pp-bar" style="width:100%;background:var(--green);"></div></div><span class="pp-pct">100%</span><span class="pp-status pp-done">✓ Done</span></div>
+            <div class="pp-item"><span class="pp-icon">💳</span><span class="pp-label">Bank Account Linked</span><div class="pp-bar-wrap"><div class="pp-bar" style="width:100%;background:var(--green);"></div></div><span class="pp-pct">100%</span><span class="pp-status pp-done">✓ Done</span></div>
+            <div class="pp-item"><span class="pp-icon">📝</span><span class="pp-label">Bio Written</span><div class="pp-bar-wrap"><div class="pp-bar" style="width:100%;background:var(--green);"></div></div><span class="pp-pct">100%</span><span class="pp-status pp-done">✓ Done</span></div>
+            <div class="pp-item"><span class="pp-icon">⭐</span><span class="pp-label">5+ Reviews Received</span><div class="pp-bar-wrap"><div class="pp-bar" style="width:100%;background:var(--green);"></div></div><span class="pp-pct">100%</span><span class="pp-status pp-done">✓ Done</span></div>
+            <div class="pp-item"><span class="pp-icon">📦</span><span class="pp-label">Courier Linked</span><div class="pp-bar-wrap"><div class="pp-bar" style="width:40%;background:var(--amber);"></div></div><span class="pp-pct">0%</span><span class="pp-status pp-todo">Add now</span></div>
+            <div class="pp-item"><span class="pp-icon">📱</span><span class="pp-label">Social Links Added</span><div class="pp-bar-wrap"><div class="pp-bar" style="width:0%;background:var(--amber);"></div></div><span class="pp-pct">0%</span><span class="pp-status pp-todo">Add now</span></div>
+          </div>
+        </div>
+
+        <div class="chart-row">
+          <div class="chart-card">
+            <div class="chart-hd"><div><div class="chart-title">Views per Listing</div><div class="chart-sub">Which listings get the most attention</div></div></div>
+            <div id="viewsChart" style="margin-top:.5rem;"></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-hd"><div><div class="chart-title">Buyer Locations</div><div class="chart-sub">Where your buyers are from</div></div></div>
+            <div id="locationStats" style="margin-top:.5rem;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════
+           VIEW: MESSAGES / REVIEWS / SETTINGS (stubs)
+      ══════════════════════════════ -->
+      <div id="view-messages" style="display:none;">
+        <div class="section-hd"><span class="section-hd-title">Messages</span></div>
+        <div class="alert-bar info"><span class="alert-icon">💬</span>You have 5 unread messages. Full messaging panel coming soon.</div>
+      </div>
+      <div id="view-reviews" style="display:none;">
+        <div class="section-hd"><span class="section-hd-title">Reviews</span></div>
+        <div class="alert-bar success"><span class="alert-icon">⭐</span>You have a 4.8 rating from 28 verified buyers. Full reviews panel coming soon.</div>
+      </div>
+      <div id="view-settings" style="display:none;">
+        <div class="section-hd"><span class="section-hd-title">Settings</span></div>
+        <div class="alert-bar info"><span class="alert-icon">⚙️</span>Account settings panel coming soon.</div>
+      </div>
+
+    </div><!-- /page-content -->
+  </div><!-- /main -->
+</div><!-- /shell -->
+
+<!-- TOAST -->
+<div id="toastEl" style="position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(60px);background:#1A2E22;color:var(--ink);padding:.7rem 1.2rem;border-radius:var(--r2);font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;border:1px solid rgba(61,184,112,.2);box-shadow:0 8px 24px rgba(0,0,0,.4);z-index:999;transition:transform .3s cubic-bezier(.34,1.3,.64,1);pointer-events:none;white-space:nowrap;display:flex;align-items:center;gap:.5rem;"></div>
+
+<script>
+/* ═══════════════════════
+   DATA
+═══════════════════════ */
+const LISTINGS_DATA = [
+  {id:1,emoji:'👗',title:'Vintage Denim Jacket',category:'Clothing',price:290,status:'active',views:84,date:'12 May 2025'},
+  {id:2,emoji:'👠',title:'Black Court Heels Size 6',category:'Shoes',price:180,status:'active',views:52,date:'14 May 2025'},
+  {id:3,emoji:'🧣',title:'Wool Scarf Set — 3 Colours',category:'Clothing',price:120,status:'active',views:31,date:'15 May 2025'},
+  {id:4,emoji:'👒',title:'Summer Straw Hats Bundle',category:'Clothing',price:95,status:'sold',views:110,date:'10 May 2025'},
+  {id:5,emoji:'🌸',title:'Floral Midi Dress — Size 10',category:'Clothing',price:340,status:'active',views:67,date:'16 May 2025'},
+  {id:6,emoji:'👜',title:'Designer-Inspired Tote Bag',category:'Bags',price:320,status:'active',views:98,date:'11 May 2025'},
+  {id:7,emoji:'🧥',title:'Puffer Jacket — Black XL',category:'Clothing',price:480,status:'paused',views:22,date:'8 May 2025'},
+  {id:8,emoji:'👟',title:'White Sneakers Size 8',category:'Shoes',price:220,status:'active',views:74,date:'17 May 2025'},
+  {id:9,emoji:'💍',title:'Silver Ring Set — 5 Piece',category:'Jewellery',price:85,status:'active',views:42,date:'18 May 2025'},
+  {id:10,emoji:'🧤',title:'Leather Gloves — Unisex',category:'Accessories',price:150,status:'sold',views:38,date:'9 May 2025'},
+  {id:11,emoji:'🪡',title:'Beaded Necklace — Gold',category:'Jewellery',price:190,status:'active',views:56,date:'13 May 2025'},
+  {id:12,emoji:'🩱',title:'Swimsuit — One Piece Size M',category:'Clothing',price:240,status:'active',views:29,date:'19 May 2025'},
+  {id:13,emoji:'🧢',title:'Cap Collection — 4 Styles',category:'Accessories',price:65,status:'paused',views:14,date:'7 May 2025'},
+  {id:14,emoji:'🕶️',title:'Sunglasses — Oversized Frames',category:'Accessories',price:110,status:'sold',views:88,date:'5 May 2025'},
+  {id:15,emoji:'🩹',title:'Ankle Boots — Brown Size 7',category:'Shoes',price:560,status:'active',views:45,date:'20 May 2025'},
+  {id:16,emoji:'🧶',title:'Handknit Cardigan — Cream L',category:'Clothing',price:380,status:'active',views:33,date:'21 May 2025'},
+  {id:17,emoji:'🎒',title:'Backpack — Canvas Khaki',category:'Bags',price:210,status:'active',views:61,date:'22 May 2025'},
+  {id:18,emoji:'💄',title:'Luxury Lipstick Set — 6 Shades',category:'Beauty',price:145,status:'sold',views:127,date:'4 May 2025'},
+];
+
+const ORDERS_DATA = [
+  {id:'ORD-0041',emoji:'👗',name:'Vintage Denim Jacket',buyer:'Nomsa K.',price:290,status:'confirm',date:'Today 09:14'},
+  {id:'ORD-0040',emoji:'👠',name:'Black Court Heels Size 6',buyer:'Lerato M.',price:180,status:'confirm',date:'Today 07:52'},
+  {id:'ORD-0039',emoji:'🧣',name:'Wool Scarf Set — 3 Colours',buyer:'Thabo N.',price:120,status:'ship',date:'Yesterday'},
+  {id:'ORD-0038',emoji:'👒',name:'Summer Straw Hats Bundle',buyer:'Zanele P.',price:95,status:'done',date:'22 May'},
+  {id:'ORD-0037',emoji:'👜',name:'Designer-Inspired Tote Bag',buyer:'Ayanda T.',price:320,status:'done',date:'21 May'},
+  {id:'ORD-0036',emoji:'💄',name:'Luxury Lipstick Set',buyer:'Palesa R.',price:145,status:'done',date:'20 May'},
+];
+
+const TX_DATA = [
+  {icon:'💰',type:'credit',name:'Payment released — Straw Hats Bundle',date:'22 May 2025',amount:95,status:'Completed'},
+  {icon:'💰',type:'credit',name:'Payment released — Tote Bag',date:'21 May 2025',amount:320,status:'Completed'},
+  {icon:'💸',type:'debit',name:'Withdrawal to Capitec ····4892',date:'20 May 2025',amount:-1200,status:'Completed'},
+  {icon:'💰',type:'credit',name:'Payment released — Lipstick Set',date:'20 May 2025',amount:145,status:'Completed'},
+  {icon:'⏳',type:'pending',name:'Escrow hold — Denim Jacket',date:'Today',amount:290,status:'Pending buyer confirmation'},
+  {icon:'⏳',type:'pending',name:'Escrow hold — Court Heels',date:'Today',amount:180,status:'Pending buyer confirmation'},
+  {icon:'💰',type:'credit',name:'Payment released — Ankle Boots',date:'18 May 2025',amount:560,status:'Completed'},
+  {icon:'💸',type:'debit',name:'Platform fee — May 2025',date:'1 May 2025',amount:-48,status:'Completed'},
+];
+
+/* ═══════════════════════
+   CHARTS
+═══════════════════════ */
+function drawBarChart() {
+  const svg = document.getElementById('barChart');
+  if (!svg) return;
+  const W = 600, H = 160, pad = 8;
+  const vals = [120,340,180,580,220,450,310,690,240,780,410,560,320,840,290,710,380,620,450,830,510,680,740,860,590,720,640,780,820,8420];
+  const labels = Array.from({length:30},(_,i)=>i%5===0?String(i+1):'');
+  const max = Math.max(...vals);
+  const bw = (W - pad*2) / vals.length;
+
+  let html = '';
+  vals.forEach((v,i) => {
+    const x = pad + i*bw;
+    const h = (v/max)*(H-20);
+    const y = H - h;
+    const isHigh = v === max;
+    const color = isHigh ? '#8DDF63' : (v > max*0.6 ? '#3DB870' : 'rgba(61,184,112,0.35)');
+    html += `<rect x="${x+1}" y="${y}" width="${bw-2}" height="${h}" fill="${color}" rx="2">
+      <title>R ${v.toLocaleString()}</title>
+    </rect>`;
+    if (isHigh) {
+      html += `<text x="${x+bw/2}" y="${y-5}" text-anchor="middle" font-size="9" fill="#8DDF63" font-family="Syne">R${(v/1000).toFixed(1)}k</text>`;
+    }
+  });
+
+  svg.innerHTML = html;
+
+  const lblWrap = document.getElementById('barLabels');
+  lblWrap.innerHTML = vals.map((_,i)=>`<span class="bar-label">${labels[i]}</span>`).join('');
+}
+
+function drawDonut() {
+  const svg = document.getElementById('donutSvg');
+  const legend = document.getElementById('donutLegend');
+  if (!svg) return;
+  const cats = [
+    {label:'Clothing', val:18, color:'#3DB870'},
+    {label:'Shoes',    val:7,  color:'#8DDF63'},
+    {label:'Bags',     val:5,  color:'#E8B84B'},
+    {label:'Jewellery',val:4,  color:'#5BB8D4'},
+  ];
+  const total = cats.reduce((s,c)=>s+c.val,0);
+  const cx=70,cy=70,r=52,ir=36;
+  let angle = -Math.PI/2;
+  let paths = '';
+  cats.forEach(c=>{
+    const sweep = (c.val/total)*Math.PI*2;
+    const x1=cx+r*Math.cos(angle), y1=cy+r*Math.sin(angle);
+    const x2=cx+r*Math.cos(angle+sweep), y2=cy+r*Math.sin(angle+sweep);
+    const xi1=cx+ir*Math.cos(angle), yi1=cy+ir*Math.sin(angle);
+    const xi2=cx+ir*Math.cos(angle+sweep), yi2=cy+ir*Math.sin(angle+sweep);
+    const lg = sweep>Math.PI?1:0;
+    paths+=`<path d="M${xi1},${yi1} L${x1},${y1} A${r},${r} 0 ${lg} 1 ${x2},${y2} L${xi2},${yi2} A${ir},${ir} 0 ${lg} 0 ${xi1},${yi1}" fill="${c.color}" opacity=".9"/>`;
+    angle+=sweep;
+  });
+  svg.innerHTML = paths;
+
+  legend.innerHTML = cats.map(c=>`
+    <div class="legend-item">
+      <div class="legend-dot" style="background:${c.color}"></div>
+      <span class="legend-label">${c.label}</span>
+      <span class="legend-val">${c.val}</span>
+      <span class="legend-pct">${Math.round(c.val/total*100)}%</span>
+    </div>`).join('');
+}
+
+function drawViewsChart() {
+  const wrap = document.getElementById('viewsChart');
+  if (!wrap) return;
+  const items = LISTINGS_DATA.slice(0,8).sort((a,b)=>b.views-a.views);
+  const max = items[0].views;
+  wrap.innerHTML = items.map(l=>`
+    <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:.7rem;">
+      <span style="font-size:.9rem;width:20px;text-align:center;">${l.emoji}</span>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:.73rem;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:.2rem;">${l.title}</div>
+        <div style="height:3px;background:var(--surface2);border-radius:2px;">
+          <div style="height:100%;width:${(l.views/max*100)}%;background:var(--green);border-radius:2px;transition:width 1s ease;"></div>
+        </div>
+      </div>
+      <span style="font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;color:var(--muted);min-width:28px;text-align:right;">${l.views}</span>
+    </div>`).join('');
+}
+
+function drawLocationStats() {
+  const wrap = document.getElementById('locationStats');
+  if (!wrap) return;
+  const locs = [
+    {name:'Gauteng',pct:52,color:'var(--green)'},
+    {name:'Western Cape',pct:24,color:'var(--lime)'},
+    {name:'KwaZulu-Natal',pct:14,color:'var(--amber)'},
+    {name:'Eastern Cape',pct:7, color:'var(--sky)'},
+    {name:'Other',pct:3,color:'var(--muted)'},
+  ];
+  wrap.innerHTML = locs.map(l=>`
+    <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:.7rem;">
+      <span style="font-size:.73rem;color:var(--muted);width:90px;flex-shrink:0;">${l.name}</span>
+      <div style="flex:1;height:3px;background:var(--surface2);border-radius:2px;">
+        <div style="height:100%;width:${l.pct}%;background:${l.color};border-radius:2px;transition:width 1s ease;"></div>
+      </div>
+      <span style="font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;color:var(--ink);min-width:28px;text-align:right;">${l.pct}%</span>
+    </div>`).join('');
+}
+
+/* ═══════════════════════
+   RENDER FUNCTIONS
+═══════════════════════ */
+
+
+function renderTxList(targetId, limit) {
+  const wrap = document.getElementById(targetId);
+  if (!wrap) return;
+  const data = limit ? TX_DATA.slice(0,limit) : TX_DATA;
+  wrap.innerHTML = data.map(t=>`
+    <div class="tx-item">
+      <div class="tx-icon ${t.type}">${t.icon}</div>
+      <div class="tx-info">
+        <div class="tx-name">${t.name}</div>
+        <div class="tx-date">${t.date}</div>
+      </div>
+      <div>
+        <div class="tx-amount ${t.type}">${t.amount>0?'+':''}R ${Math.abs(t.amount).toLocaleString()}</div>
+        <div class="tx-status">${t.status}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderTxTable() {
+  const wrap = document.getElementById('txTableWrap');
+  if (!wrap) return;
+  wrap.innerHTML = `<table>
+    <thead><tr><th>Transaction</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead>
+    <tbody>
+      ${TX_DATA.map(t=>`<tr>
+        <td><div style="display:flex;align-items:center;gap:.6rem;"><span>${t.icon}</span><span style="font-size:.8rem;color:var(--ink);">${t.name}</span></div></td>
+        <td><span class="listing-date">${t.date}</span></td>
+        <td><span class="tx-amount ${t.type}" style="font-size:.82rem;">${t.amount>0?'+':''}R ${Math.abs(t.amount).toLocaleString()}</span></td>
+        <td><span class="status-pill ${t.type==='pending'?'status-pending':t.type==='credit'?'status-active':'status-paused'}">${t.status}</span></td>
+      </tr>`).join('')}
+    </tbody>
+  </table>`;
+}
+
+/* ═══════════════════════
+   VIEW NAVIGATION
+═══════════════════════ */
+const VIEWS = ['overview','listings','orders','wallet','analytics','messages','reviews','settings'];
+const VIEW_TITLES = {
+  overview:  ['Dashboard Overview', 'Good morning, Thandi 👋'],
+  listings:  ['My Listings', 'Manage your active listings'],
+  orders:    ['Orders', '3 orders need your attention'],
+  wallet:    ['Digital Wallet', 'Your earnings and payouts'],
+  analytics: ['Analytics', 'Performance insights for your shop'],
+  messages:  ['Messages', '5 unread conversations'],
+  reviews:   ['Reviews', '28 verified buyer reviews'],
+  settings:  ['Settings', 'Account and notification settings'],
+};
+
+function showView(name) {
+  VIEWS.forEach(v => {
+    const el = document.getElementById('view-'+v);
+    if (el) el.style.display = v===name ? 'block' : 'none';
+  });
+  document.querySelectorAll('.nav-item').forEach(el => {
+    el.classList.remove('active');
+    if (el.getAttribute('onclick') && el.getAttribute('onclick').includes(`'${name}'`)) el.classList.add('active');
+  });
+  const [title, sub] = VIEW_TITLES[name] || [name, ''];
+  document.getElementById('pageTitle').textContent = title;
+  document.getElementById('pageSub').textContent   = sub;
+
+  if (name==='listings') renderListingsTable();
+  if (name==='orders')   renderOrders('ordersListFull');
+  if (name==='wallet')   { renderTxList('txListFull',5); renderTxTable(); }
+  if (name==='analytics'){ setTimeout(()=>{drawViewsChart();drawLocationStats();},50); }
+
+  // Close mobile sidebar
+  document.getElementById('sidebar').classList.remove('open');
+}
+
+function filterListings(el, filter) {
+  document.querySelectorAll('.lst-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderListingsTable(filter);
+}
+
+function switchChartTab(el) {
+  document.querySelectorAll('.chart-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  toast('📊 Switching chart period...');
+}
+
+function newListing() {
+  toast('✏️ New listing editor coming soon!');
+}
+
+/* ═══════════════════════
+   SIDEBAR MOBILE
+═══════════════════════ */
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+/* ═══════════════════════
+   TOAST
+═══════════════════════ */
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toastEl');
+  el.textContent = msg;
+  el.style.transform = 'translateX(-50%) translateY(0)';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>el.style.transform='translateX(-50%) translateY(60px)', 2800);
+}
+
+/* ═══════════════════════
+   DATE PILL
+═══════════════════════ */
+const now = new Date();
+document.getElementById('datePill').textContent =
+  now.toLocaleDateString('en-ZA',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+
+/* ═══════════════════════
+   INIT
+═══════════════════════ */
+drawBarChart();
+drawDonut();
+renderOrders('recentOrders', 3);
+</script>
+<script src="js/app.js"></script>
+<script src="js/dashboard-connect.js"></script>
+<script src="js/auth-modal-inject.js"></script>
+</body>
+</html>

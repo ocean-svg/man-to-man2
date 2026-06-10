@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MzansiMarket — Admin Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════
+   TOKENS — high-contrast command-centre
+═══════════════════════════════ */
+:root {
+  --bg:       #060A08;
+  --s0:       #0A0F0C;
+  --s1:       #0E1510;
+  --s2:       #141D16;
+  --s3:       #1B2820;
+  --border:   rgba(255,255,255,0.06);
+  --border2:  rgba(255,255,255,0.11);
+  --ink:      #E8EDE8;
+  --muted:    rgba(232,237,232,0.45);
+  --dim:      rgba(232,237,232,0.22);
+
+  /* status colours */
+  --go:       #2ECC71;  --go-d:  rgba(46,204,113,0.12);
+  --warn:     #F0B429;  --warn-d:rgba(240,180,41,0.12);
+  --danger:   #E53E3E;  --danger-d:rgba(229,62,62,0.12);
+  --info:     #63B3ED;  --info-d:rgba(99,179,237,0.12);
+  --purple:   #B794F4;  --purple-d:rgba(183,148,244,0.12);
+
+  --sidebar-w: 220px;
+  --top-h:     56px;
+  --r1:3px; --r2:6px; --r3:10px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;}
+body{
+  font-family:'IBM Plex Mono',monospace;
+  background:var(--bg);
+  color:var(--ink);
+  min-height:100vh;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+::-webkit-scrollbar{width:3px;height:3px;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+
+/* ═══════════════════════════════
+   LAYOUT
+═══════════════════════════════ */
+.shell{display:flex;min-height:100vh;}
+
+/* ═══════════════════════════════
+   SIDEBAR
+═══════════════════════════════ */
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;
+  background:var(--s0);border-right:1px solid var(--border);
+  position:fixed;top:0;bottom:0;left:0;
+  display:flex;flex-direction:column;z-index:200;
+  transition:transform .3s;
+}
+.sidebar-head{
+  padding:1.1rem 1rem .9rem;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.sidebar-brand{
+  display:flex;align-items:center;gap:.5rem;
+  font-family:'IBM Plex Sans',sans-serif;
+  font-weight:700;font-size:.95rem;color:var(--go);letter-spacing:-.01em;
+}
+.brand-pip{width:7px;height:7px;border-radius:50%;background:var(--go);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(46,204,113,.4);}50%{box-shadow:0 0 0 5px rgba(46,204,113,0);}}
+.console-tag{
+  font-size:.58rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--danger);background:var(--danger-d);border:1px solid rgba(229,62,62,.2);
+  padding:.1rem .4rem;border-radius:2px;
+}
+.sidebar-admin{
+  padding:.8rem 1rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:.6rem;
+}
+.admin-av{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--danger);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;font-weight:700;color:white;flex-shrink:0;
+}
+.admin-name{font-size:.75rem;font-weight:600;color:var(--ink);}
+.admin-role{font-size:.6rem;color:var(--danger);letter-spacing:.04em;}
+
+.sidebar-nav{flex:1;padding:.6rem .5rem;overflow-y:auto;}
+.nav-group-label{
+  font-size:.58rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--dim);padding:.5rem .5rem .3rem;margin-top:.4rem;
+}
+.nav-item{
+  display:flex;align-items:center;gap:.65rem;
+  padding:.55rem .7rem;border-radius:var(--r2);
+  cursor:pointer;transition:all .15s;
+  font-size:.77rem;color:var(--muted);
+  text-decoration:none;margin-bottom:1px;
+}
+.nav-item:hover{background:rgba(255,255,255,.04);color:var(--ink);}
+.nav-item.active{background:rgba(46,204,113,.08);border:1px solid rgba(46,204,113,.14);color:var(--ink);}
+.nav-item.active .ni{color:var(--go);}
+.ni{font-size:.85rem;width:16px;text-align:center;flex-shrink:0;}
+.nav-badge{
+  margin-left:auto;font-size:.6rem;font-weight:700;
+  padding:.1rem .35rem;border-radius:3px;min-width:18px;text-align:center;
+}
+.nb-danger{background:var(--danger);color:white;}
+.nb-warn{background:var(--warn);color:#1A1200;}
+.nb-info{background:var(--info);color:#05161f;}
+
+.sidebar-foot{padding:.6rem .5rem;border-top:1px solid var(--border);}
+.system-status{
+  display:flex;align-items:center;gap:.5rem;
+  padding:.5rem .7rem;font-size:.68rem;color:var(--muted);
+}
+.status-pip{width:6px;height:6px;border-radius:50%;background:var(--go);animation:pulse 2s infinite;}
+
+/* ═══════════════════════════════
+   MAIN
+═══════════════════════════════ */
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;}
+
+/* TOPBAR */
+.topbar{
+  height:var(--top-h);position:sticky;top:0;z-index:100;
+  background:var(--s0);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 1.6rem;
+}
+.topbar-left{display:flex;align-items:center;gap:.8rem;}
+.hamburger{display:none;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:4px;}
+.hamburger span{display:block;width:16px;height:1.5px;background:var(--muted);}
+.breadcrumb{font-size:.72rem;color:var(--muted);display:flex;align-items:center;gap:.4rem;}
+.breadcrumb-sep{color:var(--dim);}
+.breadcrumb-cur{color:var(--ink);font-weight:600;}
+.topbar-right{display:flex;align-items:center;gap:.6rem;}
+.topbar-search{
+  display:flex;align-items:center;gap:.4rem;
+  background:var(--s1);border:1px solid var(--border2);
+  border-radius:var(--r2);padding:.35rem .7rem;
+  transition:border-color .2s;
+}
+.topbar-search:focus-within{border-color:var(--go);}
+.topbar-search input{
+  background:none;border:none;outline:none;
+  font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:var(--ink);
+  width:160px;
+}
+.topbar-search input::placeholder{color:var(--dim);}
+.topbar-icon-btn{
+  width:30px;height:30px;border-radius:var(--r2);
+  background:var(--s1);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;cursor:pointer;position:relative;
+  transition:border-color .15s;
+}
+.topbar-icon-btn:hover{border-color:var(--border2);}
+.topbar-notif-dot{position:absolute;top:5px;right:5px;width:6px;height:6px;border-radius:50%;background:var(--danger);border:1.5px solid var(--s0);}
+.export-btn{
+  display:flex;align-items:center;gap:.35rem;
+  font-family:'IBM Plex Mono',monospace;font-size:.7rem;font-weight:600;
+  padding:.38rem .8rem;border-radius:var(--r2);cursor:pointer;
+  background:var(--s2);border:1px solid var(--border2);color:var(--muted);
+  transition:all .15s;
+}
+.export-btn:hover{color:var(--ink);border-color:rgba(255,255,255,.2);}
+
+/* ═══════════════════════════════
+   PAGE BODY
+═══════════════════════════════ */
+.page{padding:1.4rem 1.6rem;flex:1;}
+
+/* section header */
+.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem;}
+.sec-title{
+  font-family:'IBM Plex Sans',sans-serif;
+  font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--dim);
+}
+.sec-action{
+  font-size:.68rem;color:var(--go);background:none;border:none;cursor:pointer;
+  transition:color .15s;
+}
+.sec-action:hover{color:#52e88d;}
+
+/* ═══════════════════════════════
+   KPI STRIP
+═══════════════════════════════ */
+.kpi-strip{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);border-radius:var(--r3);
+  overflow:hidden;margin-bottom:1.2rem;
+}
+.kpi{
+  background:var(--s1);padding:1rem 1.1rem;
+  position:relative;transition:background .2s;
+}
+.kpi:hover{background:var(--s2);}
+.kpi-label{font-size:.6rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.4rem;}
+.kpi-val{
+  font-family:'IBM Plex Sans',sans-serif;
+  font-size:1.55rem;font-weight:700;color:var(--ink);line-height:1;margin-bottom:.35rem;
+  animation:numIn .5s ease both;
+}
+@keyframes numIn{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
+.kpi-val:nth-child(1){animation-delay:.05s}
+.kpi-delta{font-size:.62rem;display:flex;align-items:center;gap:.25rem;}
+.delta-up{color:var(--go);}
+.delta-dn{color:var(--danger);}
+.delta-neu{color:var(--muted);}
+.kpi-bar{position:absolute;bottom:0;left:0;right:0;height:2px;}
+
+/* ═══════════════════════════════
+   ALERT QUEUE (top priority)
+═══════════════════════════════ */
+.alert-queue{margin-bottom:1.2rem;display:flex;flex-direction:column;gap:.5rem;}
+.alert-item{
+  display:flex;align-items:center;gap:.8rem;
+  padding:.75rem 1rem;border-radius:var(--r2);
+  animation:slideIn .3s ease both;
+}
+@keyframes slideIn{from{opacity:0;transform:translateX(-8px);}to{opacity:1;transform:translateX(0);}}
+.alert-item.critical{background:var(--danger-d);border:1px solid rgba(229,62,62,.25);}
+.alert-item.warning{background:var(--warn-d);border:1px solid rgba(240,180,41,.22);}
+.alert-item.info{background:var(--info-d);border:1px solid rgba(99,179,237,.2);}
+.alert-priority{
+  font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:.15rem .4rem;border-radius:2px;flex-shrink:0;
+}
+.p-critical{background:var(--danger);color:white;}
+.p-warning{background:var(--warn);color:#1A1200;}
+.p-info{background:var(--info);color:#05161f;}
+.alert-text{flex:1;font-size:.75rem;color:var(--ink);line-height:1.4;}
+.alert-time{font-size:.62rem;color:var(--muted);flex-shrink:0;}
+.alert-actions{display:flex;gap:.4rem;flex-shrink:0;}
+.alert-btn{
+  font-size:.65rem;font-weight:600;padding:.25rem .6rem;border-radius:var(--r1);
+  cursor:pointer;border:none;font-family:'IBM Plex Mono',monospace;
+  transition:all .15s;
+}
+.ab-review{background:var(--s3);color:var(--ink);border:1px solid var(--border2);}
+.ab-review:hover{background:rgba(255,255,255,.08);}
+.ab-act{background:var(--danger);color:white;}
+.ab-act:hover{filter:brightness(1.1);}
+.ab-dismiss{background:none;color:var(--muted);border:1px solid transparent;padding:.25rem;}
+.ab-dismiss:hover{color:var(--dim);}
+
+/* ═══════════════════════════════
+   MAIN GRID
+═══════════════════════════════ */
+.main-grid{display:grid;grid-template-columns:1fr 320px;gap:1.2rem;margin-bottom:1.2rem;}
+
+/* ═══════════════════════════════
+   VERIFICATION QUEUE
+═══════════════════════════════ */
+.panel{
+  background:var(--s1);border:1px solid var(--border);border-radius:var(--r3);
+  overflow:hidden;
+}
+.panel-hd{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.8rem 1.1rem;border-bottom:1px solid var(--border);
+}
+.panel-title{
+  font-family:'IBM Plex Sans',sans-serif;
+  font-size:.78rem;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:.5rem;
+}
+.panel-count{
+  font-size:.6rem;font-weight:700;background:var(--warn-d);color:var(--warn);
+  border:1px solid rgba(240,180,41,.2);padding:.1rem .4rem;border-radius:2px;
+}
+.panel-tabs{display:flex;gap:2px;}
+.ptab{
+  font-size:.62rem;font-weight:600;padding:.28rem .6rem;border-radius:var(--r1);
+  cursor:pointer;color:var(--muted);transition:all .15s;
+}
+.ptab.active{background:var(--s3);color:var(--ink);border:1px solid var(--border2);}
+
+/* Verification cards */
+.verif-list{display:flex;flex-direction:column;gap:0;}
+.verif-item{
+  display:grid;grid-template-columns:36px 1fr auto;gap:.8rem;align-items:center;
+  padding:.8rem 1.1rem;border-bottom:1px solid var(--border);
+  transition:background .15s;
+}
+.verif-item:last-child{border-bottom:none;}
+.verif-item:hover{background:rgba(255,255,255,.02);}
+.verif-av{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;font-weight:700;color:white;flex-shrink:0;
+}
+.verif-name{font-size:.78rem;font-weight:600;color:var(--ink);margin-bottom:.15rem;}
+.verif-meta{font-size:.62rem;color:var(--muted);}
+.verif-docs{display:flex;gap:.3rem;margin-top:.3rem;}
+.doc-chip{
+  font-size:.58rem;font-weight:600;padding:.12rem .4rem;border-radius:2px;
+  background:var(--s2);border:1px solid var(--border2);color:var(--muted);
+}
+.doc-chip.ok{background:var(--go-d);border-color:rgba(46,204,113,.2);color:var(--go);}
+.verif-actions{display:flex;flex-direction:column;gap:.35rem;align-items:flex-end;}
+.verif-time{font-size:.6rem;color:var(--dim);margin-bottom:.2rem;text-align:right;}
+.va-approve{
+  font-size:.63rem;font-weight:700;padding:.3rem .7rem;border-radius:var(--r1);
+  background:var(--go);color:var(--bg);border:none;cursor:pointer;
+  transition:all .15s;
+}
+.va-approve:hover{background:#52e88d;}
+.va-reject{
+  font-size:.63rem;font-weight:600;padding:.3rem .7rem;border-radius:var(--r1);
+  background:var(--s2);color:var(--muted);border:1px solid var(--border2);cursor:pointer;
+  transition:all .15s;
+}
+.va-reject:hover{background:var(--danger-d);color:var(--danger);border-color:rgba(229,62,62,.3);}
+
+/* ═══════════════════════════════
+   LIVE ACTIVITY FEED
+═══════════════════════════════ */
+.feed{display:flex;flex-direction:column;gap:0;max-height:440px;overflow-y:auto;}
+.feed-item{
+  display:flex;gap:.7rem;align-items:flex-start;
+  padding:.65rem 1.1rem;border-bottom:1px solid var(--border);
+  animation:feedIn .3s ease both;
+}
+@keyframes feedIn{from{opacity:0;background:rgba(46,204,113,.05);}to{opacity:1;background:transparent;}}
+.feed-item:last-child{border-bottom:none;}
+.feed-icon{
+  width:24px;height:24px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;flex-shrink:0;margin-top:.05rem;
+}
+.feed-text{flex:1;font-size:.72rem;color:var(--muted);line-height:1.5;}
+.feed-text strong{color:var(--ink);font-weight:600;}
+.feed-time{font-size:.6rem;color:var(--dim);flex-shrink:0;white-space:nowrap;padding-top:.1rem;}
+.feed-type-sale   .feed-icon{background:var(--go-d);color:var(--go);}
+.feed-type-signup .feed-icon{background:var(--info-d);color:var(--info);}
+.feed-type-flag   .feed-icon{background:var(--danger-d);color:var(--danger);}
+.feed-type-verif  .feed-icon{background:var(--warn-d);color:var(--warn);}
+.feed-type-escrow .feed-icon{background:var(--purple-d);color:var(--purple);}
+
+/* ═══════════════════════════════
+   DISPUTES TABLE
+═══════════════════════════════ */
+.disputes-row{margin-bottom:1.2rem;}
+.dispute-item{
+  display:grid;grid-template-columns:auto 1fr auto auto auto;gap:1rem;align-items:center;
+  padding:.75rem 1.1rem;border-bottom:1px solid var(--border);
+  transition:background .15s;
+}
+.dispute-item:hover{background:rgba(255,255,255,.02);}
+.dispute-item:last-child{border-bottom:none;}
+.dispute-id{font-size:.65rem;color:var(--muted);font-weight:600;white-space:nowrap;}
+.dispute-info-title{font-size:.77rem;font-weight:600;color:var(--ink);margin-bottom:.12rem;}
+.dispute-info-meta{font-size:.62rem;color:var(--muted);}
+.dispute-amount{font-family:'IBM Plex Sans',sans-serif;font-size:.9rem;font-weight:700;color:var(--ink);white-space:nowrap;}
+.dispute-age{font-size:.62rem;color:var(--dim);white-space:nowrap;}
+.dispute-actions{display:flex;gap:.4rem;}
+.da-btn{
+  font-size:.62rem;font-weight:600;padding:.28rem .65rem;border-radius:var(--r1);
+  cursor:pointer;border:none;font-family:'IBM Plex Mono',monospace;transition:all .15s;
+}
+.da-review{background:var(--s2);color:var(--muted);border:1px solid var(--border2);}
+.da-review:hover{color:var(--ink);}
+.da-buyer{background:var(--info-d);color:var(--info);border:1px solid rgba(99,179,237,.2);}
+.da-buyer:hover{background:rgba(99,179,237,.2);}
+.da-seller{background:var(--go-d);color:var(--go);border:1px solid rgba(46,204,113,.2);}
+.da-seller:hover{background:rgba(46,204,113,.2);}
+
+/* ═══════════════════════════════
+   USERS TABLE
+═══════════════════════════════ */
+.user-item{
+  display:grid;grid-template-columns:28px 1fr auto auto auto;gap:.9rem;align-items:center;
+  padding:.7rem 1.1rem;border-bottom:1px solid var(--border);
+  transition:background .15s;
+}
+.user-item:hover{background:rgba(255,255,255,.02);}
+.user-item:last-child{border-bottom:none;}
+.user-av-sm{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;font-weight:700;color:white;
+}
+.user-name{font-size:.77rem;font-weight:600;color:var(--ink);margin-bottom:.1rem;}
+.user-meta{font-size:.62rem;color:var(--muted);}
+.user-stats{font-size:.65rem;color:var(--muted);text-align:right;white-space:nowrap;}
+.user-stat-val{font-family:'IBM Plex Sans',sans-serif;font-size:.78rem;font-weight:700;color:var(--ink);}
+.status-badge{
+  font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:.15rem .45rem;border-radius:2px;white-space:nowrap;
+}
+.sb-verified{background:var(--go-d);color:var(--go);border:1px solid rgba(46,204,113,.2);}
+.sb-pending{background:var(--warn-d);color:var(--warn);border:1px solid rgba(240,180,41,.2);}
+.sb-flagged{background:var(--danger-d);color:var(--danger);border:1px solid rgba(229,62,62,.2);}
+.sb-suspended{background:var(--s2);color:var(--muted);border:1px solid var(--border2);}
+.user-actions{display:flex;gap:.35rem;}
+.ua-btn{
+  width:24px;height:24px;border-radius:var(--r1);
+  background:var(--s2);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;cursor:pointer;transition:all .15s;
+  color:var(--muted);
+}
+.ua-btn:hover{background:rgba(255,255,255,.06);color:var(--ink);}
+.ua-btn.danger:hover{background:var(--danger-d);color:var(--danger);border-color:rgba(229,62,62,.25);}
+
+/* ═══════════════════════════════
+   FRAUD MONITOR
+═══════════════════════════════ */
+.fraud-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.2rem;}
+.fraud-metric{
+  background:var(--s1);border:1px solid var(--border);border-radius:var(--r3);
+  padding:1rem 1.1rem;
+}
+.fraud-metric-label{font-size:.6rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem;}
+.fraud-metric-val{
+  font-family:'IBM Plex Sans',sans-serif;font-size:1.4rem;font-weight:700;color:var(--ink);
+  line-height:1;margin-bottom:.35rem;
+}
+.fraud-metric-bar{height:3px;background:var(--s3);border-radius:2px;margin-bottom:.4rem;}
+.fraud-metric-bar-fill{height:100%;border-radius:2px;transition:width 1.2s ease;}
+.fraud-metric-sub{font-size:.62rem;color:var(--muted);}
+.flagged-list{background:var(--s1);border:1px solid var(--border);border-radius:var(--r3);overflow:hidden;}
+.flagged-item{
+  display:grid;grid-template-columns:auto 1fr auto;gap:.8rem;align-items:center;
+  padding:.7rem 1.1rem;border-bottom:1px solid var(--border);
+  transition:background .15s;
+}
+.flagged-item:hover{background:rgba(255,255,255,.02);}
+.flagged-item:last-child{border-bottom:none;}
+.flag-icon{font-size:1rem;}
+.flag-title{font-size:.75rem;font-weight:600;color:var(--ink);margin-bottom:.1rem;}
+.flag-reason{font-size:.62rem;color:var(--danger);}
+.flag-actions{display:flex;gap:.35rem;}
+.fa-btn{
+  font-size:.62rem;font-weight:600;padding:.25rem .55rem;border-radius:var(--r1);
+  cursor:pointer;border:none;font-family:'IBM Plex Mono',monospace;transition:all .15s;
+}
+.fa-remove{background:var(--danger);color:white;}
+.fa-remove:hover{filter:brightness(1.15);}
+.fa-keep{background:var(--s2);color:var(--muted);border:1px solid var(--border2);}
+.fa-keep:hover{color:var(--ink);}
+
+/* ═══════════════════════════════
+   PLATFORM HEALTH PANEL
+═══════════════════════════════ */
+.health-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-bottom:1.2rem;}
+.health-card{
+  background:var(--s1);border:1px solid var(--border);border-radius:var(--r3);
+  padding:1rem 1.1rem;
+}
+.health-service{display:flex;align-items:center;gap:.5rem;margin-bottom:.8rem;}
+.health-pip{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.health-svc-name{font-size:.75rem;font-weight:600;color:var(--ink);}
+.health-uptime{font-size:.62rem;color:var(--muted);margin-left:auto;}
+.health-metrics{display:flex;flex-direction:column;gap:.45rem;}
+.hm-row{display:flex;justify-content:space-between;align-items:center;}
+.hm-label{font-size:.65rem;color:var(--muted);}
+.hm-val{font-family:'IBM Plex Sans',sans-serif;font-size:.7rem;font-weight:600;color:var(--ink);}
+
+/* ═══════════════════════════════
+   CHART BARS (mini inline)
+═══════════════════════════════ */
+.inline-chart{display:flex;align-items:flex-end;gap:2px;height:32px;margin-top:.6rem;}
+.ic-bar{
+  flex:1;border-radius:1px 1px 0 0;min-height:3px;
+  transition:height .6s ease;
+}
+
+/* ═══════════════════════════════
+   VIEW SWITCHING
+═══════════════════════════════ */
+.view{display:none;}
+.view.active{display:block;}
+
+/* ═══════════════════════════════
+   TOAST
+═══════════════════════════════ */
+#toast{
+  position:fixed;bottom:1.2rem;left:50%;
+  transform:translateX(-50%) translateY(50px);
+  background:var(--s3);color:var(--ink);
+  padding:.55rem 1.1rem;border-radius:var(--r2);
+  font-size:.72rem;font-weight:600;
+  border:1px solid var(--border2);
+  box-shadow:0 8px 24px rgba(0,0,0,.6);
+  z-index:999;pointer-events:none;
+  transition:transform .3s cubic-bezier(.34,1.3,.64,1);
+  white-space:nowrap;
+}
+#toast.show{transform:translateX(-50%) translateY(0);}
+
+/* ═══════════════════════════════
+   RESPONSIVE
+═══════════════════════════════ */
+@media(max-width:1100px){
+  .kpi-strip{grid-template-columns:repeat(3,1fr);}
+  .main-grid{grid-template-columns:1fr;}
+  .fraud-grid{grid-template-columns:1fr;}
+  .health-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:820px){
+  :root{--sidebar-w:0px;}
+  .sidebar{transform:translateX(-220px);}
+  .sidebar.open{transform:translateX(0);width:220px;}
+  .main{margin-left:0;}
+  .hamburger{display:flex;}
+  .page{padding:1rem .9rem;}
+  .kpi-strip{grid-template-columns:repeat(2,1fr);}
+  .health-grid{grid-template-columns:1fr;}
+  .topbar-search{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+<!-- ═══════ SIDEBAR ═══════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-head">
+    <div class="sidebar-brand"><span class="brand-pip"></span>MzansiMarket</div>
+    <span class="console-tag">ADMIN</span>
+  </div>
+  <div class="sidebar-admin">
+    <div class="admin-av">SA</div>
+    <div><div class="admin-name">Super Admin</div><div class="admin-role">Platform Administrator</div></div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group-label">Monitor</div>
+    <div class="nav-item active" onclick="nav(this,'overview')"><span class="ni">⊞</span>Overview<span class="nav-badge nb-danger" id="nb-overview">7</span></div>
+    <div class="nav-item" onclick="nav(this,'verification')"><span class="ni">🪪</span>Verification Queue<span class="nav-badge nb-warn">14</span></div>
+    <div class="nav-item" onclick="nav(this,'disputes')"><span class="ni">⚖️</span>Disputes<span class="nav-badge nb-danger">6</span></div>
+    <div class="nav-item" onclick="nav(this,'fraud')"><span class="ni">🚨</span>Fraud Monitor<span class="nav-badge nb-danger">3</span></div>
+
+    <div class="nav-group-label">Manage</div>
+    <div class="nav-item" onclick="nav(this,'users')"><span class="ni">👥</span>Users<span class="nav-badge nb-info">2.4k</span></div>
+    <div class="nav-item" onclick="nav(this,'listings')"><span class="ni">📋</span>Listings</div>
+    <div class="nav-item" onclick="nav(this,'escrow')"><span class="ni">🔒</span>Escrow<span class="nav-badge nb-warn">R 84k</span></div>
+    <div class="nav-item" onclick="nav(this,'payouts')"><span class="ni">💸</span>Payouts</div>
+
+    <div class="nav-group-label">Platform</div>
+    <div class="nav-item" onclick="nav(this,'health')"><span class="ni">💚</span>System Health</div>
+    <div class="nav-item" onclick="nav(this,'reports')"><span class="ni">📊</span>Reports</div>
+    <div class="nav-item" onclick="nav(this,'settings')"><span class="ni">⚙️</span>Config</div>
+  </nav>
+  <div class="sidebar-foot">
+    <div class="system-status"><span class="status-pip"></span>All systems operational</div>
+    <div class="nav-item" style="margin-top:2px;" onclick="toast('🏠 Returning to site...');setTimeout(()=>window.location.href='mzansimarket.html',800)"><span class="ni">←</span>Back to Site</div>
+  </div>
+</aside>
+
+<!-- ═══════ MAIN ═══════ -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="hamburger" onclick="toggleSidebar()"><span></span><span></span><span></span></button>
+      <div class="breadcrumb">
+        <span>Admin</span><span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-cur" id="bcCur">Overview</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-search">
+        <span style="color:var(--muted);font-size:.75rem;">⌕</span>
+        <input type="text" placeholder="Search users, orders, listings…" id="globalSearch" oninput="handleSearch(this.value)"/>
+      </div>
+      <div class="topbar-icon-btn" onclick="toast('🔔 7 critical alerts pending')"><span>🔔</span><span class="topbar-notif-dot"></span></div>
+      <button class="export-btn" onclick="toast('📥 Exporting report CSV...')">↓ Export</button>
+    </div>
+  </header>
+
+  <!-- ═══ VIEWS ═══ -->
+  <div class="page">
+
+    <!-- ══ OVERVIEW ══ -->
+    <div class="view active" id="view-overview">
+      <div class="sec-hd"><span class="sec-title">Platform Overview — Live</span><span class="sec-action" id="liveTag">● LIVE</span></div>
+
+      <!-- KPI strip -->
+      <div class="kpi-strip">
+        <div class="kpi">
+          <div class="kpi-label">Total Users</div>
+          <div class="kpi-val" id="kpi-users">2,418</div>
+          <div class="kpi-delta"><span class="delta-up">↑ 47</span><span style="color:var(--dim);margin-left:.3rem;">today</span></div>
+          <div class="kpi-bar" style="background:linear-gradient(90deg,var(--info),transparent)"></div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Active Listings</div>
+          <div class="kpi-val">1,847</div>
+          <div class="kpi-delta"><span class="delta-up">↑ 23</span><span style="color:var(--dim);margin-left:.3rem;">this hour</span></div>
+          <div class="kpi-bar" style="background:linear-gradient(90deg,var(--go),transparent)"></div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Escrow Held</div>
+          <div class="kpi-val">R 84k</div>
+          <div class="kpi-delta"><span class="delta-up">18 orders</span></div>
+          <div class="kpi-bar" style="background:linear-gradient(90deg,var(--purple),transparent)"></div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Disputes Open</div>
+          <div class="kpi-val" style="color:var(--danger)">6</div>
+          <div class="kpi-delta"><span class="delta-dn">↑ 2 new today</span></div>
+          <div class="kpi-bar" style="background:linear-gradient(90deg,var(--danger),transparent)"></div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Revenue (MTD)</div>
+          <div class="kpi-val">R 218k</div>
+          <div class="kpi-delta"><span class="delta-up">↑ 31% vs last month</span></div>
+          <div class="kpi-bar" style="background:linear-gradient(90deg,var(--warn),transparent)"></div>
+        </div>
+      </div>
+
+      <!-- Alert queue -->
+      <div class="sec-hd"><span class="sec-title">Action Required</span><span class="sec-action" onclick="toast('✓ All alerts acknowledged')">Acknowledge all</span></div>
+      <div class="alert-queue">
+        <div class="alert-item critical">
+          <span class="alert-priority p-critical">CRITICAL</span>
+          <span class="alert-text">Suspected fraudulent seller <strong>acc_8841</strong> posted 12 identical listings in 4 minutes — possible bot activity.</span>
+          <span class="alert-time">2 min ago</span>
+          <div class="alert-actions">
+            <button class="alert-btn ab-review" onclick="nav(document.querySelector('[onclick*=fraud]'),'fraud')">Investigate</button>
+            <button class="alert-btn ab-act" onclick="suspendAndToast('acc_8841')">Suspend Account</button>
+            <button class="alert-btn ab-dismiss" onclick="this.closest('.alert-item').remove()">✕</button>
+          </div>
+        </div>
+        <div class="alert-item warning">
+          <span class="alert-priority p-warning">WARNING</span>
+          <span class="alert-text">Escrow release for order <strong>ORD-2041</strong> has been pending for 72 hours — buyer has not confirmed receipt.</span>
+          <span class="alert-time">3 hrs ago</span>
+          <div class="alert-actions">
+            <button class="alert-btn ab-review" onclick="toast('📋 Opening order ORD-2041...')">Review Order</button>
+            <button class="alert-btn ab-dismiss" onclick="this.closest('.alert-item').remove()">✕</button>
+          </div>
+        </div>
+        <div class="alert-item warning">
+          <span class="alert-priority p-warning">WARNING</span>
+          <span class="alert-text">14 seller verifications in queue — oldest submission is <strong>18 hours old</strong>. SLA target is 24h.</span>
+          <span class="alert-time">18 hrs ago</span>
+          <div class="alert-actions">
+            <button class="alert-btn ab-review" onclick="nav(document.querySelector('[onclick*=verification]'),'verification')">Review Queue</button>
+            <button class="alert-btn ab-dismiss" onclick="this.closest('.alert-item').remove()">✕</button>
+          </div>
+        </div>
+        <div class="alert-item info">
+          <span class="alert-priority p-info">INFO</span>
+          <span class="alert-text">Platform hit <strong>1,000 registered users</strong> milestone today at 08:42. Pilot objective achieved ahead of schedule.</span>
+          <span class="alert-time">Today 08:42</span>
+          <div class="alert-actions">
+            <button class="alert-btn ab-dismiss" onclick="this.closest('.alert-item').remove()">✕</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main grid: verif queue + live feed -->
+      <div class="main-grid">
+        <!-- Verification queue preview -->
+        <div class="panel">
+          <div class="panel-hd">
+            <span class="panel-title">Verification Queue <span class="panel-count">14 pending</span></span>
+            <div class="panel-tabs">
+              <div class="ptab active">All</div>
+              <div class="ptab" onclick="toast('Filtering: New submissions')">New</div>
+              <div class="ptab" onclick="toast('Filtering: Flagged docs')">Flagged</div>
+            </div>
+          </div>
+          <div class="verif-list" id="verifListPreview"></div>
+        </div>
+
+        <!-- Live activity feed -->
+        <div class="panel">
+          <div class="panel-hd">
+            <span class="panel-title">Live Activity <span style="width:6px;height:6px;border-radius:50%;background:var(--go);display:inline-block;margin-left:.3rem;animation:pulse 2s infinite;"></span></span>
+          </div>
+          <div class="feed" id="liveFeed"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ VERIFICATION ══ -->
+    <div class="view" id="view-verification">
+      <div class="sec-hd"><span class="sec-title">FICA / KYC Verification Queue</span><span class="sec-action" onclick="toast('📋 Batch review mode activated')">Batch Review</span></div>
+      <div class="panel">
+        <div class="panel-hd">
+          <span class="panel-title">Pending Submissions <span class="panel-count">14</span></span>
+          <div class="panel-tabs">
+            <div class="ptab active">All (14)</div>
+            <div class="ptab" onclick="filterVerif(this,'new')">New (9)</div>
+            <div class="ptab" onclick="filterVerif(this,'flagged')">Flagged (3)</div>
+            <div class="ptab" onclick="filterVerif(this,'resubmit')">Resubmit (2)</div>
+          </div>
+        </div>
+        <div class="verif-list" id="verifListFull"></div>
+      </div>
+    </div>
+
+    <!-- ══ DISPUTES ══ -->
+    <div class="view" id="view-disputes">
+      <div class="sec-hd"><span class="sec-title">Active Disputes</span><span class="sec-action" onclick="toast('📊 Exporting dispute report...')">Export CSV</span></div>
+      <div class="panel disputes-row">
+        <div class="panel-hd">
+          <span class="panel-title">Open Cases <span class="panel-count">6 active</span></span>
+          <div class="panel-tabs">
+            <div class="ptab active">Open (6)</div>
+            <div class="ptab" onclick="toast('Filtering: Under review')">In Review (2)</div>
+            <div class="ptab" onclick="toast('Filtering: Resolved')">Resolved (48)</div>
+          </div>
+        </div>
+        <div id="disputesList"></div>
+      </div>
+    </div>
+
+    <!-- ══ FRAUD MONITOR ══ -->
+    <div class="view" id="view-fraud">
+      <div class="sec-hd"><span class="sec-title">Fraud Monitor</span><span class="sec-action" onclick="toast('🔄 Refreshing fraud scan...')">Refresh Scan</span></div>
+      <div class="fraud-grid">
+        <div class="fraud-metric">
+          <div class="fraud-metric-label">Fraud Rate (30D)</div>
+          <div class="fraud-metric-val" style="color:var(--go)">1.2%</div>
+          <div class="fraud-metric-bar"><div class="fraud-metric-bar-fill" style="width:12%;background:var(--go);"></div></div>
+          <div class="fraud-metric-sub">↓ 0.8% from baseline — below 3% target</div>
+        </div>
+        <div class="fraud-metric">
+          <div class="fraud-metric-label">Disputes vs Transactions</div>
+          <div class="fraud-metric-val" style="color:var(--warn)">2.3%</div>
+          <div class="fraud-metric-bar"><div class="fraud-metric-bar-fill" style="width:23%;background:var(--warn);"></div></div>
+          <div class="fraud-metric-sub">↑ slightly — monitoring for trend</div>
+        </div>
+        <div class="fraud-metric">
+          <div class="fraud-metric-label">Accounts Suspended (MTD)</div>
+          <div class="fraud-metric-val">11</div>
+          <div class="fraud-metric-bar"><div class="fraud-metric-bar-fill" style="width:22%;background:var(--info);"></div></div>
+          <div class="fraud-metric-sub">4 fraud · 5 policy violation · 2 scam</div>
+        </div>
+        <div class="fraud-metric">
+          <div class="fraud-metric-label">Listings Auto-Removed</div>
+          <div class="fraud-metric-val">34</div>
+          <div class="fraud-metric-bar"><div class="fraud-metric-bar-fill" style="width:34%;background:var(--purple);"></div></div>
+          <div class="fraud-metric-sub">Duplicate / prohibited / NSFW detection</div>
+        </div>
+      </div>
+      <div class="sec-hd"><span class="sec-title">Flagged Items — Needs Action</span></div>
+      <div class="flagged-list" id="flaggedList"></div>
+    </div>
+
+    <!-- ══ USERS ══ -->
+    <div class="view" id="view-users">
+      <div class="sec-hd">
+        <span class="sec-title">User Management <span style="color:var(--go);margin-left:.5rem;">2,418 total</span></span>
+        <div style="display:flex;gap:.5rem;">
+          <div class="topbar-search" style="border-radius:var(--r2);">
+            <span style="color:var(--muted);font-size:.75rem;">⌕</span>
+            <input type="text" placeholder="Search users…" style="background:none;border:none;outline:none;font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--ink);width:140px;" oninput="filterUsers(this.value)"/>
+          </div>
+          <button class="export-btn" onclick="toast('📥 Exporting users CSV...')">↓ Export</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-hd">
+          <span class="panel-title">All Users</span>
+          <div class="panel-tabs">
+            <div class="ptab active" onclick="filterUserTab(this,'all')">All</div>
+            <div class="ptab" onclick="filterUserTab(this,'verified')">Verified</div>
+            <div class="ptab" onclick="filterUserTab(this,'pending')">Pending</div>
+            <div class="ptab" onclick="filterUserTab(this,'flagged')">Flagged</div>
+            <div class="ptab" onclick="filterUserTab(this,'suspended')">Suspended</div>
+          </div>
+        </div>
+        <div id="usersList"></div>
+      </div>
+    </div>
+
+    <!-- ══ ESCROW ══ -->
+    <div class="view" id="view-escrow">
+      <div class="sec-hd"><span class="sec-title">Escrow Management — R 84,320 held</span></div>
+      <div class="kpi-strip" style="grid-template-columns:repeat(3,1fr);">
+        <div class="kpi"><div class="kpi-label">Total Held</div><div class="kpi-val">R 84,320</div><div class="kpi-delta"><span class="delta-neu">18 active orders</span></div><div class="kpi-bar" style="background:linear-gradient(90deg,var(--purple),transparent)"></div></div>
+        <div class="kpi"><div class="kpi-label">Overdue Release (&gt;72h)</div><div class="kpi-val" style="color:var(--danger)">R 12,400</div><div class="kpi-delta"><span class="delta-dn">3 orders stalled</span></div><div class="kpi-bar" style="background:linear-gradient(90deg,var(--danger),transparent)"></div></div>
+        <div class="kpi"><div class="kpi-label">Released Today</div><div class="kpi-val">R 4,850</div><div class="kpi-delta"><span class="delta-up">7 orders completed</span></div><div class="kpi-bar" style="background:linear-gradient(90deg,var(--go),transparent)"></div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-hd"><span class="panel-title">Active Escrow Orders</span></div>
+        <div id="escrowList"></div>
+      </div>
+    </div>
+
+    <!-- ══ PAYOUTS ══ -->
+    <div class="view" id="view-payouts">
+      <div class="sec-hd"><span class="sec-title">Payout Queue</span><span class="sec-action" onclick="toast('💸 Batch payout initiated for R 14,200')">Process Batch</span></div>
+      <div class="panel">
+        <div class="panel-hd"><span class="panel-title">Pending Payouts</span></div>
+        <div id="payoutsList"></div>
+      </div>
+    </div>
+
+    <!-- ══ SYSTEM HEALTH ══ -->
+    <div class="view" id="view-health">
+      <div class="sec-hd"><span class="sec-title">System Health</span><span class="sec-action" id="healthRefreshBtn" onclick="toast('🔄 Refreshing metrics...')">↺ Refresh</span></div>
+      <div class="health-grid" id="healthGrid"></div>
+      <div class="sec-hd"><span class="sec-title">Response Time (24h)</span></div>
+      <div class="panel" style="padding:1.2rem 1.3rem;">
+        <div class="inline-chart" id="responseChart"></div>
+        <div style="display:flex;justify-content:space-between;margin-top:.4rem;">
+          <span style="font-size:.58rem;color:var(--dim);">00:00</span>
+          <span style="font-size:.58rem;color:var(--dim);">06:00</span>
+          <span style="font-size:.58rem;color:var(--dim);">12:00</span>
+          <span style="font-size:.58rem;color:var(--dim);">18:00</span>
+          <span style="font-size:.58rem;color:var(--dim);">Now</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ REPORTS / LISTINGS / SETTINGS — stubs ══ -->
+    <div class="view" id="view-reports">
+      <div class="sec-hd"><span class="sec-title">Reports</span></div>
+      <div class="alert-queue">
+        <div class="alert-item info"><span class="alert-priority p-info">INFO</span><span class="alert-text">Monthly report generator and export tools coming in next build.</span></div>
+      </div>
+    </div>
+    <div class="view" id="view-listings">
+      <div class="sec-hd"><span class="sec-title">All Listings</span></div>
+      <div class="alert-queue">
+        <div class="alert-item info"><span class="alert-priority p-info">INFO</span><span class="alert-text">Full listing moderation panel — bulk remove, flag, and edit — coming in next build.</span></div>
+      </div>
+    </div>
+    <div class="view" id="view-settings">
+      <div class="sec-hd"><span class="sec-title">Platform Config</span></div>
+      <div class="alert-queue">
+        <div class="alert-item info"><span class="alert-priority p-info">INFO</span><span class="alert-text">Platform configuration settings coming in next build.</span></div>
+      </div>
+    </div>
+
+  </div><!-- /page -->
+</div><!-- /main -->
+</div><!-- /shell -->
+
+<div id="toast"></div>
+
+<script>
+/* ═══════════════════
+   DATA
+═══════════════════ */
+const VERIF_DATA = [
+  {id:'V-0214',name:'Nomsa Khumalo',   loc:'Soweto, Gauteng',    color:'#1A3826',docs:['SA ID ✓','Selfie ✓','Address ✓'],status:'new',    submitted:'18 min ago'},
+  {id:'V-0213',name:'Kabelo Mokoena',  loc:'Tembisa, Gauteng',   color:'#0E3D4A',docs:['SA ID ✓','Selfie ✓','Address —'],status:'new',    submitted:'42 min ago'},
+  {id:'V-0212',name:'Zanele Dlamini',  loc:'Khayelitsha, W.Cape',color:'#3D1A2D',docs:['SA ID ✗','Selfie ✓','Address ✓'],status:'flagged',submitted:'1 hr ago'},
+  {id:'V-0211',name:'Thabo Nkosi',     loc:'Durban, KZN',        color:'#3D2800',docs:['SA ID ✓','Selfie ✓','Address ✓'],status:'new',    submitted:'1.5 hrs ago'},
+  {id:'V-0210',name:'Ayanda Tshabalala',loc:'Alexandra, Gauteng',color:'#4A1A4A',docs:['SA ID ✓','Selfie —','Address ✓'],status:'flagged',submitted:'2 hrs ago'},
+  {id:'V-0209',name:'Ruan van Wyk',    loc:'Pretoria, Gauteng',  color:'#2D3D1A',docs:['SA ID ✓','Selfie ✓','Address ✓'],status:'new',    submitted:'3 hrs ago'},
+];
+
+const DISPUTES_DATA = [
+  {id:'DIS-041',emoji:'📱',title:'Samsung A14 — Not as Described',     buyer:'Lerato M.',seller:'Sipho N.',amount:2100,age:'2 days',severity:'high'},
+  {id:'DIS-040',emoji:'🪑',title:'Coffee Table — Not Delivered',        buyer:'Thabo K.',seller:'Bongani P.',amount:1200,age:'3 days',severity:'high'},
+  {id:'DIS-039',emoji:'👗',title:'Denim Jacket — Wrong Size Sent',      buyer:'Nomsa D.',seller:'Ayanda T.',amount:290,age:'1 day',severity:'medium'},
+  {id:'DIS-038',emoji:'🔧',title:'Bosch Drill — Missing Accessories',   buyer:'Ruan V.',seller:'Themba D.',amount:850,age:'4 days',severity:'high'},
+  {id:'DIS-037',emoji:'👟',title:'Nike AF1 — Suspected Fake',           buyer:'Sipho L.',seller:'Unknown',amount:680,age:'5 days',severity:'critical'},
+  {id:'DIS-036',emoji:'💻',title:'Laptop — Faulty on Arrival',          buyer:'Kabelo J.',seller:'Kabelo M.',amount:4800,age:'1 day',severity:'high'},
+];
+
+const USERS_DATA = [
+  {id:'U-2418',name:'Nomsa Khumalo',   email:'nomsa@gmail.com',     color:'#1A3826',status:'pending',  sales:0,   listings:2,  joined:'Today'},
+  {id:'U-2401',name:'Thandi Mokoena',  email:'thandi@gmail.com',    color:'#1F5235',status:'verified', sales:34,  listings:12, joined:'2 wks ago'},
+  {id:'U-2387',name:'Sipho Ndlovu',    email:'sipho@yahoo.com',     color:'#2D1B69',status:'verified', sales:89,  listings:24, joined:'1 mo ago'},
+  {id:'U-2156',name:'Lerato Khumalo',  email:'lerato@gmail.com',    color:'#5C3800',status:'verified', sales:21,  listings:8,  joined:'6 wks ago'},
+  {id:'U-2099',name:'Ayanda Tshabalala',email:'ayanda@gmail.com',   color:'#4A1A4A',status:'flagged',  sales:7,   listings:5,  joined:'2 mo ago'},
+  {id:'U-1841',name:'acc_8841',         email:'acc8841@temp.com',   color:'#8B1A1A',status:'flagged',  sales:0,   listings:12, joined:'Today'},
+  {id:'U-1720',name:'Bongani Petersen',email:'bongani@gmail.com',   color:'#1A3826',status:'verified', sales:44,  listings:9,  joined:'3 mo ago'},
+  {id:'U-1540',name:'Themba Dlamini',  email:'themba@outlook.com',  color:'#3D1A00',status:'verified', sales:62,  listings:18, joined:'4 mo ago'},
+  {id:'U-0921',name:'Mama D',          email:'mamad@gmail.com',     color:'#3D2800',status:'pending',  sales:0,   listings:1,  joined:'1 day ago'},
+  {id:'U-0441',name:'Old Account',     email:'old@example.com',     color:'#3D3D3D',status:'suspended',sales:3,   listings:0,  joined:'6 mo ago'},
+];
+
+const FLAGGED_DATA = [
+  {emoji:'📱',title:'Listing L-4421 — "iPhone 15 Pro R500"',reason:'Price anomaly — 90% below market value. Suspected scam.'},
+  {emoji:'🔴',title:'Account acc_8841 — 12 identical listings',reason:'Bot-pattern posting detected. 12 posts in 4 minutes.'},
+  {emoji:'🖼️',title:'Listing L-4398 — Duplicate image batch',reason:'Same 3 photos used across 6 different seller accounts.'},
+];
+
+const ESCROW_DATA = [
+  {id:'ORD-2041',emoji:'📱',title:'Samsung A14',  buyer:'Lerato M.',seller:'Sipho N.',amount:2100,age:'72h',status:'stalled'},
+  {id:'ORD-2038',emoji:'💻',title:'Lenovo IdeaPad',buyer:'Kabelo J.',seller:'Kabelo M.',amount:4800,age:'48h',status:'stalled'},
+  {id:'ORD-2035',emoji:'👗',title:'Denim Jacket', buyer:'Nomsa D.',seller:'Ayanda T.',amount:290,age:'24h',status:'active'},
+  {id:'ORD-2034',emoji:'🔧',title:'Bosch Drill',  buyer:'Ruan V.',seller:'Themba D.',amount:850,age:'18h',status:'active'},
+  {id:'ORD-2033',emoji:'🪡',title:'Beaded Set',   buyer:'Palesa R.',seller:'Lerato K.',amount:350,age:'6h',status:'active'},
+];
+
+const PAYOUTS_DATA = [
+  {name:'Thandi Mokoena', bank:'Capitec ····4892', amount:8420, orders:34, status:'ready'},
+  {name:'Sipho Ndlovu',   bank:'ABSA ····7731',    amount:4200, orders:12, status:'ready'},
+  {name:'Themba Dlamini', bank:'FNB ····2204',     amount:1540, orders:7,  status:'ready'},
+  {name:'Bongani Petersen',bank:'Standard ····9912',amount:840, orders:3,  status:'hold'},
+];
+
+const HEALTH_DATA = [
+  {name:'API Server',     uptime:'99.98%',pip:'var(--go)', metrics:[['Requests/min','284'],['Avg latency','42ms'],['Error rate','0.02%']]},
+  {name:'Payment Gateway',uptime:'99.95%',pip:'var(--go)', metrics:[['Txn/hr','18'],['Success rate','99.8%'],['Avg process','1.2s']]},
+  {name:'KYC Service',    uptime:'99.80%',pip:'var(--warn)',metrics:[['Queue depth','14'],['Avg review','8.4h'],['Auto-approve','62%']]},
+  {name:'Push Notifications',uptime:'99.99%',pip:'var(--go)',metrics:[['Sent today','1,248'],['Delivered','99.2%'],['Bounce','0.8%']]},
+  {name:'Courier API',    uptime:'98.40%',pip:'var(--warn)',metrics:[['Active shipments','22'],['On-time rate','91%'],['Issues','2']]},
+  {name:'Database',       uptime:'100%', pip:'var(--go)', metrics:[['Connections','47'],['Query time','3ms'],['Storage','12%']]},
+];
+
+const FEED_DATA = [
+  {type:'sale',  icon:'💰', text:'<strong>Thandi M.</strong> sold Vintage Denim Jacket to <strong>Nomsa K.</strong> — R 290 into escrow', time:'just now'},
+  {type:'signup',icon:'👤', text:'<strong>Nomsa Khumalo</strong> registered and submitted KYC documents', time:'3 min ago'},
+  {type:'flag',  icon:'🚨', text:'Listing <strong>L-4421</strong> auto-flagged — price anomaly detected (iPhone R500)', time:'8 min ago'},
+  {type:'verif', icon:'✅', text:'<strong>Kabelo Mokoena</strong> approved by moderator — verified badge activated', time:'12 min ago'},
+  {type:'escrow',icon:'🔒', text:'Escrow released R 4,800 → <strong>Kabelo M.</strong> after order <strong>ORD-2028</strong> confirmed', time:'18 min ago'},
+  {type:'sale',  icon:'💰', text:'<strong>Sipho N.</strong> sold Beaded Necklace Set to <strong>Palesa R.</strong> — R 350', time:'24 min ago'},
+  {type:'flag',  icon:'🚨', text:'Account <strong>acc_8841</strong> flagged — 12 identical listings in 4 minutes', time:'2 min ago'},
+  {type:'signup',icon:'👤', text:'<strong>Mama D.</strong> registered from Soweto, Gauteng', time:'31 min ago'},
+  {type:'verif', icon:'⏳', text:'KYC submission <strong>V-0212</strong> flagged for review — SA ID unclear', time:'1 hr ago'},
+  {type:'escrow',icon:'⚠️', text:'Order <strong>ORD-2041</strong> escrow overdue 72h — buyer not confirmed', time:'3 hrs ago'},
+];
+
+/* ═══════════════════
+   RENDER FUNCTIONS
+═══════════════════ */
+function renderVerifList(targetId, limit) {
+  const el = document.getElementById(targetId);
+  if (!el) return;
+  const data = limit ? VERIF_DATA.slice(0, limit) : VERIF_DATA;
+  el.innerHTML = data.map(v => `
+    <div class="verif-item">
+      <div class="verif-av" style="background:${v.color}">${v.name.charAt(0)}</div>
+      <div>
+        <div class="verif-name">${v.name} <span style="color:var(--dim);font-size:.6rem;">${v.id}</span></div>
+        <div class="verif-meta">${v.loc}</div>
+        <div class="verif-docs">
+          ${v.docs.map(d=>`<span class="doc-chip${d.includes('✓')?' ok':''}">${d}</span>`).join('')}
+        </div>
+      </div>
+      <div class="verif-actions">
+        <div class="verif-time">${v.submitted}</div>
+        <button class="va-approve" onclick="approveVerif(this,'${v.name}')">Approve ✓</button>
+        <button class="va-reject" onclick="rejectVerif(this,'${v.name}')">Reject</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderDisputes() {
+  const el = document.getElementById('disputesList');
+  if (!el) return;
+  const sev = {critical:'var(--danger)',high:'var(--warn)',medium:'var(--info)'};
+  el.innerHTML = DISPUTES_DATA.map(d => `
+    <div class="dispute-item">
+      <div style="display:flex;align-items:center;gap:.5rem;">
+        <span style="font-size:1.2rem">${d.emoji}</span>
+        <span class="dispute-id">${d.id}</span>
+      </div>
+      <div>
+        <div class="dispute-info-title">${d.title}</div>
+        <div class="dispute-info-meta">Buyer: ${d.buyer} · Seller: ${d.seller}</div>
+      </div>
+      <div class="dispute-amount">R ${d.amount.toLocaleString()}</div>
+      <div class="dispute-age" style="color:${sev[d.severity]}">${d.age}</div>
+      <div class="dispute-actions">
+        <button class="da-btn da-review" onclick="toast('📋 Opening case ${d.id}...')">Review</button>
+        <button class="da-btn da-buyer" onclick="toast('← Ruling for buyer on ${d.id} — refund initiated')">Buyer</button>
+        <button class="da-btn da-seller" onclick="toast('→ Ruling for seller on ${d.id} — funds released')">Seller</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderUsers(filter='all') {
+  const el = document.getElementById('usersList');
+  if (!el) return;
+  const data = filter==='all' ? USERS_DATA : USERS_DATA.filter(u=>u.status===filter);
+  el.innerHTML = data.map(u => `
+    <div class="user-item">
+      <div class="user-av-sm" style="background:${u.color}">${u.name.charAt(0)}</div>
+      <div>
+        <div class="user-name">${u.name} <span style="color:var(--dim);font-size:.6rem;">${u.id}</span></div>
+        <div class="user-meta">${u.email} · Joined ${u.joined}</div>
+      </div>
+      <div class="user-stats">
+        <div class="user-stat-val">${u.sales}</div>
+        <div>sales</div>
+      </div>
+      <span class="status-badge sb-${u.status}">${u.status}</span>
+      <div class="user-actions">
+        <button class="ua-btn" title="View" onclick="toast('👤 Opening profile: ${u.name}')">👁</button>
+        <button class="ua-btn" title="Message" onclick="toast('💬 Messaging ${u.name}...')">💬</button>
+        <button class="ua-btn danger" title="Suspend" onclick="suspendAndToast('${u.id}')">🚫</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderFlagged() {
+  const el = document.getElementById('flaggedList');
+  if (!el) return;
+  el.innerHTML = FLAGGED_DATA.map(f => `
+    <div class="flagged-item">
+      <span class="flag-icon">${f.emoji}</span>
+      <div>
+        <div class="flag-title">${f.title}</div>
+        <div class="flag-reason">${f.reason}</div>
+      </div>
+      <div class="flag-actions">
+        <button class="fa-btn fa-keep" onclick="toast('✓ Listing cleared — no action taken')">Keep</button>
+        <button class="fa-btn fa-remove" onclick="this.closest('.flagged-item').style.opacity='.3';toast('🗑️ Removed and flagged for review')">Remove</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderEscrow() {
+  const el = document.getElementById('escrowList');
+  if (!el) return;
+  el.innerHTML = ESCROW_DATA.map(o => `
+    <div class="dispute-item">
+      <span style="font-size:1.1rem">${o.emoji}</span>
+      <div><div class="dispute-info-title">${o.title}</div><div class="dispute-info-meta">${o.id} · Buyer: ${o.buyer} · Seller: ${o.seller}</div></div>
+      <div class="dispute-amount">R ${o.amount.toLocaleString()}</div>
+      <span class="status-badge" style="${o.status==='stalled'?'background:var(--danger-d);color:var(--danger);border-color:rgba(229,62,62,.2)':'background:var(--go-d);color:var(--go);border-color:rgba(46,204,113,.2)'}">${o.status} · ${o.age}</span>
+      <div class="dispute-actions">
+        ${o.status==='stalled'?`<button class="da-btn da-buyer" onclick="toast('⚡ Manual release initiated for ${o.id}')">Force Release</button>`:`<button class="da-btn da-review" onclick="toast('📋 Viewing ${o.id}')">View</button>`}
+      </div>
+    </div>`).join('');
+}
+
+function renderPayouts() {
+  const el = document.getElementById('payoutsList');
+  if (!el) return;
+  el.innerHTML = PAYOUTS_DATA.map(p => `
+    <div class="dispute-item">
+      <div class="user-av-sm" style="background:#1F5235;width:28px;height:28px;">${p.name.charAt(0)}</div>
+      <div><div class="dispute-info-title">${p.name}</div><div class="dispute-info-meta">${p.bank} · ${p.orders} orders</div></div>
+      <div class="dispute-amount">R ${p.amount.toLocaleString()}</div>
+      <span class="status-badge ${p.status==='ready'?'sb-verified':'sb-pending'}">${p.status}</span>
+      <div class="dispute-actions">
+        ${p.status==='ready'?`<button class="da-btn da-seller" onclick="toast('💸 Payout initiated to ${p.name}')">Pay Out</button>`:`<button class="da-btn da-review" onclick="toast('🔍 Reviewing hold reason for ${p.name}')">Review Hold</button>`}
+      </div>
+    </div>`).join('');
+}
+
+function renderHealth() {
+  const el = document.getElementById('healthGrid');
+  if (!el) return;
+  el.innerHTML = HEALTH_DATA.map(s => `
+    <div class="health-card">
+      <div class="health-service">
+        <div class="health-pip" style="background:${s.pip};${s.pip==='var(--go)'?'animation:pulse 2s infinite':''}"></div>
+        <span class="health-svc-name">${s.name}</span>
+        <span class="health-uptime">${s.uptime}</span>
+      </div>
+      <div class="health-metrics">
+        ${s.metrics.map(m=>`<div class="hm-row"><span class="hm-label">${m[0]}</span><span class="hm-val">${m[1]}</span></div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function renderResponseChart() {
+  const el = document.getElementById('responseChart');
+  if (!el) return;
+  const vals = Array.from({length:48},(_,i)=>20+Math.random()*60+(i>20&&i<28?40:0));
+  const max = Math.max(...vals);
+  el.innerHTML = vals.map((v,i)=>{
+    const h = (v/max*100);
+    const col = v>80 ? 'var(--danger)' : v>60 ? 'var(--warn)' : 'var(--go)';
+    return `<div class="ic-bar" style="height:${h}%;background:${col};opacity:${i===47?1:.7}"></div>`;
+  }).join('');
+}
+
+function renderFeed() {
+  const el = document.getElementById('liveFeed');
+  if (!el) return;
+  el.innerHTML = FEED_DATA.map(f=>`
+    <div class="feed-item feed-type-${f.type}">
+      <div class="feed-icon">${f.icon}</div>
+      <div class="feed-text">${f.text}</div>
+      <span class="feed-time">${f.time}</span>
+    </div>`).join('');
+}
+
+/* ═══════════════════
+   NAVIGATION
+═══════════════════ */
+const VIEWS = ['overview','verification','disputes','fraud','users','listings','escrow','payouts','health','reports','settings'];
+const BREADCRUMBS = {
+  overview:'Overview',verification:'Verification Queue',disputes:'Disputes',
+  fraud:'Fraud Monitor',users:'Users',listings:'Listings',
+  escrow:'Escrow',payouts:'Payouts',health:'System Health',
+  reports:'Reports',settings:'Config'
+};
+
+function nav(el, viewName) {
+  VIEWS.forEach(v => {
+    const vEl = document.getElementById('view-'+v);
+    if (vEl) vEl.classList.toggle('active', v===viewName);
+  });
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.getElementById('bcCur').textContent = BREADCRUMBS[viewName] || viewName;
+
+  // Lazy render
+  if (viewName==='verification') renderVerifList('verifListFull');
+  if (viewName==='disputes')     renderDisputes();
+  if (viewName==='users')        renderUsers();
+  if (viewName==='fraud')        renderFlagged();
+  if (viewName==='escrow')       renderEscrow();
+  if (viewName==='payouts')      renderPayouts();
+  if (viewName==='health')       { renderHealth(); setTimeout(renderResponseChart, 100); }
+
+  document.getElementById('sidebar').classList.remove('open');
+}
+
+/* ═══════════════════
+   ACTIONS
+═══════════════════ */
+function approveVerif(btn, name) {
+  btn.closest('.verif-item').style.opacity = '.4';
+  btn.textContent = 'Approved ✓';
+  btn.style.background = 'var(--go-d)';
+  btn.style.color = 'var(--go)';
+  btn.disabled = true;
+  toast(`✅ ${name} approved — trust badge activated`);
+}
+function rejectVerif(btn, name) {
+  btn.closest('.verif-item').style.opacity = '.4';
+  btn.disabled = true;
+  toast(`✕ ${name} rejected — notification sent`);
+}
+function suspendAndToast(id) {
+  toast(`🚫 Account ${id} suspended — all listings paused`);
+}
+function filterVerif(el, f) {
+  document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  toast(`Filtering: ${f}`);
+}
+function filterUsers(q) {
+  const rows = document.querySelectorAll('#usersList .user-item');
+  rows.forEach(r => {
+    r.style.display = r.textContent.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
+  });
+}
+function filterUserTab(el, f) {
+  document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderUsers(f);
+}
+function handleSearch(q) {
+  if (q.length > 2) toast(`🔍 Searching: "${q}"...`);
+}
+
+/* ═══════════════════
+   TOAST
+═══════════════════ */
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>el.classList.remove('show'), 2800);
+}
+
+/* ═══════════════════
+   MOBILE
+═══════════════════ */
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+/* ═══════════════════
+   LIVE COUNTER TICK
+═══════════════════ */
+let userCount = 2418;
+setInterval(() => {
+  if (Math.random() > 0.7) {
+    userCount++;
+    const el = document.getElementById('kpi-users');
+    if (el) el.textContent = userCount.toLocaleString();
+  }
+}, 8000);
+
+/* ═══════════════════
+   INIT
+═══════════════════ */
+renderVerifList('verifListPreview', 4);
+renderFeed();
+</script>
+<script src="js/app.js"></script>
+<script src="js/auth-modal-inject.js"></script>
+</body>
+</html>

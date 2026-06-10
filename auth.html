@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MzansiMarket — Sign In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/auth.css"/>
+
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ══════ LEFT: BRAND PANEL ══════ -->
+  <aside class="brand-panel">
+    <div class="brand-top">
+      <a href="index.html" class="brand-logo">
+        <span class="brand-logo-dot"></span>
+        Man-to-Man
+      </a>
+      <h2 class="brand-headline">
+        Your township<br>hustle,<br><em>gone digital.</em>
+      </h2>
+      <p class="brand-sub">
+        Join over 2,400 South African traders and buyers already using the only marketplace built for the township economy.
+      </p>
+      <div class="brand-card">
+        <p class="brand-card-quote">"I've been selling clothes on WhatsApp for years. MzansiMarket is the first platform that actually works for people like me."</p>
+        <div class="brand-card-author">
+          <div class="brand-avatar">T</div>
+          <div>
+            <div class="brand-author-name">Thandi Mokoena</div>
+            <div class="brand-author-loc">Seller · Soweto, Gauteng</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="brand-bottom">
+      <div class="trust-strip">
+        <div class="trust-item"><span class="trust-pip"></span>FICA-verified sellers only</div>
+        <div class="trust-item"><span class="trust-pip"></span>Escrow-protected every transaction</div>
+        <div class="trust-item"><span class="trust-pip"></span>Under 10MB data per session</div>
+        <div class="trust-item"><span class="trust-pip"></span>POPIA compliant · SSL encrypted</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══════ RIGHT: AUTH FORMS ══════ -->
+  <main class="auth-panel">
+    <div class="auth-box">
+
+      <a href="index.html" class="auth-back">← Back to Man-to-Man</a>
+
+      <!-- Global error -->
+      <div class="callout error" id="authError">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-text" id="authErrorText">Something went wrong. Please try again.</div>
+      </div>
+
+      <!-- ══ VIEW: SIGN IN ══ -->
+      <div class="auth-view active" id="view-signin">
+        <div class="auth-eyebrow">Welcome back</div>
+        <h1 class="auth-title">Sign in to your account</h1>
+        <p class="auth-sub">New to MzansiMarket? <button class="field-link" style="display:inline;" onclick="showView('register')">Create a free account →</button></p>
+
+        <div class="field-group">
+          <div class="field">
+            <label>Email Address <span class="req">*</span></label>
+            <input type="email" id="si-email" placeholder="you@email.com" autocomplete="email"/>
+            <span class="field-error" id="si-email-err">Please enter a valid email address.</span>
+          </div>
+          <div class="field">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <label>Password <span class="req">*</span></label>
+              <button class="field-link" onclick="showView('forgot')">Forgot password?</button>
+            </div>
+            <div class="pw-wrap">
+              <input type="password" id="si-password" placeholder="Your password" autocomplete="current-password"/>
+              <button class="pw-eye" type="button" onclick="togglePw('si-password',this)">👁</button>
+            </div>
+            <span class="field-error" id="si-password-err">Please enter your password.</span>
+          </div>
+        </div>
+
+        <button class="auth-submit" id="signinBtn" onclick="handleSignIn()">
+          <span class="btn-text">Sign In</span>
+          <div class="btn-spinner"><div class="spinner"></div></div>
+        </button>
+
+        <div class="auth-divider"><span>or continue with</span></div>
+        <div class="social-btns">
+          <button class="social-btn" onclick="toast('Google sign-in coming soon')"><span class="social-btn-icon">🔵</span> Google</button>
+          <button class="social-btn" onclick="toast('Facebook sign-in coming soon')"><span class="social-btn-icon">📘</span> Facebook</button>
+        </div>
+
+        <p class="auth-switch">Don't have an account? <button onclick="showView('register')">Register free</button></p>
+      </div>
+
+      <!-- ══ VIEW: REGISTER ══ -->
+      <div class="auth-view" id="view-register">
+        <div class="auth-eyebrow">Create account</div>
+        <h1 class="auth-title">Join MzansiMarket</h1>
+        <p class="auth-sub">Already have an account? <button class="field-link" style="display:inline;" onclick="showView('signin')">Sign in →</button></p>
+
+        <!-- Role toggle -->
+        <div class="auth-tabs" id="roleTabs">
+          <button class="auth-tab active" id="tab-buyer" onclick="selectRole('buyer')">🛍️ I'm a Buyer</button>
+          <button class="auth-tab" id="tab-seller" onclick="selectRole('seller')">🏪 I'm a Seller</button>
+        </div>
+
+        <!-- Buyer fields -->
+        <div id="reg-buyer-fields">
+          <div class="field-group">
+            <div class="field-row">
+              <div class="field">
+                <label>First Name <span class="req">*</span></label>
+                <input type="text" id="b-first" placeholder="Thandi" autocomplete="given-name"/>
+                <span class="field-error" id="b-first-err">Required.</span>
+              </div>
+              <div class="field">
+                <label>Last Name <span class="req">*</span></label>
+                <input type="text" id="b-last" placeholder="Mokoena" autocomplete="family-name"/>
+                <span class="field-error" id="b-last-err">Required.</span>
+              </div>
+            </div>
+            <div class="field">
+              <label>Email Address <span class="req">*</span></label>
+              <input type="email" id="b-email" placeholder="you@email.com" autocomplete="email"/>
+              <span class="field-error" id="b-email-err">Please enter a valid email.</span>
+            </div>
+            <div class="field">
+              <label>Mobile Number <span class="req">*</span></label>
+              <div class="phone-wrap">
+                <div class="phone-prefix">🇿🇦 +27</div>
+                <input type="tel" id="b-phone" placeholder="71 234 5678"/>
+              </div>
+              <span class="field-error" id="b-phone-err">Enter a valid SA number.</span>
+            </div>
+            <div class="field">
+              <label>Password <span class="req">*</span></label>
+              <div class="pw-wrap">
+                <input type="password" id="b-password" placeholder="Min 8 characters" oninput="checkStrength(this,'b-strength')"/>
+                <button class="pw-eye" type="button" onclick="togglePw('b-password',this)">👁</button>
+              </div>
+              <div class="pw-strength-wrap" id="b-strength-wrap" style="display:none;">
+                <div class="pw-bars">
+                  <div class="pw-bar" id="b-bar1"></div>
+                  <div class="pw-bar" id="b-bar2"></div>
+                  <div class="pw-bar" id="b-bar3"></div>
+                  <div class="pw-bar" id="b-bar4"></div>
+                </div>
+                <span class="pw-strength-label" id="b-strength">Enter a password</span>
+              </div>
+              <span class="field-error" id="b-password-err">Password must be at least 8 characters.</span>
+            </div>
+
+            <div class="agree-row" id="b-agree" onclick="toggleAgree(this)">
+              <div class="agree-box" id="b-agree-box"></div>
+              <div class="agree-text">I agree to the <a href="#">Terms of Service</a>, <a href="#">Privacy Policy</a>, and <a href="#">POPIA Notice</a></div>
+            </div>
+          </div>
+
+          <button class="auth-submit" onclick="handleRegisterBuyer()">
+            <span class="btn-text">Create Buyer Account</span>
+            <div class="btn-spinner"><div class="spinner"></div></div>
+          </button>
+        </div>
+
+        <!-- Seller redirect notice -->
+        <div id="reg-seller-fields" style="display:none;">
+          <div class="callout info">
+            <span class="callout-icon">🏪</span>
+            <div class="callout-text">
+              <strong>Seller registration is a multi-step process.</strong>
+              It includes identity verification (FICA/KYC), payment setup, and shop profile creation.
+            </div>
+          </div>
+          <button class="auth-submit" style="background:var(--leaf);" onclick="window.location.href='onboarding.html'">
+            <span class="btn-text">Go to Seller Registration →</span>
+            <div class="btn-spinner"><div class="spinner"></div></div>
+          </button>
+        </div>
+
+        <p class="auth-switch">Already have an account? <button onclick="showView('signin')">Sign in</button></p>
+      </div>
+
+      <!-- ══ VIEW: FORGOT PASSWORD ══ -->
+      <div class="auth-view" id="view-forgot">
+        <div class="auth-eyebrow">Password reset</div>
+        <h1 class="auth-title">Forgot your password?</h1>
+        <p class="auth-sub">No problem. Enter your email and we'll send you a reset link. It expires in 1 hour.</p>
+
+        <div class="field-group">
+          <div class="field">
+            <label>Email Address <span class="req">*</span></label>
+            <input type="email" id="fp-email" placeholder="you@email.com"/>
+            <span class="field-error" id="fp-email-err">Please enter a valid email.</span>
+          </div>
+        </div>
+
+        <button class="auth-submit" onclick="handleForgotPassword()">
+          <span class="btn-text">Send Reset Link</span>
+          <div class="btn-spinner"><div class="spinner"></div></div>
+        </button>
+        <p class="auth-switch">Remembered it? <button onclick="showView('signin')">Back to sign in</button></p>
+      </div>
+
+      <!-- ══ VIEW: RESET PASSWORD ══ -->
+      <div class="auth-view" id="view-reset">
+        <div class="auth-eyebrow">Create new password</div>
+        <h1 class="auth-title">Reset your password</h1>
+        <p class="auth-sub">Choose a strong password — at least 8 characters, with a number or symbol.</p>
+
+        <div class="field-group">
+          <div class="field">
+            <label>New Password <span class="req">*</span></label>
+            <div class="pw-wrap">
+              <input type="password" id="rp-password" placeholder="New password" oninput="checkStrength(this,'rp-strength')"/>
+              <button class="pw-eye" type="button" onclick="togglePw('rp-password',this)">👁</button>
+            </div>
+            <div class="pw-strength-wrap">
+              <div class="pw-bars">
+                <div class="pw-bar" id="rp-bar1"></div>
+                <div class="pw-bar" id="rp-bar2"></div>
+                <div class="pw-bar" id="rp-bar3"></div>
+                <div class="pw-bar" id="rp-bar4"></div>
+              </div>
+              <span class="pw-strength-label" id="rp-strength">Enter a password</span>
+            </div>
+          </div>
+          <div class="field">
+            <label>Confirm New Password <span class="req">*</span></label>
+            <div class="pw-wrap">
+              <input type="password" id="rp-confirm" placeholder="Repeat password"/>
+              <button class="pw-eye" type="button" onclick="togglePw('rp-confirm',this)">👁</button>
+            </div>
+            <span class="field-error" id="rp-confirm-err">Passwords do not match.</span>
+          </div>
+        </div>
+
+        <button class="auth-submit" onclick="handleResetPassword()">
+          <span class="btn-text">Update Password</span>
+          <div class="btn-spinner"><div class="spinner"></div></div>
+        </button>
+      </div>
+
+      <!-- ══ VIEW: EMAIL SENT ══ -->
+      <div class="auth-view" id="view-email-sent">
+        <div class="success-view">
+          <div class="success-ring">📧</div>
+          <h2 class="success-title">Check your inbox</h2>
+          <p class="success-sub">We've sent a reset link to your email address. It'll expire in 1 hour.</p>
+          <button class="auth-submit" onclick="showView('signin')" style="max-width:260px;">Back to Sign In</button>
+          <p style="font-size:0.78rem;color:var(--muted);margin-top:1rem;">
+            Didn't get it? Check your spam folder or
+            <button class="field-link" style="display:inline;font-size:0.78rem;" onclick="showView('forgot')">try again</button>
+          </p>
+        </div>
+      </div>
+
+      <!-- ══ VIEW: VERIFY EMAIL ══ -->
+      <div class="auth-view" id="view-verify">
+        <div class="success-view">
+          <div class="success-ring">✉️</div>
+          <h2 class="success-title">Verify your email</h2>
+          <p class="success-sub">We sent a 6-digit code to <strong id="verify-email-display">your email</strong>. Enter it below to activate your account.</p>
+
+          <div class="otp-wrap" id="otpWrap">
+            <input class="otp-input" maxlength="1" type="text" inputmode="numeric" oninput="otpNext(this,0)"/>
+            <input class="otp-input" maxlength="1" type="text" inputmode="numeric" oninput="otpNext(this,1)"/>
+            <input class="otp-input" maxlength="1" type="text" inputmode="numeric" oninput="otpNext(this,2)"/>
+            <input class="otp-input" maxlength="1" type="text" inputmode="numeric" oninput="otpNext(this,3)"/>
+            <input class="otp-input" maxlength="1" type="text" inputmode="numeric" oninput="otpNext(this,4)"/>
+            <input class="otp-input" maxlength="1" type="text" inputmode="numeric" oninput="otpNext(this,5)"/>
+          </div>
+
+          <button class="auth-submit" style="max-width:260px;" onclick="handleVerifyOtp()">
+            <span class="btn-text">Verify & Continue</span>
+            <div class="btn-spinner"><div class="spinner"></div></div>
+          </button>
+          <p style="font-size:0.78rem;color:var(--muted);margin-top:1rem;">
+            Didn't get it? <button class="field-link" style="display:inline;font-size:0.78rem;" onclick="toast('📧 Code resent!')">Resend code</button>
+          </p>
+        </div>
+      </div>
+
+      <!-- ══ VIEW: SUCCESS ══ -->
+      <div class="auth-view" id="view-success">
+        <div class="success-view">
+          <div class="success-ring">🎉</div>
+          <h2 class="success-title">You're in!</h2>
+          <p class="success-sub" id="successMsg">Welcome to MzansiMarket. You can now browse, save, and buy from verified township sellers.</p>
+          <button class="auth-submit" style="max-width:260px;" id="successCta" onclick="redirectAfterLogin()">
+            <span class="btn-text">Start Browsing →</span>
+            <div class="btn-spinner"><div class="spinner"></div></div>
+          </button>
+        </div>
+      </div>
+
+      <div class="auth-footer">
+        🔒 256-bit SSL &nbsp;·&nbsp; POPIA Compliant &nbsp;·&nbsp; FICA Regulated
+      </div>
+
+    </div><!-- /auth-box -->
+  </main>
+</div>
+
+<!-- TOAST -->
+<div id="globalToast" style="
+  position:fixed;bottom:1.5rem;left:50%;
+  transform:translateX(-50%) translateY(60px);
+  background:var(--forest);color:var(--white);
+  padding:.7rem 1.3rem;border-radius:var(--r2);
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:.82rem;font-weight:700;
+  display:flex;align-items:center;gap:.5rem;
+  box-shadow:0 8px 24px rgba(12,23,16,0.3);
+  z-index:999;pointer-events:none;white-space:nowrap;
+  transition:transform .3s cubic-bezier(.34,1.3,.64,1);
+"></div>
+
+<script src="js/app.js"></script>
+<script>
+const API = 'http://localhost/man-to-man/api';
+
+/* ════════════════════════════
+   VIEW NAVIGATION
+════════════════════════════ */
+function showView(name) {
+  document.querySelectorAll('.auth-view').forEach(v => v.classList.remove('active'));
+  const el = document.getElementById('view-' + name);
+  if (el) el.classList.add('active');
+  hideError();
+}
+
+/* ════════════════════════════
+   ROLE SELECT
+════════════════════════════ */
+let currentRole = 'buyer';
+
+function selectRole(role) {
+  currentRole = role;
+  document.getElementById('tab-buyer').classList.toggle('active', role === 'buyer');
+  document.getElementById('tab-seller').classList.toggle('active', role === 'seller');
+  document.getElementById('reg-buyer-fields').style.display  = role === 'buyer'  ? 'block' : 'none';
+  document.getElementById('reg-seller-fields').style.display = role === 'seller' ? 'block' : 'none';
+}
+
+/* ════════════════════════════
+   SIGN IN
+════════════════════════════ */
+async function handleSignIn() {
+  hideError();
+  const email = val('si-email');
+  const pw    = val('si-password');
+  let ok = true;
+  if (!email || !email.includes('@')) { showFieldErr('si-email','si-email-err'); ok = false; }
+  if (!pw) { showFieldErr('si-password','si-password-err'); ok = false; }
+  if (!ok) return;
+
+  setLoading('signinBtn', true);
+  try {
+    const res  = await fetch(`${API}/auth.php?action=login`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ email, password: pw }),
+    });
+    const json = await res.json();
+
+    if (json.success) {
+      localStorage.setItem('mz_token', json.data.token);
+      localStorage.setItem('mz_user',  JSON.stringify(json.data.user));
+      const role = json.data.user.role;
+      document.getElementById('successMsg').textContent =
+        role === 'seller' ? 'Welcome back! Your seller dashboard is ready.' :
+        role === 'admin'  ? 'Welcome back, Admin. Going to your console.' :
+        'Welcome back! Browse verified listings and buy securely.';
+      document.getElementById('successCta').querySelector('.btn-text').textContent =
+        role === 'seller' ? 'Go to Dashboard →' :
+        role === 'admin'  ? 'Go to Admin Console →' :
+        'Browse Listings →';
+      showView('success');
+    } else {
+      showError(json.message || 'Invalid email or password.');
+    }
+  } catch {
+    showError('Unable to connect. Check XAMPP is running.');
+  } finally {
+    setLoading('signinBtn', false);
+  }
+}
+
+/* ════════════════════════════
+   REGISTER BUYER
+════════════════════════════ */
+async function handleRegisterBuyer() {
+  hideError();
+  let ok = true;
+  const first = val('b-first'), last = val('b-last');
+  const email = val('b-email'), phone = val('b-phone'), pw = val('b-password');
+  const agreed = document.getElementById('b-agree').classList.contains('checked');
+
+  if (!first)                      { showFieldErr('b-first','b-first-err'); ok = false; }
+  if (!last)                       { showFieldErr('b-last','b-last-err');   ok = false; }
+  if (!email || !email.includes('@')){ showFieldErr('b-email','b-email-err'); ok = false; }
+  if (!phone)                      { showFieldErr('b-phone','b-phone-err'); ok = false; }
+  if (!pw || pw.length < 8)        { showFieldErr('b-password','b-password-err'); ok = false; }
+  if (!agreed) { showError('Please agree to the Terms of Service.'); ok = false; }
+  if (!ok) return;
+
+  const btn = event.currentTarget;
+  setLoadingEl(btn, true);
+  try {
+    const res  = await fetch(`${API}/auth.php?action=register`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ first_name: first, last_name: last, email, phone, password: pw, role: 'buyer' }),
+    });
+    const json = await res.json();
+
+    if (json.success) {
+      // Dev mode: token returned — verify immediately
+      if (json.data.verify_token) {
+        const vRes = await fetch(`${API}/auth.php?action=verify_email`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: json.data.verify_token }),
+        });
+        await vRes.json();
+        // Auto login
+        document.getElementById('si-email').value    = email;
+        document.getElementById('si-password').value = pw;
+        await handleSignIn();
+      } else {
+        document.getElementById('verify-email-display').textContent = email;
+        showView('verify');
+      }
+    } else {
+      showError(json.message || 'Registration failed.');
+    }
+  } catch {
+    showError('Unable to connect. Check XAMPP is running.');
+  } finally {
+    setLoadingEl(btn, false);
+  }
+}
+
+/* ════════════════════════════
+   FORGOT PASSWORD
+════════════════════════════ */
+async function handleForgotPassword() {
+  hideError();
+  const email = val('fp-email');
+  if (!email || !email.includes('@')) { showFieldErr('fp-email','fp-email-err'); return; }
+
+  const btn = event.currentTarget;
+  setLoadingEl(btn, true);
+  try {
+    await fetch(`${API}/auth.php?action=forgot_password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+    showView('email-sent');
+  } catch {
+    showError('Unable to connect. Check XAMPP is running.');
+  } finally {
+    setLoadingEl(btn, false);
+  }
+}
+
+/* ════════════════════════════
+   RESET PASSWORD
+════════════════════════════ */
+async function handleResetPassword() {
+  hideError();
+  const pw  = val('rp-password');
+  const cpw = val('rp-confirm');
+  if (!pw || pw.length < 8) return;
+  if (pw !== cpw) { showFieldErr('rp-confirm','rp-confirm-err'); return; }
+
+  // Get token from URL ?token=xxx
+  const token = new URLSearchParams(window.location.search).get('token');
+  if (!token) { showError('Reset token missing from URL.'); return; }
+
+  const btn = event.currentTarget;
+  setLoadingEl(btn, true);
+  try {
+    const res  = await fetch(`${API}/auth.php?action=reset_password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, password: pw }),
+    });
+    const json = await res.json();
+    if (json.success) {
+      toast('✅ Password updated! Please sign in.');
+      showView('signin');
+    } else {
+      showError(json.message || 'Reset failed.');
+    }
+  } catch {
+    showError('Unable to connect.');
+  } finally {
+    setLoadingEl(btn, false);
+  }
+}
+
+/* ════════════════════════════
+   OTP HANDLING
+════════════════════════════ */
+function otpNext(input, idx) {
+  input.classList.toggle('filled', input.value.length > 0);
+  const inputs = document.querySelectorAll('.otp-input');
+  if (input.value && idx < 5) inputs[idx + 1].focus();
+  if (!input.value && idx > 0) inputs[idx - 1].focus();
+}
+
+async function handleVerifyOtp() {
+  const code = [...document.querySelectorAll('.otp-input')].map(i => i.value).join('');
+  if (code.length < 6) { toast('Please enter all 6 digits.'); return; }
+  toast('✅ Email verified! Signing you in...');
+  setTimeout(() => showView('success'), 1200);
+}
+
+/* ════════════════════════════
+   REDIRECT AFTER LOGIN
+════════════════════════════ */
+function redirectAfterLogin() {
+  const user = JSON.parse(localStorage.getItem('mz_user') || '{}');
+  const role = user.role;
+  const dest = role === 'seller' ? 'dashboard.html' :
+               role === 'admin'  ? 'admin.html' :
+               'listings.html';
+  window.location.href = dest;
+}
+
+/* ════════════════════════════
+   HELPERS
+════════════════════════════ */
+function val(id) { return (document.getElementById(id)?.value || '').trim(); }
+
+function showFieldErr(inputId, errId) {
+  document.getElementById(inputId)?.classList.add('error');
+  document.getElementById(errId)?.classList.add('show');
+}
+function clearFieldErr(inputId, errId) {
+  document.getElementById(inputId)?.classList.remove('error');
+  document.getElementById(errId)?.classList.remove('show');
+}
+function showError(msg) {
+  document.getElementById('authErrorText').textContent = msg;
+  document.getElementById('authError').classList.add('show');
+  document.getElementById('authError').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function hideError() { document.getElementById('authError').classList.remove('show'); }
+
+function setLoading(btnId, on) {
+  const btn = document.getElementById(btnId);
+  if (btn) btn.classList.toggle('loading', on);
+}
+function setLoadingEl(btn, on) { btn.classList.toggle('loading', on); }
+
+function togglePw(id, btn) {
+  const input = document.getElementById(id);
+  if (!input) return;
+  const isText = input.type === 'text';
+  input.type   = isText ? 'password' : 'text';
+  btn.textContent = isText ? '👁' : '🙈';
+}
+
+function toggleAgree(el) {
+  el.classList.toggle('checked');
+  el.querySelector('.agree-box').textContent = el.classList.contains('checked') ? '✓' : '';
+}
+
+function checkStrength(input, labelId) {
+  const v = input.value;
+  const wrap = input.closest('.field').querySelector('.pw-strength-wrap');
+  if (wrap) wrap.style.display = v ? 'block' : 'none';
+
+  let score = 0;
+  if (v.length >= 8)           score++;
+  if (v.length >= 12)          score++;
+  if (/[A-Z]/.test(v))         score++;
+  if (/[0-9]/.test(v))         score++;
+  if (/[^A-Za-z0-9]/.test(v)) score++;
+
+  const prefix = labelId.replace('-strength','');
+  const levels = ['','weak','fair','good','strong'];
+  const labels = ['','Weak','Fair','Good ✓','Strong ✓'];
+  const colors = ['','var(--err)','var(--amber)','var(--leaf)','var(--lime)'];
+  const filled = Math.min(score, 4);
+
+  for (let i = 1; i <= 4; i++) {
+    const bar = document.getElementById(prefix + '-bar' + i);
+    if (!bar) continue;
+    bar.className = 'pw-bar' + (i <= filled ? ` filled-${levels[filled]}` : '');
+  }
+  const label = document.getElementById(labelId);
+  if (label) {
+    label.textContent = labels[filled] || 'Enter a password';
+    label.style.color = colors[filled] || 'var(--muted)';
+  }
+}
+
+// Clear errors on input
+document.addEventListener('input', e => {
+  if (e.target.matches('input')) {
+    e.target.classList.remove('error');
+    const id  = e.target.id;
+    const err = document.getElementById(id + '-err');
+    if (err) err.classList.remove('show');
+  }
+});
+
+// Toast
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById('globalToast');
+  el.textContent = msg;
+  el.style.transform = 'translateX(-50%) translateY(0)';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.style.transform = 'translateX(-50%) translateY(60px)', 2800);
+}
+
+// Check URL for reset token
+const urlToken = new URLSearchParams(window.location.search).get('token');
+if (urlToken) showView('reset');
+
+// Keyboard submit
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const active = document.querySelector('.auth-view.active')?.id;
+    if (active === 'view-signin')   handleSignIn();
+    if (active === 'view-forgot')   handleForgotPassword();
+    if (active === 'view-reset')    handleResetPassword();
+  }
+});
+</script>
+<script src="js/app.js"></script>
+<script src="js/auth-modal-inject.js"></script>
+</body>
+</html>

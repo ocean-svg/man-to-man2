@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Man-to-Man — Browse Listings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:     #0C1710; --forest: #0D2219; --moss: #183826;
+  --canopy:  #1F5235; --leaf:   #3A9B5C; --lime: #7ED957;
+  --mint:    #EDFFF5; --cream:  #F5F0E4; --parch:#E8DFCA;
+  --white:   #FDFCF9; --gold:   #C9960E; --amber:#E8B84B;
+  --rust:    #C45E2A; --muted:  #687B6C; --subtle:#A8BAA8;
+  --r1:3px; --r2:8px; --r3:14px;
+  --shadow-card:0 2px 16px rgba(12,23,16,.07),0 1px 3px rgba(12,23,16,.05);
+  --shadow-hover:0 12px 40px rgba(12,23,16,.13),0 2px 8px rgba(12,23,16,.07);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:16px;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;}
+
+/* NAV */
+#nav{position:sticky;top:0;z-index:200;background:rgba(245,240,228,.92);backdrop-filter:blur(18px) saturate(160%);border-bottom:1px solid var(--parch);}
+.nav-inner{display:flex;align-items:center;gap:1.2rem;height:62px;padding:0 1.8rem;max-width:1480px;margin:0 auto;}
+.nav-logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.25rem;color:var(--forest);letter-spacing:-.04em;display:flex;align-items:center;gap:.35rem;text-decoration:none;flex-shrink:0;}
+.nav-logo-dot{width:8px;height:8px;border-radius:50%;background:var(--lime);}
+.nav-search{flex:1;max-width:520px;display:flex;align-items:center;background:var(--white);border:1.5px solid var(--parch);border-radius:var(--r2);overflow:hidden;transition:border-color .2s,box-shadow .2s;}
+.nav-search:focus-within{border-color:var(--leaf);box-shadow:0 0 0 3px rgba(58,155,92,.1);}
+.nav-search-icon{padding:0 .7rem 0 1rem;color:var(--muted);font-size:.95rem;flex-shrink:0;}
+.nav-search input{flex:1;border:none;outline:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--ink);padding:.7rem 0;}
+.nav-search input::placeholder{color:var(--subtle);}
+.nav-search-btn{background:var(--leaf);color:var(--white);border:none;padding:.55rem 1rem;cursor:pointer;font-family:'Bricolage Grotesque',sans-serif;font-size:.78rem;font-weight:700;transition:background .2s;flex-shrink:0;margin:4px;border-radius:5px;}
+.nav-search-btn:hover{background:var(--canopy);}
+.nav-right{display:flex;align-items:center;gap:.6rem;margin-left:auto;flex-shrink:0;}
+.nav-btn{font-family:'Bricolage Grotesque',sans-serif;font-size:.8rem;font-weight:700;padding:.5rem .9rem;border-radius:var(--r1);cursor:pointer;border:none;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:.3rem;}
+.nav-btn-ghost{background:transparent;color:var(--muted);}
+.nav-btn-ghost:hover{background:rgba(0,0,0,.05);color:var(--ink);}
+.nav-btn-primary{background:var(--leaf);color:var(--white);}
+.nav-btn-primary:hover{background:var(--canopy);}
+.nav-cart{width:36px;height:36px;border-radius:var(--r1);background:var(--white);border:1.5px solid var(--parch);display:flex;align-items:center;justify-content:center;font-size:.95rem;cursor:pointer;position:relative;transition:border-color .2s;}
+.nav-cart:hover{border-color:var(--leaf);}
+.cart-badge{position:absolute;top:-5px;right:-5px;width:16px;height:16px;border-radius:50%;background:var(--rust);color:white;font-family:'Bricolage Grotesque',sans-serif;font-size:.6rem;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid var(--cream);}
+.filter-bar-btn{display:none;align-items:center;gap:.4rem;font-family:'Bricolage Grotesque',sans-serif;font-size:.8rem;font-weight:700;padding:.5rem .9rem;border-radius:var(--r1);background:var(--white);border:1.5px solid var(--parch);color:var(--ink);cursor:pointer;}
+
+/* CAT STRIP */
+.cat-strip{background:var(--white);border-bottom:1px solid var(--parch);overflow-x:auto;scrollbar-width:none;}
+.cat-strip::-webkit-scrollbar{display:none;}
+.cat-inner{display:flex;align-items:stretch;max-width:1480px;margin:0 auto;padding:0 1.8rem;}
+.cat-item{display:flex;align-items:center;gap:.4rem;padding:.7rem 1rem;font-family:'Bricolage Grotesque',sans-serif;font-size:.8rem;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;flex-shrink:0;}
+.cat-item:hover{color:var(--forest);border-bottom-color:var(--parch);}
+.cat-item.active{color:var(--canopy);border-bottom-color:var(--leaf);}
+.cat-icon{font-size:.95rem;}
+
+/* LAYOUT */
+.page-wrap{max-width:1480px;margin:0 auto;display:grid;grid-template-columns:252px 1fr;min-height:calc(100vh - 104px);}
+
+/* SIDEBAR */
+.sidebar{padding:1.6rem 1.3rem;border-right:1px solid var(--parch);background:var(--white);height:calc(100vh - 104px);overflow-y:auto;position:sticky;top:104px;scrollbar-width:thin;scrollbar-color:var(--parch) transparent;}
+.sidebar-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.4rem;}
+.sidebar-title{font-family:'Bricolage Grotesque',sans-serif;font-size:.78rem;font-weight:800;color:var(--ink);letter-spacing:.07em;text-transform:uppercase;}
+.sidebar-clear{font-family:'Bricolage Grotesque',sans-serif;font-size:.72rem;font-weight:700;color:var(--leaf);background:none;border:none;cursor:pointer;padding:0;}
+.sidebar-clear:hover{text-decoration:underline;}
+.filter-group{margin-bottom:1.6rem;}
+.filter-label{font-family:'Bricolage Grotesque',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem;display:block;}
+.price-inputs{display:flex;gap:.5rem;align-items:center;}
+.price-input{flex:1;border:1.5px solid var(--parch);border-radius:var(--r1);padding:.5rem .65rem;font-family:'DM Sans',sans-serif;font-size:.85rem;color:var(--ink);outline:none;background:var(--white);transition:border-color .2s;}
+.price-input:focus{border-color:var(--leaf);}
+.price-sep{font-size:.8rem;color:var(--muted);flex-shrink:0;}
+.range-wrap{padding:.7rem 0 0;}
+input[type=range]{width:100%;appearance:none;height:3px;background:var(--parch);border-radius:2px;outline:none;}
+input[type=range]::-webkit-slider-thumb{appearance:none;width:15px;height:15px;border-radius:50%;background:var(--leaf);cursor:pointer;border:2px solid var(--white);box-shadow:0 1px 4px rgba(0,0,0,.2);}
+.checkbox-list{display:flex;flex-direction:column;gap:.45rem;}
+.checkbox-item{display:flex;align-items:center;gap:.65rem;cursor:pointer;padding:.25rem 0;}
+.checkbox-item input{display:none;}
+.checkbox-box{width:15px;height:15px;border-radius:3px;border:1.5px solid var(--parch);background:var(--white);display:flex;align-items:center;justify-content:center;font-size:.6rem;color:white;flex-shrink:0;transition:all .15s;}
+.checkbox-item.checked .checkbox-box{background:var(--leaf);border-color:var(--leaf);}
+.checkbox-text{font-size:.83rem;color:var(--ink);line-height:1.3;flex:1;}
+.checkbox-count{font-family:'Bricolage Grotesque',sans-serif;font-size:.68rem;font-weight:700;color:var(--subtle);background:var(--cream);padding:.1rem .4rem;border-radius:10px;}
+.province-grid{display:flex;flex-direction:column;gap:.3rem;}
+.province-item{display:flex;align-items:center;gap:.65rem;padding:.45rem .65rem;border-radius:var(--r1);cursor:pointer;transition:background .15s;}
+.province-item:hover{background:var(--cream);}
+.province-item.selected{background:var(--mint);}
+.province-dot{width:7px;height:7px;border-radius:50%;border:2px solid var(--parch);flex-shrink:0;transition:all .15s;}
+.province-item.selected .province-dot{background:var(--leaf);border-color:var(--leaf);}
+.province-name{font-size:.83rem;color:var(--ink);}
+.province-count{margin-left:auto;font-family:'Bricolage Grotesque',sans-serif;font-size:.68rem;font-weight:700;color:var(--subtle);}
+.trust-toggle{display:flex;align-items:center;justify-content:space-between;padding:.65rem .85rem;background:var(--cream);border-radius:var(--r2);cursor:pointer;border:1.5px solid transparent;transition:all .2s;}
+.trust-toggle.on{background:var(--mint);border-color:rgba(58,155,92,.25);}
+.trust-toggle-left{display:flex;align-items:center;gap:.55rem;}
+.trust-toggle-icon{font-size:.95rem;}
+.trust-toggle-label{font-family:'Bricolage Grotesque',sans-serif;font-size:.8rem;font-weight:700;color:var(--ink);}
+.trust-toggle-sub{font-size:.68rem;color:var(--muted);}
+.switch{width:30px;height:17px;border-radius:9px;background:var(--parch);position:relative;transition:background .2s;flex-shrink:0;}
+.switch.on{background:var(--leaf);}
+.switch::after{content:'';position:absolute;top:2px;left:2px;width:13px;height:13px;border-radius:50%;background:var(--white);box-shadow:0 1px 3px rgba(0,0,0,.2);transition:left .2s;}
+.switch.on::after{left:15px;}
+
+/* MAIN */
+.main-content{padding:1.6rem 1.8rem;}
+.results-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:.7rem;}
+.results-count{font-family:'Bricolage Grotesque',sans-serif;font-size:.88rem;font-weight:700;color:var(--ink);}
+.results-count span{color:var(--muted);font-weight:400;}
+.results-right{display:flex;align-items:center;gap:.75rem;}
+.sort-wrap{position:relative;}
+.sort-select{appearance:none;border:1.5px solid var(--parch);border-radius:var(--r1);padding:.52rem 2rem .52rem .85rem;font-family:'Bricolage Grotesque',sans-serif;font-size:.78rem;font-weight:700;color:var(--ink);background:var(--white);outline:none;cursor:pointer;transition:border-color .2s;}
+.sort-select:focus{border-color:var(--leaf);}
+.sort-wrap::after{content:'▾';position:absolute;right:.65rem;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.7rem;pointer-events:none;}
+.view-toggle{display:flex;gap:2px;}
+.view-btn{width:30px;height:30px;border:1.5px solid var(--parch);background:var(--white);border-radius:var(--r1);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.82rem;transition:all .15s;color:var(--muted);}
+.view-btn.active{background:var(--forest);border-color:var(--forest);color:var(--white);}
+.active-filters{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem;}
+.filter-chip{display:inline-flex;align-items:center;gap:.4rem;background:var(--forest);color:var(--white);padding:.28rem .65rem .28rem .85rem;border-radius:20px;font-family:'Bricolage Grotesque',sans-serif;font-size:.7rem;font-weight:700;animation:chipIn .2s ease both;}
+@keyframes chipIn{from{opacity:0;transform:scale(.85);}to{opacity:1;transform:scale(1);}}
+.chip-remove{background:rgba(255,255,255,.2);border:none;color:white;width:15px;height:15px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:900;transition:background .15s;flex-shrink:0;}
+.chip-remove:hover{background:rgba(255,255,255,.35);}
+
+/* CARDS */
+.listings-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:1.1rem;}
+.listings-grid.list-view{grid-template-columns:1fr;gap:.75rem;}
+.listing-card{background:var(--white);border:1.5px solid var(--parch);border-radius:var(--r3);overflow:hidden;cursor:pointer;transition:transform .22s,box-shadow .22s,border-color .22s;box-shadow:var(--shadow-card);animation:cardIn .35s ease both;position:relative;}
+.listing-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover);border-color:rgba(58,155,92,.22);}
+@keyframes cardIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.listing-card:nth-child(1){animation-delay:.04s}.listing-card:nth-child(2){animation-delay:.08s}.listing-card:nth-child(3){animation-delay:.12s}.listing-card:nth-child(4){animation-delay:.16s}.listing-card:nth-child(5){animation-delay:.2s}.listing-card:nth-child(6){animation-delay:.24s}.listing-card:nth-child(7){animation-delay:.28s}.listing-card:nth-child(8){animation-delay:.32s}.listing-card:nth-child(9){animation-delay:.06s}.listing-card:nth-child(10){animation-delay:.1s}.listing-card:nth-child(11){animation-delay:.14s}.listing-card:nth-child(12){animation-delay:.18s}
+.card-img{width:100%;aspect-ratio:1/1;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden;}
+.card-img-emoji{transition:transform .3s;}
+.listing-card:hover .card-img-emoji{transform:scale(1.08);}
+.condition-badge{position:absolute;top:.55rem;left:.55rem;font-family:'Bricolage Grotesque',sans-serif;font-size:.6rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:.18rem .5rem;border-radius:20px;}
+.cond-new{background:#E6FFE6;color:#1A6E2E;border:1px solid rgba(26,110,46,.2);}
+.cond-good{background:#FFF8E6;color:#7A5A00;border:1px solid rgba(122,90,0,.2);}
+.cond-fair{background:#FFF0E6;color:#7A3000;border:1px solid rgba(122,48,0,.2);}
+.card-save{position:absolute;top:.55rem;right:.55rem;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;font-size:.82rem;cursor:pointer;backdrop-filter:blur(4px);transition:all .2s;opacity:0;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+.listing-card:hover .card-save,.card-save.saved{opacity:1;}
+.verified-ribbon{position:absolute;bottom:.55rem;left:.55rem;display:flex;align-items:center;gap:.3rem;background:rgba(14,34,25,.85);backdrop-filter:blur(4px);padding:.2rem .5rem;border-radius:20px;font-family:'Bricolage Grotesque',sans-serif;font-size:.58rem;font-weight:800;color:var(--lime);letter-spacing:.06em;text-transform:uppercase;}
+.verified-dot{width:5px;height:5px;border-radius:50%;background:var(--lime);}
+.card-body{padding:.85rem .95rem .95rem;}
+.card-category{font-family:'Bricolage Grotesque',sans-serif;font-size:.63rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:.25rem;}
+.card-title{font-family:'Bricolage Grotesque',sans-serif;font-size:.88rem;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:.35rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.card-location{font-size:.73rem;color:var(--muted);display:flex;align-items:center;gap:.3rem;margin-bottom:.65rem;}
+.card-footer{display:flex;align-items:flex-end;justify-content:space-between;border-top:1px solid var(--parch);padding-top:.65rem;}
+.card-price{font-family:'Bricolage Grotesque',sans-serif;font-size:1.1rem;font-weight:800;color:var(--forest);line-height:1;}
+.card-price-sub{font-size:.67rem;color:var(--muted);font-weight:400;margin-top:.12rem;}
+.card-seller{display:flex;align-items:center;gap:.35rem;}
+.seller-avatar{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:800;color:white;flex-shrink:0;}
+.seller-name{font-size:.7rem;color:var(--muted);max-width:75px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.seller-stars{font-size:.6rem;color:var(--amber);}
+.card-buy-btn{display:flex;align-items:center;justify-content:center;gap:.35rem;background:var(--forest);color:var(--white);border:none;width:100%;padding:.65rem;font-family:'Bricolage Grotesque',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;border-radius:0 0 var(--r3) var(--r3);transform:translateY(100%);opacity:0;transition:all .22s;position:absolute;bottom:0;left:0;right:0;}
+.listing-card:hover .card-buy-btn{transform:translateY(0);opacity:1;}
+
+/* LIST VIEW */
+.listings-grid.list-view .listing-card{display:grid;grid-template-columns:130px 1fr auto;border-radius:var(--r2);}
+.listings-grid.list-view .card-img{aspect-ratio:unset;height:100%;border-radius:var(--r2) 0 0 var(--r2);min-height:115px;}
+.listings-grid.list-view .card-body{padding:.95rem 1.1rem;display:flex;flex-direction:column;justify-content:space-between;}
+.listings-grid.list-view .card-footer{border-top:none;padding-top:0;}
+.listings-grid.list-view .card-buy-btn{position:static;transform:none;opacity:1;border-radius:0 var(--r2) var(--r2) 0;width:100px;padding:0;background:var(--leaf);}
+.listings-grid.list-view .listing-card:hover .card-buy-btn{background:var(--canopy);}
+
+/* EMPTY */
+.empty-state{display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4rem 2rem;grid-column:1/-1;}
+.empty-state.show{display:flex;}
+.empty-icon{font-size:3.2rem;margin-bottom:1rem;}
+.empty-title{font-family:'Bricolage Grotesque',sans-serif;font-size:1.15rem;font-weight:700;color:var(--ink);margin-bottom:.5rem;}
+.empty-sub{font-size:.87rem;color:var(--muted);max-width:36ch;line-height:1.6;}
+
+/* LOAD MORE */
+.load-more-wrap{display:flex;justify-content:center;padding:2.2rem 0 1rem;}
+.load-more-btn{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.86rem;background:var(--white);color:var(--ink);border:2px solid var(--parch);padding:.8rem 2.4rem;border-radius:var(--r2);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.5rem;}
+.load-more-btn:hover{border-color:var(--leaf);color:var(--canopy);}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(12,23,16,.6);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity .25s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--white);border-radius:16px;width:100%;max-width:860px;max-height:90vh;overflow-y:auto;box-shadow:0 32px 80px rgba(12,23,16,.25);transform:translateY(20px) scale(.97);transition:transform .3s cubic-bezier(.34,1.3,.64,1);}
+.modal-overlay.open .modal{transform:translateY(0) scale(1);}
+.modal-inner{display:grid;grid-template-columns:1fr 1fr;}
+.modal-gallery{background:var(--cream);border-radius:16px 0 0 16px;display:flex;flex-direction:column;gap:.5rem;padding:1.5rem;min-height:380px;}
+.modal-main-img{flex:1;background:var(--parch);border-radius:var(--r2);display:flex;align-items:center;justify-content:center;font-size:5rem;min-height:240px;}
+.modal-thumbs{display:flex;gap:.5rem;}
+.modal-thumb{width:56px;height:56px;border-radius:var(--r1);background:var(--parch);display:flex;align-items:center;justify-content:center;font-size:1.3rem;cursor:pointer;border:2px solid transparent;transition:border-color .15s;}
+.modal-thumb.active{border-color:var(--leaf);}
+.modal-info{padding:1.8rem 1.8rem 1.8rem 1.5rem;display:flex;flex-direction:column;}
+.modal-category{font-family:'Bricolage Grotesque',sans-serif;font-size:.67rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--leaf);margin-bottom:.4rem;}
+.modal-title{font-family:'Instrument Serif',serif;font-size:1.65rem;color:var(--forest);line-height:1.15;margin-bottom:.5rem;}
+.modal-price{font-family:'Bricolage Grotesque',sans-serif;font-size:2.1rem;font-weight:800;color:var(--forest);line-height:1;margin-bottom:.9rem;}
+.modal-price sup{font-size:.95rem;vertical-align:super;}
+.modal-badges{display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:1.1rem;}
+.modal-badge{display:inline-flex;align-items:center;gap:.3rem;padding:.22rem .6rem;border-radius:20px;font-family:'Bricolage Grotesque',sans-serif;font-size:.65rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;}
+.badge-verified{background:var(--mint);color:var(--canopy);border:1px solid rgba(58,155,92,.25);}
+.badge-escrow{background:#E6F4FF;color:#0E4A7A;border:1px solid rgba(14,74,122,.2);}
+.badge-cond{background:#E6FFE6;color:#1A6E2E;border:1px solid rgba(26,110,46,.2);}
+.modal-desc{font-size:.87rem;color:var(--muted);line-height:1.75;margin-bottom:1.2rem;flex:1;}
+.modal-seller{display:flex;align-items:center;gap:.75rem;padding:.9rem;background:var(--cream);border-radius:var(--r2);margin-bottom:1rem;}
+.modal-seller-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.88rem;font-weight:800;color:white;flex-shrink:0;}
+.modal-seller-name{font-family:'Bricolage Grotesque',sans-serif;font-size:.86rem;font-weight:700;color:var(--ink);margin-bottom:.1rem;}
+.modal-seller-meta{font-size:.73rem;color:var(--muted);}
+.modal-seller-stars{color:var(--amber);}
+.modal-location{display:flex;align-items:center;gap:.4rem;font-size:.8rem;color:var(--muted);margin-bottom:1.3rem;}
+.modal-actions{display:flex;gap:.7rem;}
+.modal-btn-buy{flex:1;background:var(--forest);color:var(--white);border:none;padding:.9rem;border-radius:var(--r2);cursor:pointer;font-family:'Bricolage Grotesque',sans-serif;font-size:.88rem;font-weight:800;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:.45rem;}
+.modal-btn-buy:hover{background:var(--ink);}
+.modal-btn-icon{width:46px;height:46px;background:var(--cream);border:2px solid var(--parch);border-radius:var(--r2);cursor:pointer;font-size:1.05rem;display:flex;align-items:center;justify-content:center;transition:border-color .2s;}
+.modal-btn-icon:hover{border-color:var(--leaf);}
+.modal-escrow-note{display:flex;align-items:center;gap:.45rem;margin-top:.75rem;font-size:.73rem;color:var(--muted);justify-content:center;text-align:center;}
+.modal-close{position:absolute;top:.9rem;right:.9rem;width:30px;height:30px;border-radius:50%;background:rgba(12,23,16,.08);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.75rem;color:var(--ink);z-index:10;transition:background .15s;}
+.modal-close:hover{background:rgba(12,23,16,.16);}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.8rem;left:50%;transform:translateX(-50%) translateY(70px);background:var(--forest);color:var(--white);padding:.75rem 1.3rem;border-radius:var(--r2);font-family:'Bricolage Grotesque',sans-serif;font-size:.83rem;font-weight:700;display:flex;align-items:center;gap:.5rem;box-shadow:0 8px 24px rgba(12,23,16,.25);z-index:600;transition:transform .3s cubic-bezier(.34,1.3,.64,1);pointer-events:none;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+/* SIDEBAR OVERLAY (mobile) */
+.sidebar-overlay{display:none;position:fixed;inset:0;z-index:299;background:rgba(12,23,16,.4);}
+.sidebar-overlay.show{display:block;}
+
+/* RESPONSIVE */
+@media(max-width:1024px){.page-wrap{grid-template-columns:220px 1fr;}.listings-grid{grid-template-columns:repeat(auto-fill,minmax(188px,1fr));}}
+@media(max-width:768px){
+  .page-wrap{grid-template-columns:1fr;}
+  .sidebar{display:none;position:fixed;left:0;top:0;bottom:0;z-index:300;width:272px;height:100vh;box-shadow:8px 0 32px rgba(0,0,0,.15);}
+  .sidebar.mobile-open{display:block;}
+  .nav-inner{padding:0 1rem;gap:.7rem;}
+  .main-content{padding:1.2rem 1rem;}
+  .listings-grid{grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:.8rem;}
+  .modal-inner{grid-template-columns:1fr;}
+  .modal-gallery{border-radius:16px 16px 0 0;min-height:200px;}
+  .modal-info{padding:1.2rem 1.4rem 1.5rem;}
+  .modal-main-img{min-height:160px;}
+  .filter-bar-btn{display:flex;}
+}
+@media(max-width:480px){.listings-grid{grid-template-columns:repeat(2,1fr);gap:.6rem;}.card-price{font-size:1rem;}}
+</style>
+</head>
+<body>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <div class="modal-inner">
+      <div class="modal-gallery">
+        <div class="modal-main-img" id="modalEmoji"></div>
+        <div class="modal-thumbs" id="modalThumbs"></div>
+      </div>
+      <div class="modal-info">
+        <div class="modal-category" id="modalCategory"></div>
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <div class="modal-price" id="modalPrice"></div>
+        <div class="modal-badges" id="modalBadges"></div>
+        <p class="modal-desc" id="modalDesc"></p>
+        <div class="modal-seller" id="modalSeller"></div>
+        <div class="modal-location" id="modalLocation"></div>
+        <div class="modal-actions">
+          <button class="modal-btn-buy" onclick="showToast('🔒 Escrow checkout coming soon!')">🔒 Buy Securely</button>
+          <button class="modal-btn-icon" title="Message Seller" onclick="showToast('💬 Opening chat...')">💬</button>
+          <button class="modal-btn-icon" id="modalSaveBtn" onclick="toggleModalSave()">🤍</button>
+        </div>
+        <div class="modal-escrow-note"><span>🔒</span> Escrow-protected — funds held until you confirm delivery.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- SIDEBAR OVERLAY (mobile) -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><span class="nav-logo-dot"></span>Man-to-Man</a>
+    <div class="nav-search">
+      <span class="nav-search-icon">🔍</span>
+      <input type="text" placeholder="Search listings — sneakers, phones, furniture…" id="searchInput" oninput="handleSearch()"/>
+      <button class="nav-search-btn" onclick="handleSearch()">Search</button>
+    </div>
+    <div class="nav-right">
+      <a href="onboarding.html" class="nav-btn nav-btn-primary">+ Sell</a>
+      <a href="auth.html" class="nav-btn nav-btn-ghost nav-login" data-auth-trigger>Sign In</a>
+      <div class="nav-cart" onclick="showToast('🛒 Your cart is empty')">🛒<span class="cart-badge">0</span></div>
+      <button class="filter-bar-btn" onclick="openSidebar()">⚙️ Filters</button>
+    </div>
+  </div>
+</nav>
+
+<!-- CATEGORY STRIP -->
+<div class="cat-strip">
+  <div class="cat-inner">
+    <div class="cat-item active"  onclick="filterCategory(this,'All')"><span class="cat-icon">✨</span>All</div>
+    <div class="cat-item" onclick="filterCategory(this,'Clothing')"><span class="cat-icon">👕</span>Clothing</div>
+    <div class="cat-item" onclick="filterCategory(this,'Electronics')"><span class="cat-icon">📱</span>Electronics</div>
+    <div class="cat-item" onclick="filterCategory(this,'Handmade')"><span class="cat-icon">🪡</span>Handmade</div>
+    <div class="cat-item" onclick="filterCategory(this,'Home')"><span class="cat-icon">🏠</span>Home</div>
+    <div class="cat-item" onclick="filterCategory(this,'Food')"><span class="cat-icon">🍱</span>Food</div>
+    <div class="cat-item" onclick="filterCategory(this,'Shoes')"><span class="cat-icon">👟</span>Shoes</div>
+    <div class="cat-item" onclick="filterCategory(this,'Tools')"><span class="cat-icon">🔧</span>Tools</div>
+    <div class="cat-item" onclick="filterCategory(this,'Books')"><span class="cat-icon">📚</span>Books</div>
+    <div class="cat-item" onclick="filterCategory(this,'Kids')"><span class="cat-icon">🧸</span>Kids</div>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <span class="sidebar-title">Filters</span>
+      <button class="sidebar-clear" onclick="clearAllFilters()">Clear all</button>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">Seller Trust</span>
+      <div class="trust-toggle on" id="verifiedToggle" onclick="toggleVerified()">
+        <div class="trust-toggle-left">
+          <span class="trust-toggle-icon">✅</span>
+          <div><div class="trust-toggle-label">Verified Only</div><div class="trust-toggle-sub">FICA-verified sellers</div></div>
+        </div>
+        <div class="switch on" id="verifiedSwitch"></div>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">Price Range</span>
+      <div class="price-inputs">
+        <input type="number" class="price-input" id="priceMin" placeholder="R Min" min="0" oninput="applyFilters()"/>
+        <span class="price-sep">—</span>
+        <input type="number" class="price-input" id="priceMax" placeholder="R Max" min="0" oninput="applyFilters()"/>
+      </div>
+      <div class="range-wrap">
+        <input type="range" min="0" max="10000" value="10000" id="priceRange" oninput="updatePriceRange(this.value)"/>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">Condition</span>
+      <div class="checkbox-list">
+        <label class="checkbox-item checked" onclick="toggleCheckbox(this)"><input type="checkbox" checked/><div class="checkbox-box">✓</div><span class="checkbox-text">New / Unused</span><span class="checkbox-count">48</span></label>
+        <label class="checkbox-item checked" onclick="toggleCheckbox(this)"><input type="checkbox" checked/><div class="checkbox-box">✓</div><span class="checkbox-text">Good Condition</span><span class="checkbox-count">134</span></label>
+        <label class="checkbox-item checked" onclick="toggleCheckbox(this)"><input type="checkbox" checked/><div class="checkbox-box">✓</div><span class="checkbox-text">Fair / Used</span><span class="checkbox-count">72</span></label>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">Province</span>
+      <div class="province-grid">
+        <div class="province-item selected" onclick="filterProvince(this,'All')"><div class="province-dot"></div><span class="province-name">All Provinces</span><span class="province-count">254</span></div>
+        <div class="province-item" onclick="filterProvince(this,'Gauteng')"><div class="province-dot"></div><span class="province-name">Gauteng</span><span class="province-count">118</span></div>
+        <div class="province-item" onclick="filterProvince(this,'W. Cape')"><div class="province-dot"></div><span class="province-name">Western Cape</span><span class="province-count">67</span></div>
+        <div class="province-item" onclick="filterProvince(this,'KZN')"><div class="province-dot"></div><span class="province-name">KwaZulu-Natal</span><span class="province-count">41</span></div>
+        <div class="province-item" onclick="filterProvince(this,'E. Cape')"><div class="province-dot"></div><span class="province-name">Eastern Cape</span><span class="province-count">28</span></div>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">Delivery</span>
+      <div class="checkbox-list">
+        <label class="checkbox-item" onclick="toggleCheckbox(this)"><input type="checkbox"/><div class="checkbox-box"></div><span class="checkbox-text">Courier available</span></label>
+        <label class="checkbox-item" onclick="toggleCheckbox(this)"><input type="checkbox"/><div class="checkbox-box"></div><span class="checkbox-text">Pickup only</span></label>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">Date Listed</span>
+      <div class="checkbox-list">
+        <label class="checkbox-item" onclick="toggleCheckbox(this)"><input type="checkbox"/><div class="checkbox-box"></div><span class="checkbox-text">Today</span><span class="checkbox-count">12</span></label>
+        <label class="checkbox-item" onclick="toggleCheckbox(this)"><input type="checkbox"/><div class="checkbox-box"></div><span class="checkbox-text">This week</span><span class="checkbox-count">54</span></label>
+        <label class="checkbox-item" onclick="toggleCheckbox(this)"><input type="checkbox"/><div class="checkbox-box"></div><span class="checkbox-text">This month</span><span class="checkbox-count">189</span></label>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-content">
+    <div class="results-bar">
+      <div class="results-count" id="resultsCount">Showing <strong>—</strong> listings <span>across South Africa</span></div>
+      <div class="results-right">
+        <div class="sort-wrap">
+          <select class="sort-select" onchange="applySort(this.value)">
+            <option value="recent">Most Recent</option>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
+            <option value="trusted">Verified First</option>
+          </select>
+        </div>
+        <div class="view-toggle">
+          <button class="view-btn active" id="gridBtn" onclick="setView('grid')" title="Grid">⊞</button>
+          <button class="view-btn" id="listBtn" onclick="setView('list')" title="List">☰</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="active-filters" id="activeFilters">
+      <div class="filter-chip">✅ Verified Only <button class="chip-remove" onclick="removeFilter('verified')">✕</button></div>
+    </div>
+
+    <div class="listings-grid" id="listingsGrid">
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">🔍</div>
+        <div class="empty-title">No listings found</div>
+        <div class="empty-sub">Try adjusting your search or filters.</div>
+      </div>
+    </div>
+
+    <div class="load-more-wrap">
+      <button class="load-more-btn" onclick="loadMore()">Load more listings <span>↓</span></button>
+    </div>
+  </div>
+</div>
+
+<script>
+const LISTINGS=[
+  {id:1,emoji:'👟',category:'Shoes',title:'Nike Air Force 1 — Size 10',price:680,condition:'Good',location:'Soweto, Gauteng',seller:'Thandi M.',sellerColor:'#1F5235',rating:4.8,verified:true,delivery:'courier',desc:'Clean pair, worn a few times. No major scuffs. Original box included. Size 10 US / Size 44 EU. Open to reasonable offers.',posted:'2 hrs ago'},
+  {id:2,emoji:'📱',category:'Electronics',title:'Samsung Galaxy A14 — Good Condition',price:2100,condition:'Good',location:'Khayelitsha, W. Cape',seller:'Sipho N.',sellerColor:'#2D1B69',rating:4.9,verified:true,delivery:'both',desc:'6 months old, excellent battery life. Original charger and case included. No cracks. 128GB storage, 4GB RAM. Selling because upgrading.',posted:'5 hrs ago'},
+  {id:3,emoji:'🪡',category:'Handmade',title:'Beaded Necklace Set — Zulu Design',price:350,condition:'New',location:'Alexandra, Gauteng',seller:'Lerato K.',sellerColor:'#5C3800',rating:5.0,verified:true,delivery:'courier',desc:'Handmade Zulu beadwork necklace, bracelet, and earring set. Ships in 2–3 days. Custom colours available on request.',posted:'1 hr ago'},
+  {id:4,emoji:'👗',category:'Clothing',title:'Vintage Denim Jacket — Size M',price:290,condition:'Good',location:'Mitchells Plain, W. Cape',seller:'Ayanda T.',sellerColor:'#4A1A4A',rating:4.6,verified:true,delivery:'pickup',desc:'Classic Levi\'s denim jacket, size medium. Very good condition, no tears or stains.',posted:'3 hrs ago'},
+  {id:5,emoji:'🪑',category:'Home',title:'Wooden Coffee Table — Solid Pine',price:1200,condition:'Good',location:'Tembisa, Gauteng',seller:'Bongani P.',sellerColor:'#1A3826',rating:4.7,verified:true,delivery:'pickup',desc:'Solid pine coffee table, lightly used. 90cm x 50cm x 45cm. Minor surface scratches, easily polished out.',posted:'1 day ago'},
+  {id:6,emoji:'📚',category:'Books',title:'Grade 11 Textbook Bundle — All Subjects',price:450,condition:'Fair',location:'Soweto, Gauteng',seller:'Neo S.',sellerColor:'#1F3A5F',rating:4.5,verified:false,delivery:'both',desc:'Full set of Grade 11 textbooks. Maths, Life Sciences, Physical Sciences, English, Afrikaans. Some highlighting but all readable.',posted:'6 hrs ago'},
+  {id:7,emoji:'🔧',category:'Tools',title:'Bosch Drill Set — Complete Kit',price:850,condition:'Good',location:'Durban North, KZN',seller:'Themba D.',sellerColor:'#3D1A00',rating:4.9,verified:true,delivery:'courier',desc:'Bosch 12V drill with 2 batteries, charger, and full bit set. Works perfectly. Selling because I upgraded to a corded model.',posted:'12 hrs ago'},
+  {id:8,emoji:'🧸',category:'Kids',title:'Baby Cot + Mattress — Barely Used',price:750,condition:'Good',location:'Mamelodi, Gauteng',seller:'Palesa M.',sellerColor:'#4A0E2D',rating:4.8,verified:true,delivery:'pickup',desc:'Used for 6 months. Includes waterproof mattress cover. Adjustable base height. Converts to toddler bed.',posted:'2 days ago'},
+  {id:9,emoji:'👠',category:'Shoes',title:'Court Heels — Black Size 6',price:180,condition:'Good',location:'Cape Town CBD, W. Cape',seller:'Zanele R.',sellerColor:'#1A1A4A',rating:4.7,verified:true,delivery:'courier',desc:'Smart black court heels, 6cm heel. Worn twice. No scuffs. Perfect for work or formal events.',posted:'4 hrs ago'},
+  {id:10,emoji:'💻',category:'Electronics',title:'Lenovo IdeaPad — Core i5, 8GB RAM',price:4800,condition:'Good',location:'Johannesburg CBD, Gauteng',seller:'Kabelo M.',sellerColor:'#0E3D4A',rating:4.6,verified:true,delivery:'both',desc:'2021 model, Windows 11. 256GB SSD. Battery holds 4+ hours. Comes with charger and laptop bag.',posted:'8 hrs ago'},
+  {id:11,emoji:'🍱',category:'Food',title:'Homemade Chakalaka — 6-Jar Bulk',price:220,condition:'New',location:'Soweto, Gauteng',seller:'Mama D.',sellerColor:'#3D2800',rating:5.0,verified:false,delivery:'pickup',desc:'Family recipe, made fresh weekly. Mild and hot options. Order by Wednesday for weekend pickup.',posted:'Today'},
+  {id:12,emoji:'🎸',category:'Electronics',title:'Acoustic Guitar — Yamaha F280',price:1500,condition:'Good',location:'Pretoria, Gauteng',seller:'Ruan V.',sellerColor:'#2D3D1A',rating:4.8,verified:true,delivery:'both',desc:'3 years old, stored well. Comes with capo, tuner, and carry bag. Small ding on body edge but plays perfectly.',posted:'Yesterday'},
+  {id:13,emoji:'🪞',category:'Home',title:'Standing Mirror — Full Length 160cm',price:380,condition:'New',location:'East London, E. Cape',seller:'Chantal M.',sellerColor:'#1A3050',rating:4.5,verified:true,delivery:'pickup',desc:'Brand new, never mounted. 160cm x 40cm. Rose gold frame. Still in original packaging.',posted:'3 days ago'},
+  {id:14,emoji:'🧴',category:'Handmade',title:'Organic Shea Butter — 500ml',price:120,condition:'New',location:'Durban South, KZN',seller:'Nandi Z.',sellerColor:'#3D1A2D',rating:4.9,verified:true,delivery:'courier',desc:'100% pure organic shea butter, unrefined. No preservatives. Handmade in small batches. Great for skin and hair.',posted:'1 hr ago'},
+  {id:15,emoji:'🚲',category:'Tools',title:'Mountain Bike — 26" Wheels',price:2200,condition:'Fair',location:'Centurion, Gauteng',seller:'Deon B.',sellerColor:'#2E1500',rating:4.4,verified:false,delivery:'pickup',desc:'21-speed mountain bike. Needs a front tyre replacement and brake cable. Frame and gears in great shape. Priced to sell.',posted:'4 days ago'},
+  {id:16,emoji:'👒',category:'Clothing',title:'Handwoven Straw Hats — 5 Styles',price:95,condition:'New',location:'Khayelitsha, W. Cape',seller:'Sipho N.',sellerColor:'#2D1B69',rating:4.9,verified:true,delivery:'both',desc:'Handwoven straw hats in 5 styles. One size fits most. Great for summer. Also selling individually.',posted:'6 hrs ago'},
+  {id:17,emoji:'🍳',category:'Home',title:'Cast Iron Skillet Set — 3 Piece',price:490,condition:'Good',location:'Port Elizabeth, E. Cape',seller:'Johan V.',sellerColor:'#3D2000',rating:4.6,verified:true,delivery:'courier',desc:'Lodge cast iron set — 8", 10", and 12". Well-seasoned and ready to use. Selling as full set only.',posted:'2 days ago'},
+  {id:18,emoji:'🎮',category:'Electronics',title:'PlayStation 4 — 500GB + 2 Controllers',price:3200,condition:'Good',location:'Soweto, Gauteng',seller:'Thandi M.',sellerColor:'#1F5235',rating:4.8,verified:true,delivery:'both',desc:'PS4 500GB, two controllers, 8 games. HDMI and power cable included. Slight yellowing on controller but fully functional.',posted:'5 hrs ago'},
+  {id:19,emoji:'🌱',category:'Handmade',title:'Succulent Collection — 10 Plants',price:200,condition:'New',location:'Pretoria East, Gauteng',seller:'Ruan V.',sellerColor:'#2D3D1A',rating:4.8,verified:true,delivery:'pickup',desc:'10 assorted succulents in terracotta pots. Mix of aloe, echeveria, and haworthia. Perfect as gifts or office decor.',posted:'Today'},
+  {id:20,emoji:'🧳',category:'Clothing',title:'Designer-Inspired Tote Bag — Large',price:320,condition:'New',location:'Alexandra, Gauteng',seller:'Lerato K.',sellerColor:'#5C3800',rating:5.0,verified:true,delivery:'courier',desc:'High-quality canvas and brass hardware. 38cm x 28cm x 16cm. Spacious interior, multiple pockets. Brand new.',posted:'3 hrs ago'},
+  {id:21,emoji:'📺',category:'Electronics',title:'Samsung 43" Smart TV — Full HD',price:3800,condition:'Good',location:'Tembisa, Gauteng',seller:'Bongani P.',sellerColor:'#1A3826',rating:4.7,verified:true,delivery:'pickup',desc:'2020 Samsung Smart TV, Full HD 1080p. Netflix, YouTube, DStv all work. Remote and 2 HDMI ports included.',posted:'1 day ago'},
+  {id:22,emoji:'🎀',category:'Handmade',title:'Gift Wrapping Service — Per Item',price:45,condition:'New',location:'Johannesburg South, Gauteng',seller:'Palesa M.',sellerColor:'#4A0E2D',rating:4.8,verified:true,delivery:'pickup',desc:'Professional gift wrapping. 12 paper designs. Add ribbon, bow, and personalised message card.',posted:'Yesterday'},
+  {id:23,emoji:'🪴',category:'Home',title:'Bamboo Plant Stand — 3-Tier',price:260,condition:'New',location:'Durban CBD, KZN',seller:'Nandi Z.',sellerColor:'#3D1A2D',rating:4.9,verified:true,delivery:'courier',desc:'Natural bamboo 3-tier plant stand. 45cm wide x 90cm tall. Easy 10-minute assembly. Holds up to 6 medium pots.',posted:'4 hrs ago'},
+  {id:24,emoji:'🏋️',category:'Tools',title:'Dumbbell Set — 10–30kg Pairs',price:1800,condition:'Good',location:'Centurion, Gauteng',seller:'Deon B.',sellerColor:'#2E1500',rating:4.4,verified:true,delivery:'pickup',desc:'Full rubber dumbbell set, 5 pairs (10–30kg). No rack. Relocating, must sell. Pick up only.',posted:'2 days ago'},
+];
+
+let state={search:'',category:'All',province:'All',verifiedOnly:true,priceMax:10000,sort:'recent',view:'grid',savedIds:new Set(),page:1,perPage:12};
+let currentModalItem=null;
+
+function getFiltered(){
+  return LISTINGS.filter(l=>{
+    if(state.verifiedOnly&&!l.verified)return false;
+    if(state.category!=='All'&&l.category!==state.category)return false;
+    if(state.province!=='All'&&!l.location.includes(state.province))return false;
+    if(l.price>state.priceMax)return false;
+    const q=state.search.toLowerCase();
+    if(q&&!l.title.toLowerCase().includes(q)&&!l.category.toLowerCase().includes(q)&&!l.location.toLowerCase().includes(q))return false;
+    return true;
+  }).sort((a,b)=>{
+    if(state.sort==='price-asc')return a.price-b.price;
+    if(state.sort==='price-desc')return b.price-a.price;
+    if(state.sort==='trusted')return(b.verified?1:0)-(a.verified?1:0);
+    return 0;
+  });
+}
+
+function renderListings(){
+  const grid=document.getElementById('listingsGrid');
+  const empty=document.getElementById('emptyState');
+  const filtered=getFiltered();
+  const slice=filtered.slice(0,state.page*state.perPage);
+  grid.querySelectorAll('.listing-card').forEach(el=>el.remove());
+  empty.classList.remove('show');
+  if(!filtered.length){empty.classList.add('show');}
+  slice.forEach(l=>grid.appendChild(buildCard(l)));
+  const showing=Math.min(slice.length,filtered.length);
+  document.getElementById('resultsCount').innerHTML=
+    `Showing <strong>${showing}</strong> of <strong>${filtered.length}</strong> listings <span>${state.category!=='All'?'in '+state.category:'across South Africa'}</span>`;
+}
+
+function buildCard(l){
+  const saved=state.savedIds.has(l.id);
+  const d=document.createElement('div');
+  d.className='listing-card';
+  d.innerHTML=`
+    <div class="card-img">
+      <span class="card-img-emoji">${l.emoji}</span>
+      <span class="condition-badge cond-${l.condition.toLowerCase()}">${l.condition}</span>
+      <button class="card-save${saved?' saved':''}" onclick="event.stopPropagation();toggleSave(${l.id},this)"><span>${saved?'❤️':'🤍'}</span></button>
+      ${l.verified?`<div class="verified-ribbon"><span class="verified-dot"></span>Verified</div>`:''}
+    </div>
+    <div class="card-body">
+      <div class="card-category">${l.category}</div>
+      <div class="card-title">${l.title}</div>
+      <div class="card-location">📍 ${l.location}</div>
+      <div class="card-footer">
+        <div>
+          <div class="card-price">R ${l.price.toLocaleString()}</div>
+          <div class="card-price-sub">${l.delivery==='courier'?'🚚 Courier':l.delivery==='pickup'?'📍 Pickup only':'🚚 Courier & pickup'}</div>
+        </div>
+        <div class="card-seller">
+          <div class="seller-avatar" style="background:${l.sellerColor}">${l.seller.charAt(0)}</div>
+          <div>
+            <div class="seller-name">${l.seller}</div>
+            <div class="seller-stars">${'★'.repeat(Math.floor(l.rating))}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="card-buy-btn" onclick="event.stopPropagation();showToast('🔒 Escrow checkout coming soon!')">🔒 Buy Securely</button>`;
+  d.addEventListener('click',()=>openModal(l));
+  return d;
+}
+
+function openModal(l){
+  currentModalItem=l;
+  document.getElementById('modalEmoji').textContent=l.emoji;
+  document.getElementById('modalCategory').textContent=l.category;
+  document.getElementById('modalTitle').textContent=l.title;
+  document.getElementById('modalPrice').innerHTML=`<sup>R</sup>${l.price.toLocaleString()}`;
+  document.getElementById('modalDesc').textContent=l.desc;
+  document.getElementById('modalBadges').innerHTML=
+    `${l.verified?`<span class="modal-badge badge-verified">✓ Verified</span>`:''}
+     <span class="modal-badge badge-escrow">🔒 Escrow</span>
+     <span class="modal-badge badge-cond">${l.condition}</span>`;
+  document.getElementById('modalThumbs').innerHTML=
+    [l.emoji,'📷','📐'].map((e,i)=>`<div class="modal-thumb${i===0?' active':''}">${e}</div>`).join('');
+  document.getElementById('modalSeller').innerHTML=`
+    <div class="modal-seller-av" style="background:${l.sellerColor}">${l.seller.charAt(0)}</div>
+    <div>
+      <div class="modal-seller-name">${l.seller}${l.verified?' ✓':''}</div>
+      <div class="modal-seller-meta"><span class="modal-seller-stars">${'★'.repeat(Math.floor(l.rating))}</span> ${l.rating} · Listed ${l.posted}</div>
+    </div>`;
+  document.getElementById('modalLocation').innerHTML=`📍 <strong>${l.location}</strong> &nbsp;·&nbsp; ${l.delivery==='courier'?'🚚 Courier':l.delivery==='pickup'?'📍 Pickup':'🚚 Courier & pickup'}`;
+  document.getElementById('modalSaveBtn').textContent=state.savedIds.has(l.id)?'❤️':'🤍';
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(e){if(e.target===document.getElementById('modalOverlay'))closeModalDirect();}
+function closeModalDirect(){document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow='';}
+function toggleModalSave(){if(!currentModalItem)return;toggleSave(currentModalItem.id,null);document.getElementById('modalSaveBtn').textContent=state.savedIds.has(currentModalItem.id)?'❤️':'🤍';}
+
+function handleSearch(){state.search=document.getElementById('searchInput').value;state.page=1;updateChips();renderListings();}
+function filterCategory(el,cat){document.querySelectorAll('.cat-item').forEach(c=>c.classList.remove('active'));el.classList.add('active');state.category=cat;state.page=1;updateChips();renderListings();}
+function filterProvince(el,prov){document.querySelectorAll('.province-item').forEach(p=>p.classList.remove('selected'));el.classList.add('selected');state.province=prov;state.page=1;updateChips();renderListings();}
+function toggleVerified(){state.verifiedOnly=!state.verifiedOnly;document.getElementById('verifiedToggle').classList.toggle('on',state.verifiedOnly);document.getElementById('verifiedSwitch').classList.toggle('on',state.verifiedOnly);updateChips();renderListings();}
+function updatePriceRange(val){state.priceMax=parseInt(val);document.getElementById('priceMax').value=val;state.page=1;renderListings();}
+function applyFilters(){state.priceMax=parseInt(document.getElementById('priceMax').value)||10000;state.page=1;renderListings();}
+function applySort(val){state.sort=val;renderListings();}
+function toggleCheckbox(el){el.classList.toggle('checked');el.querySelector('.checkbox-box').textContent=el.classList.contains('checked')?'✓':'';}
+function clearAllFilters(){
+  state={...state,search:'',category:'All',province:'All',verifiedOnly:false,priceMax:10000,page:1};
+  document.getElementById('searchInput').value='';
+  document.getElementById('priceMax').value='';
+  document.getElementById('priceMin').value='';
+  document.getElementById('priceRange').value=10000;
+  document.querySelectorAll('.cat-item').forEach((c,i)=>c.classList.toggle('active',i===0));
+  document.querySelectorAll('.province-item').forEach((p,i)=>p.classList.toggle('selected',i===0));
+  document.getElementById('verifiedToggle').classList.remove('on');
+  document.getElementById('verifiedSwitch').classList.remove('on');
+  document.querySelectorAll('.checkbox-item').forEach(c=>{c.classList.remove('checked');c.querySelector('.checkbox-box').textContent='';});
+  updateChips();renderListings();
+}
+function removeFilter(type){if(type==='verified'){state.verifiedOnly=false;document.getElementById('verifiedToggle').classList.remove('on');document.getElementById('verifiedSwitch').classList.remove('on');}updateChips();renderListings();}
+function removeFilterCat(){state.category='All';document.querySelectorAll('.cat-item').forEach((c,i)=>c.classList.toggle('active',i===0));updateChips();renderListings();}
+function removeFilterProv(){state.province='All';document.querySelectorAll('.province-item').forEach((p,i)=>p.classList.toggle('selected',i===0));updateChips();renderListings();}
+function removeFilterSearch(){state.search='';document.getElementById('searchInput').value='';updateChips();renderListings();}
+
+function updateChips(){
+  let h='';
+  if(state.verifiedOnly)h+=`<div class="filter-chip">✅ Verified Only <button class="chip-remove" onclick="removeFilter('verified')">✕</button></div>`;
+  if(state.category!=='All')h+=`<div class="filter-chip">${state.category} <button class="chip-remove" onclick="removeFilterCat()">✕</button></div>`;
+  if(state.province!=='All')h+=`<div class="filter-chip">📍 ${state.province} <button class="chip-remove" onclick="removeFilterProv()">✕</button></div>`;
+  if(state.search)h+=`<div class="filter-chip">🔍 "${state.search}" <button class="chip-remove" onclick="removeFilterSearch()">✕</button></div>`;
+  document.getElementById('activeFilters').innerHTML=h;
+}
+
+function setView(v){state.view=v;document.getElementById('listingsGrid').classList.toggle('list-view',v==='list');document.getElementById('gridBtn').classList.toggle('active',v==='grid');document.getElementById('listBtn').classList.toggle('active',v==='list');}
+function toggleSave(id,btn){const added=!state.savedIds.has(id);if(added)state.savedIds.add(id);else state.savedIds.delete(id);if(btn){btn.classList.toggle('saved',added);btn.querySelector('span').textContent=added?'❤️':'🤍';}showToast(added?'❤️ Saved to wishlist':'🗑️ Removed from wishlist');}
+function loadMore(){state.page++;renderListings();}
+
+let toastTimer;
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2600);}
+
+function openSidebar(){document.getElementById('sidebar').classList.add('mobile-open');document.getElementById('sidebarOverlay').classList.add('show');document.body.style.overflow='hidden';}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('mobile-open');document.getElementById('sidebarOverlay').classList.remove('show');document.body.style.overflow='';}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModalDirect();if(e.key==='Enter'&&document.activeElement.id==='searchInput')handleSearch();});
+
+renderListings();
+</script>
+<script src="js/app.js"></script>
+<script src="js/auth-modal-inject.js"></script>
+<script src="listings-connect.js"></script>
+</body>
+</html>

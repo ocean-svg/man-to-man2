@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Man-to-Man — Sell. Trust. Grow.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,700;12..96,800&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/index.css">
+
+</head>
+<body>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#problem" onclick="closeMobile()">The Problem</a>
+  <a href="#how" onclick="closeMobile()">How It Works</a>
+  <a href="#features" onclick="closeMobile()">Features</a>
+  <a href="#who" onclick="closeMobile()">Who It's For</a>
+  <a href="#pricing" onclick="closeMobile()">Pricing</a>
+  <a href="#cta-band" onclick="closeMobile()">Get Early Access</a>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <span class="nav-logo-dot"></span>
+      Man-to-Man
+    </a>
+    <ul class="nav-links">
+      <li><a href="#problem">The Problem</a></li>
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#who">Who It's For</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="auth.html" class="nav-login">Sign In</a>
+      <div class="hamburger" id="hamburger" onclick="toggleMobile()">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-pattern"></div>
+
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="overline" style="color:var(--lime);margin-bottom:1.2rem;display:block;">
+        Proudly South African · C2C Marketplace
+      </div>
+      <h1 class="hero-headline display">
+        Sell what you have.<br>
+        <span class="accent display-italic">Trust the process.</span><br>
+        Grow your hustle.
+      </h1>
+      <p class="hero-sub">
+        The first marketplace built specifically for South Africa's township economy — with secure escrow payments, verified seller profiles, and low-data access for everyone, everywhere.
+      </p>
+      <div class="hero-actions">
+        <a href="onboarding.html"><button class="btn btn-green" style="font-size:1rem;padding:1rem 2rem;">Start Selling Free</button></a>
+        <a href="#how"><button class="btn btn-outline-white" style="font-size:1rem;padding:1rem 2rem;">See How It Works</button></a>
+      </div>
+      <div class="hero-trust">
+        <div class="hero-trust-item"><div class="hero-trust-dot"></div><span class="hero-trust-text">FICA-verified sellers</span></div>
+        <div class="hero-divider"></div>
+        <div class="hero-trust-item"><div class="hero-trust-dot"></div><span class="hero-trust-text">Escrow-protected payments</span></div>
+        <div class="hero-divider"></div>
+        <div class="hero-trust-item"><div class="hero-trust-dot"></div><span class="hero-trust-text">Works on 2G & 3G</span></div>
+      </div>
+    </div>
+
+    <!-- Live App Mockup -->
+    <div class="hero-app-card">
+      <div class="app-header">
+        <span class="app-header-title">Browse Listings</span>
+        <span class="app-verified">Verified Marketplace</span>
+      </div>
+      <div class="app-body">
+        <div class="app-listing">
+          <div class="app-listing-thumb orange">👟</div>
+          <div class="app-listing-info">
+            <div class="app-listing-name">Nike Air Force 1 — Size 10</div>
+            <div class="app-listing-meta">📍 Soweto · Listed 2 hrs ago</div>
+          </div>
+          <div class="app-listing-price">R 680</div>
+        </div>
+        <div class="app-listing">
+          <div class="app-listing-thumb blue">📱</div>
+          <div class="app-listing-info">
+            <div class="app-listing-name">Samsung A14 — Good Condition</div>
+            <div class="app-listing-meta">📍 Khayelitsha · Listed 5 hrs ago</div>
+          </div>
+          <div class="app-listing-price">R 2 100</div>
+        </div>
+        <div class="app-listing">
+          <div class="app-listing-thumb green">🪡</div>
+          <div class="app-listing-info">
+            <div class="app-listing-name">Handmade Beaded Necklace Set</div>
+            <div class="app-listing-meta">📍 Alex · Listed 1 hr ago</div>
+          </div>
+          <div class="app-listing-price">R 350</div>
+        </div>
+        <div class="app-escrow-badge">
+          <span class="app-escrow-icon">🔒</span>
+          <div>
+            <div class="app-escrow-label">Escrow Protected</div>
+            <div class="app-escrow-sub">Funds held safely until you confirm delivery</div>
+          </div>
+        </div>
+      </div>
+      <div class="app-footer">
+        <button class="app-btn-buy">Buy Securely</button>
+        <button class="app-btn-msg">💬</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll"><span class="hero-scroll-icon">↓</span></div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem" class="section">
+  <div class="container">
+    <div class="problem-layout">
+      <div class="problem-text">
+        <span class="overline">Why This Matters</span>
+        <h2 class="heading">Informal traders are being left behind by digital commerce</h2>
+        <p class="body-md">South Africa's township economy is worth nearly a trillion rand — yet the traders driving it are excluded from the platforms, payment systems, and financial tools that everyone else takes for granted.</p>
+        <div class="pain-list">
+          <div class="pain-item reveal">
+            <div class="pain-icon">⚠️</div>
+            <div>
+              <h4>No secure payment infrastructure</h4>
+              <p>Most sellers rely on cash, unprotected EFT, or WhatsApp coordination — leaving them exposed to fraud and making buyers nervous about completing transactions.</p>
+            </div>
+          </div>
+          <div class="pain-item reveal reveal-delay-1">
+            <div class="pain-icon">🤔</div>
+            <div>
+              <h4>No verified identity or trust signals</h4>
+              <p>Without verified profiles, buyers have no way to distinguish legitimate sellers from scammers. This kills conversion rates and caps what sellers can charge.</p>
+            </div>
+          </div>
+          <div class="pain-item reveal reveal-delay-2">
+            <div class="pain-icon">🏦</div>
+            <div>
+              <h4>Locked out of financial systems</h4>
+              <p>No transaction history means no credit score, no business account, no loan access. Informal traders are permanently stuck in "start from zero" mode.</p>
+            </div>
+          </div>
+          <div class="pain-item reveal reveal-delay-3">
+            <div class="pain-icon">🌍</div>
+            <div>
+              <h4>Platforms built for someone else</h4>
+              <p>Facebook Marketplace, Gumtree, and OLX weren't designed for township realities — no language support, no local logistics, no low-data mode.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="impact-panel reveal">
+          <span class="overline">The Opportunity</span>
+          <h3>A R900 billion economy without a home</h3>
+          <p>The informal sector isn't small — it employs 1 in 5 South Africans. It just needs infrastructure that meets it where it is, not where Silicon Valley imagines it to be.</p>
+          <div class="impact-metrics">
+            <div class="impact-metric">
+              <span class="impact-label">Township economy size</span>
+              <span class="impact-value">R 900B / year</span>
+            </div>
+            <div class="impact-metric">
+              <span class="impact-label">Informal sector employment share</span>
+              <span class="impact-value">~20%</span>
+            </div>
+            <div class="impact-metric">
+              <span class="impact-label">E-commerce participation gap</span>
+              <span class="impact-value">Massive</span>
+            </div>
+            <div class="impact-metric">
+              <span class="impact-label">Domestic platform alternatives</span>
+              <span class="impact-value">Near zero</span>
+            </div>
+          </div>
+          <p class="impact-source">Sources: Standard Bank 2025, Stats SA QLFS Q1 2025, World Wide Worx & Mastercard 2025</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="section">
+  <div class="container">
+    <span class="overline reveal">How It Works</span>
+    <h2 class="heading reveal">Simple for sellers.<br>Safe for buyers.</h2>
+    <p class="lead reveal">Four steps from listing to payment — with fraud protection built into every single one.</p>
+
+    <div class="steps-grid">
+      <div class="step reveal">
+        <div class="step-connector">→</div>
+        <div class="step-num">01</div>
+        <div class="step-icon">🪪</div>
+        <h3>Verify your identity</h3>
+        <p>Complete a quick FICA/KYC check using your SA ID. Once verified, your listings carry a trust badge that buyers can rely on.</p>
+      </div>
+      <div class="step reveal reveal-delay-1">
+        <div class="step-connector">→</div>
+        <div class="step-num">02</div>
+        <div class="step-icon">📸</div>
+        <h3>List your item</h3>
+        <p>Take a photo, set your price, pick a category. Listings go live in under 2 minutes — no technical skill needed. Works on any Android phone.</p>
+      </div>
+      <div class="step reveal reveal-delay-2">
+        <div class="step-connector">→</div>
+        <div class="step-num">03</div>
+        <div class="step-icon">🔒</div>
+        <h3>Buyer pays into escrow</h3>
+        <p>When someone buys, their payment is held securely until you both confirm the transaction. No money moves until the deal is done.</p>
+      </div>
+      <div class="step reveal reveal-delay-3">
+        <div class="step-num">04</div>
+        <div class="step-icon">💸</div>
+        <h3>Get paid. Build history.</h3>
+        <p>Funds release to your digital wallet instantly on confirmation. Every sale builds your transaction history — your path to formal credit.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="section">
+  <div class="container-wide">
+    <div class="container" style="padding:0 2rem 0;">
+      <span class="overline reveal">Platform Features</span>
+      <h2 class="heading reveal">Everything informal traders<br>have always needed</h2>
+      <p class="lead reveal">Not a reskin of an existing platform. Built from scratch around the real constraints of trading in South Africa's townships.</p>
+    </div>
+
+    <div class="features-bento reveal">
+      <div class="feat featured">
+        <div class="feat-icon white">🔒</div>
+        <h3>Escrow Payment Protection</h3>
+        <p>Every transaction on MzansiMarket is escrow-protected. Buyer funds are held in a secure account until both parties confirm the deal — eliminating payment fraud completely. This is the single feature that changes everything for informal trade.</p>
+        <span class="feat-badge">Core Feature</span>
+      </div>
+      <div class="feat">
+        <div class="feat-icon green">🪪</div>
+        <h3>KYC / FICA Verification</h3>
+        <p>Identity-verified sellers carry a visible trust badge. Buyers know exactly who they're dealing with. Fraud has nowhere to hide.</p>
+      </div>
+      <div class="feat tall">
+        <div class="feat-icon gold">🌍</div>
+        <h3>Multilingual Platform</h3>
+        <p>Full platform support in five South African languages — because language should never be a barrier to economic participation.</p>
+        <div class="lang-grid">
+          <span style="display:inline-block;background:rgba(58,155,92,0.1);border:1px solid rgba(58,155,92,0.2);padding:0.3rem 0.75rem;border-radius:20px;font-family:'Bricolage Grotesque',sans-serif;font-size:0.72rem;font-weight:700;color:var(--canopy);">English</span>
+          <span style="display:inline-block;background:rgba(58,155,92,0.1);border:1px solid rgba(58,155,92,0.2);padding:0.3rem 0.75rem;border-radius:20px;font-family:'Bricolage Grotesque',sans-serif;font-size:0.72rem;font-weight:700;color:var(--canopy);">isiZulu</span>
+          <span style="display:inline-block;background:rgba(58,155,92,0.1);border:1px solid rgba(58,155,92,0.2);padding:0.3rem 0.75rem;border-radius:20px;font-family:'Bricolage Grotesque',sans-serif;font-size:0.72rem;font-weight:700;color:var(--canopy);">Sesotho</span>
+          <span style="display:inline-block;background:rgba(58,155,92,0.1);border:1px solid rgba(58,155,92,0.2);padding:0.3rem 0.75rem;border-radius:20px;font-family:'Bricolage Grotesque',sans-serif;font-size:0.72rem;font-weight:700;color:var(--canopy);">Setswana</span>
+          <span style="display:inline-block;background:rgba(58,155,92,0.1);border:1px solid rgba(58,155,92,0.2);padding:0.3rem 0.75rem;border-radius:20px;font-family:'Bricolage Grotesque',sans-serif;font-size:0.72rem;font-weight:700;color:var(--canopy);">isiXhosa</span>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon amber">📦</div>
+        <h3>Courier Integration</h3>
+        <p>Book a collection without leaving the app. Local logistics partners, transparent pricing, real-time tracking.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon rust">📊</div>
+        <h3>Seller Dashboard</h3>
+        <p>Track your sales, earnings, and transaction history in one place. Download reports for your records or your bank.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon green">💳</div>
+        <h3>Digital Wallet</h3>
+        <p>Receive payments instantly. Cash out to your bank or mobile money account. Build a verifiable financial record.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon gold">📶</div>
+        <h3>Low-Data Mode</h3>
+        <p>Under 10MB per session. Designed for prepaid data, older handsets, and inconsistent township connectivity.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO WE SERVE -->
+<section id="who" class="section">
+  <div class="container">
+    <span class="overline reveal">Who It's Built For</span>
+    <h2 class="heading reveal">For the people who keep<br>the township economy moving</h2>
+    <p class="lead reveal">Whether you're selling on weekends or building a full-time hustle, MzansiMarket has a place for you.</p>
+
+    <div class="personas">
+      <div class="persona reveal">
+        <div class="persona-header trader-bg">🧑‍💼</div>
+        <div class="persona-body">
+          <span class="persona-tag tag-green">Township Seller</span>
+          <h3>The Informal Trader</h3>
+          <p>You sell secondhand clothing, electronics, food, crafts — on Facebook, WhatsApp, at taxi ranks. You're tired of chasing payments and dealing with no-shows.</p>
+          <ul class="persona-perks">
+            <li><span class="perk-check">✓</span>Verified seller badge builds buyer trust</li>
+            <li><span class="perk-check">✓</span>Escrow means you always get paid</li>
+            <li><span class="perk-check">✓</span>Transaction history builds credit profile</li>
+            <li><span class="perk-check">✓</span>List in your home language</li>
+          </ul>
+        </div>
+      </div>
+      <div class="persona reveal reveal-delay-1">
+        <div class="persona-header buyer-bg">🛍️</div>
+        <div class="persona-body">
+          <span class="persona-tag tag-blue">Township Buyer</span>
+          <h3>The Smart Shopper</h3>
+          <p>You want good deals from local sellers but you've been burned before — paid for something that never arrived, or bought something very different from the photos.</p>
+          <ul class="persona-perks">
+            <li><span class="perk-check">✓</span>Escrow holds your money until delivery</li>
+            <li><span class="perk-check">✓</span>Only buy from verified sellers</li>
+            <li><span class="perk-check">✓</span>Dispute resolution built in</li>
+            <li><span class="perk-check">✓</span>Real seller ratings and history</li>
+          </ul>
+        </div>
+      </div>
+      <div class="persona reveal reveal-delay-2">
+        <div class="persona-header biz-bg">🏪</div>
+        <div class="persona-body">
+          <span class="persona-tag tag-amber">Micro-Business</span>
+          <h3>The Growing Hustler</h3>
+          <p>You've got a real product — custom clothing, handmade goods, resold imports. You need something more serious than Facebook Marketplace to scale.</p>
+          <ul class="persona-perks">
+            <li><span class="perk-check">✓</span>Seller dashboard with analytics</li>
+            <li><span class="perk-check">✓</span>Downloadable income reports</li>
+            <li><span class="perk-check">✓</span>Courier booking at volume rates</li>
+            <li><span class="perk-check">✓</span>Digital wallet for cashflow management</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST & SECURITY -->
+<section id="trust" class="section">
+  <div class="container">
+    <span class="overline reveal">Security & Trust</span>
+    <h2 class="heading reveal">We take fraud seriously<br>so you don't have to</h2>
+    <p class="lead reveal">Trust isn't built through good intentions — it's built through systems. Every layer of MzansiMarket is designed to make fraud structurally difficult.</p>
+
+    <div class="trust-grid">
+      <div class="trust-card reveal">
+        <div class="trust-icon">🏦</div>
+        <h3>Escrow Payment System</h3>
+        <p>Buyer funds are held by a regulated financial intermediary until both parties confirm the transaction. Neither side can run off with the money.</p>
+      </div>
+      <div class="trust-card reveal reveal-delay-1">
+        <div class="trust-icon">🪪</div>
+        <h3>FICA / KYC Identity Checks</h3>
+        <p>Every seller undergoes South African ID verification before they can list. Verified sellers show a badge — anonymous listings aren't possible.</p>
+      </div>
+      <div class="trust-card reveal reveal-delay-2">
+        <div class="trust-icon">⚖️</div>
+        <h3>Built-In Dispute Resolution</h3>
+        <p>If something goes wrong, our resolution process is clear, fast, and fair. Funds are never released until disputes are settled.</p>
+      </div>
+      <div class="trust-card reveal reveal-delay-3">
+        <div class="trust-icon">🔐</div>
+        <h3>Penetration-Tested Platform</h3>
+        <p>Full security testing before every major release. We treat your data and your money with the same seriousness as a bank.</p>
+      </div>
+      <div class="trust-card reveal">
+        <div class="trust-icon">⭐</div>
+        <h3>Verified Ratings System</h3>
+        <p>Only confirmed buyers can leave reviews. Ratings are transaction-verified and can't be gamed or bought.</p>
+      </div>
+      <div class="trust-card reveal reveal-delay-1">
+        <div class="trust-icon">📜</div>
+        <h3>Transaction Records</h3>
+        <p>Every deal is logged and downloadable. Sellers build a verifiable income history — groundwork for formal credit access.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section id="social" class="section">
+  <div class="container">
+    <span class="overline reveal">Early Feedback</span>
+    <h2 class="heading reveal">What township traders are saying</h2>
+
+    <div class="testimonials">
+      <div class="testimonial reveal">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-quote">"I've been scammed three times selling on Facebook. With MzansiMarket I know the money is protected before I even hand over the item. That changes everything."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar av1">TM</div>
+          <div>
+            <div class="testimonial-name">Thandeka M.</div>
+            <div class="testimonial-location">Clothing seller · Soweto</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial reveal reveal-delay-1">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-quote">"The verified badge on my profile is worth so much. Buyers trust me immediately. My prices went up because people know I'm legit. I'm making more with fewer sales."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar av2">SN</div>
+          <div>
+            <div class="testimonial-name">Sipho N.</div>
+            <div class="testimonial-location">Electronics reseller · Khayelitsha</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial reveal reveal-delay-2">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-quote">"I can download my sales report at the end of the month and show it to the bank. They took me seriously for the first time. I'm applying for a small business account now."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar av3">LK</div>
+          <div>
+            <div class="testimonial-name">Lerato K.</div>
+            <div class="testimonial-location">Beadwork maker · Alexandra</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="section">
+  <div class="container">
+    <span class="overline reveal">Pricing</span>
+    <h2 class="heading reveal">Fair pricing for<br>every level of hustle</h2>
+    <p class="lead reveal">Start completely free. Pay only when you grow. No hidden fees, no surprise charges.</p>
+
+    <div class="pricing-cards">
+      <div class="pricing-card reveal">
+        <div class="pricing-plan">Starter</div>
+        <div class="pricing-price"><sup>R</sup>0<sub>/month</sub></div>
+        <p class="pricing-desc">For first-time sellers and occasional traders. Get verified and start selling with no upfront cost.</p>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li><span class="check">✓</span> Up to 10 active listings</li>
+          <li><span class="check">✓</span> FICA verification & trust badge</li>
+          <li><span class="check">✓</span> Escrow-protected payments</li>
+          <li><span class="check">✓</span> Digital wallet (withdraw anytime)</li>
+          <li><span class="check">✓</span> Multilingual interface</li>
+          <li><span class="cross">×</span> Seller analytics dashboard</li>
+          <li><span class="cross">×</span> Downloadable transaction reports</li>
+          <li><span class="cross">×</span> Priority dispute resolution</li>
+        </ul>
+        <button class="btn btn-outline-dark" style="width:100%;justify-content:center;">Get Started Free</button>
+      </div>
+
+      <div class="pricing-card popular reveal reveal-delay-1">
+        <span class="popular-tag">Most Popular</span>
+        <div class="pricing-plan">Hustler</div>
+        <div class="pricing-price"><sup>R</sup>99<sub>/month</sub></div>
+        <p class="pricing-desc">For active sellers who want analytics, reports, and priority support to grow their micro-business.</p>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li><span class="check">✓</span> Unlimited active listings</li>
+          <li><span class="check">✓</span> Everything in Starter</li>
+          <li><span class="check">✓</span> Full seller analytics dashboard</li>
+          <li><span class="check">✓</span> Downloadable income reports</li>
+          <li><span class="check">✓</span> Reduced transaction fee (2.5%)</li>
+          <li><span class="check">✓</span> Priority dispute resolution</li>
+          <li><span class="check">✓</span> Courier volume discount</li>
+          <li><span class="cross">×</span> Business API access</li>
+        </ul>
+        <button class="btn btn-green" style="width:100%;justify-content:center;">Start 30-Day Free Trial</button>
+      </div>
+
+      <div class="pricing-card reveal reveal-delay-2">
+        <div class="pricing-plan">Enterprise</div>
+        <div class="pricing-price"><sup></sup>Custom</div>
+        <p class="pricing-desc">For NGOs, cooperatives, and community organisations onboarding multiple traders at once.</p>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li><span class="check">✓</span> Everything in Hustler</li>
+          <li><span class="check">✓</span> Bulk seller onboarding</li>
+          <li><span class="check">✓</span> Dedicated account manager</li>
+          <li><span class="check">✓</span> Custom onboarding webinars</li>
+          <li><span class="check">✓</span> Business API access</li>
+          <li><span class="check">✓</span> White-label option</li>
+          <li><span class="check">✓</span> Lowest transaction fee</li>
+          <li><span class="check">✓</span> SLA-backed support</li>
+        </ul>
+        <button class="btn btn-outline-dark" style="width:100%;justify-content:center;">Contact Us</button>
+      </div>
+    </div>
+
+    <p style="text-align:center;margin-top:2rem;font-size:0.82rem;color:var(--muted);">
+      All plans include a 3% platform fee on completed transactions (Starter: 4%). No listing fees. No monthly minimums.
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="nav-logo" style="margin-bottom:1rem;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.2rem;display:flex;align-items:center;gap:0.4rem;">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--lime);display:inline-block;"></span>
+          Man-to-Man
+        </div>
+        <p>Bridging the gap between informal trade and digital commerce in South Africa. Built locally. Built for you.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <ul class="footer-links">
+          <li><a href="#how">How It Works</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#">Download App</a></li>
+          <li><a href="#">Seller Dashboard</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul class="footer-links">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#roadmap">Roadmap</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal & Support</h4>
+        <ul class="footer-links">
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">POPIA Compliance</a></li>
+          <li><a href="#">Dispute Process</a></li>
+          <li><a href="#">Help Centre</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-legal">© 2025 Man-to-Man (Pty) Ltd · Proudly South African · Registered with CIPC</span>
+      <div class="footer-badges">
+        <span class="footer-badge">FICA Compliant</span>
+        <span class="footer-badge">POPIA Compliant</span>
+        <span class="footer-badge">SSL Secured</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Nav scroll effect
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(el => observer.observe(el));
+
+// Mobile menu
+function toggleMobile() {
+  const menu = document.getElementById('mobileMenu');
+  menu.classList.toggle('open');
+}
+function closeMobile() {
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+
+// Waitlist
+function handleWaitlist() {
+  const input = document.getElementById('emailInput');
+  const msg   = document.getElementById('waitlistMsg');
+  if (input.value && input.value.includes('@')) {
+    msg.textContent = "✓ You're on the list! We'll be in touch when your region goes live.";
+    msg.style.color = '#7ED957';
+    input.value = '';
+  } else {
+    msg.textContent = 'Please enter a valid email address.';
+    msg.style.color = '#E8B84B';
+  }
+}
+
+// App listing hover interactions
+document.querySelectorAll('.app-listing').forEach(item => {
+  item.addEventListener('click', () => {
+    document.getElementById('cta-band').scrollIntoView({ behavior: 'smooth' });
+  });
+});
+</script>
+<script src="js/app.js"></script>
+<script src="js/auth-modal-inject.js"></script>
+</body>
+</html>

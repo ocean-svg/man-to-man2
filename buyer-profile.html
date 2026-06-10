@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MzansiMarket — My Account</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+body{background:var(--cream,#F5F0E4);font-family:'DM Sans',sans-serif;}
+.shell{max-width:1000px;margin:0 auto;padding:5.5rem 1.5rem 3rem;}
+.page-grid{display:grid;grid-template-columns:240px 1fr;gap:2rem;align-items:start;}
+/* Sidebar */
+.profile-sidebar{background:#FDFCF9;border:1.5px solid #E8DFCA;border-radius:12px;overflow:hidden;position:sticky;top:5rem;}
+.profile-avatar-wrap{background:linear-gradient(135deg,#0D2219,#1F5235);padding:2rem;text-align:center;}
+.profile-av{width:64px;height:64px;border-radius:50%;background:rgba(126,217,87,.25);border:2px solid rgba(126,217,87,.4);display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:1.6rem;font-weight:800;color:#7ED957;margin:0 auto .8rem;}
+.profile-name{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.95rem;color:#FDFCF9;}
+.profile-email{font-size:.75rem;color:rgba(247,242,232,.5);margin-top:.2rem;}
+.profile-badge{display:inline-flex;align-items:center;gap:.3rem;background:rgba(126,217,87,.15);border:1px solid rgba(126,217,87,.3);padding:.2rem .6rem;border-radius:20px;font-family:'Bricolage Grotesque',sans-serif;font-size:.62rem;font-weight:700;color:#7ED957;margin-top:.6rem;}
+.sidebar-nav{padding:.5rem;}
+.snav-item{display:flex;align-items:center;gap:.7rem;padding:.65rem .8rem;border-radius:8px;cursor:pointer;font-family:'Bricolage Grotesque',sans-serif;font-size:.82rem;font-weight:700;color:#687B6C;transition:all .15s;text-decoration:none;}
+.snav-item:hover{background:rgba(58,155,92,.07);color:#0C1710;}
+.snav-item.active{background:rgba(58,155,92,.1);color:#1F5235;}
+.snav-icon{font-size:.95rem;width:18px;text-align:center;}
+.snav-divider{height:1px;background:#E8DFCA;margin:.4rem .8rem;}
+/* Main content */
+.tab-panel{display:none;}
+.tab-panel.active{display:block;animation:fadeUp .35s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.panel-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.2rem;letter-spacing:-.025em;color:#0C1710;margin-bottom:1.2rem;}
+/* Order cards */
+.order-card{background:#FDFCF9;border:1.5px solid #E8DFCA;border-radius:12px;padding:1.2rem 1.4rem;margin-bottom:.9rem;transition:border-color .2s;}
+.order-card:hover{border-color:rgba(58,155,92,.25);}
+.order-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:.9rem;}
+.order-info-name{font-family:'Bricolage Grotesque',sans-serif;font-size:.9rem;font-weight:700;color:#0C1710;margin-bottom:.25rem;}
+.order-meta{font-size:.75rem;color:#687B6C;}
+.order-price{font-family:'Bricolage Grotesque',sans-serif;font-size:1.1rem;font-weight:800;color:#0D2219;white-space:nowrap;}
+.status-pill{display:inline-flex;align-items:center;gap:.3rem;font-family:'Bricolage Grotesque',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.2rem .55rem;border-radius:20px;}
+.s-paid{background:#E6F4FF;color:#0E4A7A;border:1px solid rgba(14,74,122,.2);}
+.s-dispatched{background:#FFF8E6;color:#7A5A00;border:1px solid rgba(122,90,0,.2);}
+.s-confirmed{background:#E6FFE6;color:#1A6E2E;border:1px solid rgba(26,110,46,.2);}
+.s-cancelled{background:#F5F0E4;color:#687B6C;border:1px solid #E8DFCA;}
+.s-disputed{background:#FFF0E6;color:#7A3000;border:1px solid rgba(122,48,0,.2);}
+.order-actions{display:flex;gap:.6rem;flex-wrap:wrap;}
+.order-btn{font-family:'Bricolage Grotesque',sans-serif;font-size:.75rem;font-weight:700;padding:.45rem .9rem;border-radius:4px;cursor:pointer;border:none;transition:all .15s;}
+.order-btn-confirm{background:#0D2219;color:#FDFCF9;}
+.order-btn-confirm:hover{background:#1F5235;}
+.order-btn-dispute{background:transparent;color:#C45E2A;border:1px solid rgba(196,94,42,.3);}
+.order-btn-dispute:hover{background:rgba(196,94,42,.07);}
+.order-btn-review{background:#EDFFF5;color:#1F5235;border:1px solid rgba(58,155,92,.2);}
+.order-btn-review:hover{background:rgba(58,155,92,.12);}
+.order-progress{display:flex;align-items:center;gap:0;margin-top:.9rem;}
+.progress-step{flex:1;text-align:center;position:relative;}
+.progress-step::before{content:'';position:absolute;top:9px;left:50%;right:-50%;height:2px;background:#E8DFCA;z-index:0;}
+.progress-step:last-child::before{display:none;}
+.progress-step.done::before{background:#3A9B5C;}
+.progress-dot{width:20px;height:20px;border-radius:50%;background:#E8DFCA;display:flex;align-items:center;justify-content:center;font-size:.55rem;margin:0 auto .35rem;position:relative;z-index:1;transition:all .2s;}
+.progress-step.done .progress-dot{background:#3A9B5C;color:white;font-weight:700;}
+.progress-step.active .progress-dot{background:#0D2219;color:white;box-shadow:0 0 0 3px rgba(13,34,25,.15);}
+.progress-label{font-size:.65rem;color:#A8BAA8;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;}
+.progress-step.done .progress-label,.progress-step.active .progress-label{color:#687B6C;}
+/* Saved listings */
+.saved-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;}
+.saved-card{background:#FDFCF9;border:1.5px solid #E8DFCA;border-radius:12px;overflow:hidden;cursor:pointer;transition:all .2s;}
+.saved-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(12,23,16,.1);border-color:rgba(58,155,92,.2);}
+.saved-thumb{height:130px;background:#F5F0E4;display:flex;align-items:center;justify-content:center;font-size:2.5rem;position:relative;}
+.saved-remove{position:absolute;top:.5rem;right:.5rem;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.9);border:none;cursor:pointer;font-size:.75rem;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;}
+.saved-card:hover .saved-remove{opacity:1;}
+.saved-body{padding:.75rem .9rem;}
+.saved-title{font-family:'Bricolage Grotesque',sans-serif;font-size:.82rem;font-weight:700;color:#0C1710;margin-bottom:.25rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.saved-price{font-family:'Bricolage Grotesque',sans-serif;font-size:.95rem;font-weight:800;color:#0D2219;}
+/* Settings form */
+.settings-card{background:#FDFCF9;border:1.5px solid #E8DFCA;border-radius:12px;padding:1.4rem;margin-bottom:1rem;}
+.settings-card h4{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.9rem;color:#0C1710;margin-bottom:1rem;padding-bottom:.7rem;border-bottom:1px solid #E8DFCA;}
+.field{display:flex;flex-direction:column;gap:.35rem;margin-bottom:.9rem;}
+.field label{font-family:'Bricolage Grotesque',sans-serif;font-size:.77rem;font-weight:700;color:#0C1710;}
+.field input{background:#F5F0E4;border:1.5px solid #E8DFCA;border-radius:3px;padding:.75rem .9rem;font-family:'DM Sans',sans-serif;font-size:.9rem;color:#0C1710;outline:none;transition:border-color .2s,box-shadow .2s;width:100%;}
+.field input:focus{border-color:#3A9B5C;box-shadow:0 0 0 3px rgba(58,155,92,.1);background:#FDFCF9;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+.save-btn{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.85rem;background:#0D2219;color:#FDFCF9;border:none;border-radius:3px;padding:.8rem 1.8rem;cursor:pointer;transition:all .2s;}
+.save-btn:hover{background:#1F5235;transform:translateY(-1px);}
+.danger-zone{background:#FFF5F5;border:1.5px solid rgba(217,64,64,.2);border-radius:12px;padding:1.4rem;}
+.danger-zone h4{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.9rem;color:#D94040;margin-bottom:.5rem;}
+.danger-zone p{font-size:.82rem;color:#687B6C;margin-bottom:1rem;}
+.danger-btn{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.82rem;background:transparent;color:#D94040;border:1.5px solid rgba(217,64,64,.3);border-radius:3px;padding:.7rem 1.4rem;cursor:pointer;transition:all .2s;}
+.danger-btn:hover{background:rgba(217,64,64,.07);}
+/* Empty states */
+.empty-state{text-align:center;padding:3rem 1rem;color:#687B6C;}
+.empty-icon{font-size:2.8rem;margin-bottom:.8rem;}
+.empty-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1rem;color:#0C1710;margin-bottom:.4rem;}
+.empty-sub{font-size:.85rem;line-height:1.6;max-width:30ch;margin:0 auto 1.2rem;}
+.empty-cta{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.82rem;background:#0D2219;color:#FDFCF9;border:none;border-radius:3px;padding:.7rem 1.6rem;cursor:pointer;text-decoration:none;display:inline-block;}
+/* Review modal */
+.review-modal-overlay{position:fixed;inset:0;background:rgba(12,23,16,.6);backdrop-filter:blur(5px);z-index:500;display:none;align-items:center;justify-content:center;padding:1.5rem;}
+.review-modal-overlay.open{display:flex;}
+.review-modal{background:#FDFCF9;border-radius:16px;padding:2rem;max-width:420px;width:100%;animation:popIn .3s cubic-bezier(.34,1.3,.64,1) both;}
+@keyframes popIn{from{opacity:0;transform:scale(.9);}to{opacity:1;transform:scale(1);}}
+.review-modal h3{font-family:'DM Serif Display',serif;font-size:1.5rem;color:#0D2219;margin-bottom:.5rem;}
+.stars-input{display:flex;gap:.4rem;margin:.8rem 0 1rem;font-size:1.8rem;cursor:pointer;}
+.stars-input span{opacity:.3;transition:opacity .15s;}
+.stars-input span.lit{opacity:1;}
+.review-textarea{width:100%;background:#F5F0E4;border:1.5px solid #E8DFCA;border-radius:4px;padding:.8rem;font-family:'DM Sans',sans-serif;font-size:.9rem;color:#0C1710;outline:none;resize:vertical;min-height:90px;transition:border-color .2s;}
+.review-textarea:focus{border-color:#3A9B5C;}
+.review-btns{display:flex;gap:.7rem;margin-top:1rem;}
+.review-submit{flex:1;background:#0D2219;color:#FDFCF9;border:none;border-radius:3px;padding:.85rem;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;cursor:pointer;transition:background .2s;}
+.review-submit:hover{background:#1F5235;}
+.review-cancel{background:transparent;color:#687B6C;border:1.5px solid #E8DFCA;border-radius:3px;padding:.85rem 1.2rem;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;cursor:pointer;}
+@media(max-width:768px){.page-grid{grid-template-columns:1fr;}.profile-sidebar{position:static;}.field-row{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<nav style="position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(245,240,228,.92);backdrop-filter:blur(18px);border-bottom:1px solid #E8DFCA;height:62px;display:flex;align-items:center;padding:0 2rem;gap:1.5rem;">
+  <a href="mantoman.html" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.2rem;color:#0D2219;display:flex;align-items:center;gap:.35rem;text-decoration:none;">
+    <span style="width:8px;height:8px;border-radius:50%;background:#7ED957;"></span>MzansiMarket
+  </a>
+  <a href="listings.html" style="font-size:.82rem;color:#687B6C;text-decoration:none;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;">Browse</a>
+  <div style="margin-left:auto;display:flex;gap:.8rem;align-items:center;">
+    <a href="listings.html" style="font-family:'Bricolage Grotesque',sans-serif;font-size:.8rem;font-weight:700;color:#687B6C;text-decoration:none;">← Back</a>
+    <button data-logout style="font-family:'Bricolage Grotesque',sans-serif;font-size:.8rem;font-weight:700;background:transparent;color:#687B6C;border:1.5px solid #E8DFCA;border-radius:3px;padding:.45rem .9rem;cursor:pointer;">Sign Out</button>
+  </div>
+</nav>
+
+<!-- Review Modal -->
+<div class="review-modal-overlay" id="reviewOverlay" onclick="if(event.target===this)closeReview()">
+  <div class="review-modal">
+    <h3>Leave a Review</h3>
+    <p style="font-size:.83rem;color:#687B6C;" id="reviewItemName">How was your experience?</p>
+    <div class="stars-input" id="starsInput">
+      <span onclick="setRating(1)">⭐</span><span onclick="setRating(2)">⭐</span>
+      <span onclick="setRating(3)">⭐</span><span onclick="setRating(4)">⭐</span>
+      <span onclick="setRating(5)">⭐</span>
+    </div>
+    <textarea class="review-textarea" id="reviewComment" placeholder="Tell other buyers about your experience with this seller…"></textarea>
+    <div class="review-btns">
+      <button class="review-cancel" onclick="closeReview()">Cancel</button>
+      <button class="review-submit" onclick="submitReview()">Submit Review</button>
+    </div>
+  </div>
+</div>
+
+<div class="shell">
+  <div class="page-grid">
+
+    <!-- Sidebar -->
+    <aside class="profile-sidebar">
+      <div class="profile-avatar-wrap">
+        <div class="profile-av" data-user-initial>U</div>
+        <div class="profile-name" data-user-name>Loading…</div>
+        <div class="profile-email" data-user-email></div>
+        <div class="profile-badge">🛍️ Buyer</div>
+      </div>
+      <div class="sidebar-nav">
+        <a class="snav-item active" onclick="showTab('orders')"><span class="snav-icon">📦</span>My Orders</a>
+        <a class="snav-item" onclick="showTab('saved')"><span class="snav-icon">❤️</span>Saved Items</a>
+        <div class="snav-divider"></div>
+        <a class="snav-item" onclick="showTab('settings')"><span class="snav-icon">⚙️</span>Account Settings</a>
+        <a class="snav-item" onclick="showTab('security')"><span class="snav-icon">🔒</span>Password & Security</a>
+        <div class="snav-divider"></div>
+        <a class="snav-item" href="listings.html"><span class="snav-icon">🏪</span>Browse Listings</a>
+        <a class="snav-item" data-logout style="color:#C45E2A;"><span class="snav-icon">🚪</span>Sign Out</a>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main>
+
+      <!-- ORDERS -->
+      <div class="tab-panel active" id="tab-orders">
+        <div class="panel-title">My Orders</div>
+        <div id="ordersList"><div style="text-align:center;padding:2rem;color:#687B6C;">Loading orders…</div></div>
+      </div>
+
+      <!-- SAVED -->
+      <div class="tab-panel" id="tab-saved">
+        <div class="panel-title">Saved Items</div>
+        <div class="saved-grid" id="savedGrid"><div style="text-align:center;padding:2rem;color:#687B6C;grid-column:1/-1;">Loading saved items…</div></div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="tab-panel" id="tab-settings">
+        <div class="panel-title">Account Settings</div>
+        <div class="settings-card">
+          <h4>Personal Information</h4>
+          <div class="field-row">
+            <div class="field"><label>First Name</label><input type="text" id="s-first"/></div>
+            <div class="field"><label>Last Name</label><input type="text" id="s-last"/></div>
+          </div>
+          <div class="field"><label>Email Address</label><input type="email" id="s-email"/></div>
+          <div class="field"><label>Mobile Number</label><input type="tel" id="s-phone" placeholder="+27 71 234 5678"/></div>
+          <button class="save-btn" onclick="saveSettings()">Save Changes</button>
+        </div>
+        <div class="danger-zone">
+          <h4>Danger Zone</h4>
+          <p>Deleting your account removes all your data permanently. Orders in progress will be cancelled.</p>
+          <button class="danger-btn" onclick="if(confirm('Are you sure? This cannot be undone.'))MZ.toast('Account deletion request submitted.','warn')">Delete Account</button>
+        </div>
+      </div>
+
+      <!-- SECURITY -->
+      <div class="tab-panel" id="tab-security">
+        <div class="panel-title">Password & Security</div>
+        <div class="settings-card">
+          <h4>Change Password</h4>
+          <div class="field"><label>Current Password</label><input type="password" id="s-cur-pw" placeholder="Current password"/></div>
+          <div class="field"><label>New Password</label><input type="password" id="s-new-pw" placeholder="Min 8 characters"/></div>
+          <div class="field"><label>Confirm New Password</label><input type="password" id="s-conf-pw" placeholder="Repeat new password"/></div>
+          <button class="save-btn" onclick="changePassword()">Update Password</button>
+        </div>
+        <div class="settings-card">
+          <h4>Active Sessions</h4>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:.7rem 0;border-bottom:1px solid #E8DFCA;">
+            <div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:.82rem;font-weight:700;">This device</div><div style="font-size:.75rem;color:#687B6C;">Current session · Active now</div></div>
+            <span style="font-size:.65rem;font-weight:700;background:#E6FFE6;color:#1A6E2E;padding:.2rem .5rem;border-radius:10px;">Current</span>
+          </div>
+          <button style="margin-top:1rem;font-family:'Bricolage Grotesque',sans-serif;font-size:.8rem;font-weight:700;color:#C45E2A;background:none;border:none;cursor:pointer;padding:0;" onclick="MZ.auth.logout()">Sign out of all devices</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+let reviewOrderId = null, currentRating = 0;
+
+document.addEventListener('DOMContentLoaded', async () => {
+  if (!MZ.auth.isLoggedIn()) { window.location.href = 'auth.html?login=1'; return; }
+  const user = MZ.auth.user();
+  if (user) {
+    document.getElementById('s-first').value = user.first_name || '';
+    document.getElementById('s-last').value  = user.last_name  || '';
+    document.getElementById('s-email').value = user.email      || '';
+  }
+  loadOrders();
+  loadSaved();
+});
+
+function showTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + name)?.classList.add('active');
+  document.querySelectorAll('.snav-item').forEach(i => i.classList.remove('active'));
+  event?.currentTarget?.classList.add('active');
+}
+
+/* ── ORDERS ─────────────────────────────────────────────── */
+async function loadOrders() {
+  const res = await MZ.get('orders.php', { type: 'buyer', per_page: 20 });
+  const wrap = document.getElementById('ordersList');
+  if (!res?.success || !res.data.length) {
+    wrap.innerHTML = `<div class="empty-state"><div class="empty-icon">📦</div>
+      <div class="empty-title">No orders yet</div>
+      <div class="empty-sub">When you buy something, your orders will appear here.</div>
+      <a href="listings.html" class="empty-cta">Browse Listings</a></div>`;
+    return;
+  }
+  const steps = ['Paid','Dispatched','Delivered','Confirmed'];
+  const stepIdx = {paid:0, dispatched:1, delivered:2, confirmed:3};
+  wrap.innerHTML = res.data.map(o => {
+    const idx = stepIdx[o.status] ?? 0;
+    const statusClass = {paid:'s-paid', dispatched:'s-dispatched', confirmed:'s-confirmed', cancelled:'s-cancelled', disputed:'s-disputed'}[o.status] || 's-paid';
+    return `<div class="order-card">
+      <div class="order-card-top">
+        <div>
+          <div class="order-info-name">${o.listing_title || 'Order'}</div>
+          <div class="order-meta">${o.order_number} · ${o.seller_name || ''} · ${MZ.timeAgo(o.created_at)}</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="order-price">${MZ.currency(o.amount)}</div>
+          <span class="status-pill ${statusClass}" style="margin-top:.3rem;display:inline-flex;">${o.status}</span>
+        </div>
+      </div>
+      ${!['cancelled','refunded','disputed'].includes(o.status) ? `
+      <div class="order-progress">
+        ${steps.map((s,i) => `<div class="progress-step ${i<idx?'done':i===idx?'active':''}">
+          <div class="progress-dot">${i<idx?'✓':'·'}</div>
+          <div class="progress-label">${s}</div>
+        </div>`).join('')}
+      </div>` : ''}
+      <div class="order-actions" style="margin-top:.9rem;">
+        ${o.status === 'dispatched' || o.status === 'delivered' ? `<button class="order-btn order-btn-confirm" onclick="confirmOrder(${o.id})">✓ Confirm Receipt</button>` : ''}
+        ${o.status === 'confirmed' ? `<button class="order-btn order-btn-review" onclick="openReview(${o.id},'${(o.listing_title||'').replace(/'/g,"\\'")}')">⭐ Leave Review</button>` : ''}
+        ${['paid','dispatched'].includes(o.status) ? `<button class="order-btn order-btn-dispute" onclick="raiseDispute(${o.id})">Raise Dispute</button>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function confirmOrder(id) {
+  if (!confirm('Confirm you have received this item? This will release payment to the seller.')) return;
+  const res = await MZ.put(`orders.php?action=confirm&id=${id}`);
+  res?.success ? (MZ.toast('✅ Receipt confirmed! Seller has been paid.','success'), loadOrders()) : MZ.toast(res?.message||'Failed.','error');
+}
+
+async function raiseDispute(orderId) {
+  const reason = prompt('Briefly describe the problem:\n\n1. not_delivered\n2. not_as_described\n3. fake_item\n4. seller_unresponsive\n\nType one of the above:');
+  if (!reason) return;
+  const desc = prompt('Describe the issue in more detail:') || '';
+  const res = await MZ.post('disputes.php', { order_id: orderId, reason, description: desc });
+  res?.success ? (MZ.toast('⚖️ Dispute opened. Our team will review within 24 hours.','warn'), loadOrders()) : MZ.toast(res?.message||'Failed.','error');
+}
+
+/* ── SAVED LISTINGS ─────────────────────────────────────── */
+async function loadSaved() {
+  const res = await MZ.get('listings.php', { saved: 1, per_page: 24 });
+  const grid = document.getElementById('savedGrid');
+  if (!res?.success || !res.data.length) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><div class="empty-icon">❤️</div>
+      <div class="empty-title">Nothing saved yet</div>
+      <div class="empty-sub">Tap the heart on any listing to save it here.</div>
+      <a href="listings.html" class="empty-cta">Browse Listings</a></div>`;
+    return;
+  }
+  grid.innerHTML = res.data.map(l => `
+    <div class="saved-card" onclick="window.location.href='listings.html?listing=${l.id}'">
+      <div class="saved-thumb">
+        ${l.image_1 ? `<img src="${l.image_1}" style="width:100%;height:100%;object-fit:cover;">` : (l.category_icon||'📦')}
+        <button class="saved-remove" onclick="event.stopPropagation();removeSaved(${l.id},this)" title="Remove">🗑</button>
+      </div>
+      <div class="saved-body">
+        <div class="saved-title">${l.title}</div>
+        <div class="saved-price">${MZ.currency(l.price)}</div>
+      </div>
+    </div>`).join('');
+}
+
+async function removeSaved(id, btn) {
+  await MZ.post('listings.php?action=save', { listing_id: id });
+  btn.closest('.saved-card').style.opacity = '0';
+  btn.closest('.saved-card').style.transform = 'scale(.9)';
+  setTimeout(() => { btn.closest('.saved-card').remove(); }, 250);
+  MZ.toast('Removed from saved items');
+}
+
+/* ── SETTINGS ───────────────────────────────────────────── */
+async function saveSettings() {
+  const res = await MZ.put('auth.php?action=update_profile', {
+    first_name: document.getElementById('s-first').value,
+    last_name:  document.getElementById('s-last').value,
+    phone:      document.getElementById('s-phone').value,
+  });
+  res?.success ? MZ.toast('✅ Settings saved!','success') : MZ.toast('Save failed.','error');
+}
+
+async function changePassword() {
+  const cur  = document.getElementById('s-cur-pw').value;
+  const nw   = document.getElementById('s-new-pw').value;
+  const conf = document.getElementById('s-conf-pw').value;
+  if (!cur || !nw) { MZ.toast('Fill in all password fields.','warn'); return; }
+  if (nw !== conf) { MZ.toast("New passwords don't match.",'warn'); return; }
+  if (nw.length < 8) { MZ.toast('Password must be at least 8 characters.','warn'); return; }
+  const res = await MZ.post('auth.php?action=change_password', { current_password: cur, new_password: nw });
+  res?.success ? (MZ.toast('✅ Password updated!','success'), document.querySelectorAll('#tab-security input[type=password]').forEach(i=>i.value=''))
+    : MZ.toast(res?.message||'Failed.','error');
+}
+
+/* ── REVIEW ─────────────────────────────────────────────── */
+function openReview(orderId, title) {
+  reviewOrderId = orderId; currentRating = 0;
+  document.getElementById('reviewItemName').textContent = title;
+  document.getElementById('reviewComment').value = '';
+  document.querySelectorAll('.stars-input span').forEach(s => s.classList.remove('lit'));
+  document.getElementById('reviewOverlay').classList.add('open');
+}
+function closeReview() { document.getElementById('reviewOverlay').classList.remove('open'); }
+function setRating(n) {
+  currentRating = n;
+  document.querySelectorAll('.stars-input span').forEach((s,i) => s.classList.toggle('lit', i < n));
+}
+async function submitReview() {
+  if (!currentRating) { MZ.toast('Please select a star rating.','warn'); return; }
+  const res = await MZ.post('reviews.php', {
+    order_id: reviewOrderId, rating: currentRating,
+    comment: document.getElementById('reviewComment').value,
+  });
+  res?.success ? (MZ.toast('⭐ Review submitted!','success'), closeReview()) : MZ.toast(res?.message||'Failed.','error');
+}
+</script>
+<script src="js/app.js"></script>
+<script src="js/auth-modal-inject.js"></script>
+</body>
+</html>

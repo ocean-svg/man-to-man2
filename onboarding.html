@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Man-to-Man — Become a Seller</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/onboarding.css">
+
+
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ══════════════ LEFT PANEL ══════════════ -->
+  <aside class="left-panel">
+    <a href="index.html" class="brand">
+      <span class="brand-dot"></span>
+      Man-to-Man
+    </a>
+
+    <ul class="steps-nav" id="stepsNav">
+      <li class="step-nav-item active" data-step="1">
+        <div class="step-nav-icon">1</div>
+        <div class="step-nav-text">
+          <span class="step-nav-label">Your Account</span>
+          <span class="step-nav-sublabel">Name, email & password</span>
+        </div>
+      </li>
+      <li class="step-nav-item" data-step="2">
+        <div class="step-nav-icon">2</div>
+        <div class="step-nav-text">
+          <span class="step-nav-label">Seller Profile</span>
+          <span class="step-nav-sublabel">What you sell & where</span>
+        </div>
+      </li>
+      <li class="step-nav-item" data-step="3">
+        <div class="step-nav-icon">3</div>
+        <div class="step-nav-text">
+          <span class="step-nav-label">Identity Verification</span>
+          <span class="step-nav-sublabel">FICA / KYC check</span>
+        </div>
+      </li>
+      <li class="step-nav-item" data-step="4">
+        <div class="step-nav-icon">4</div>
+        <div class="step-nav-text">
+          <span class="step-nav-label">Payment Setup</span>
+          <span class="step-nav-sublabel">Digital wallet & bank details</span>
+        </div>
+      </li>
+      <li class="step-nav-item" data-step="5">
+        <div class="step-nav-icon">5</div>
+        <div class="step-nav-text">
+          <span class="step-nav-label">Review & Submit</span>
+          <span class="step-nav-sublabel">Confirm your details</span>
+        </div>
+      </li>
+    </ul>
+
+    <div class="trust-badges">
+      <div class="trust-badge-item"><span class="trust-badge-icon">🔒</span> 256-bit SSL encrypted</div>
+      <div class="trust-badge-item"><span class="trust-badge-icon">📜</span> POPIA compliant</div>
+      <div class="trust-badge-item"><span class="trust-badge-icon">🏦</span> FICA regulated verification</div>
+    </div>
+  </aside>
+
+  <!-- ══════════════ RIGHT PANEL ══════════════ -->
+  <main class="right-panel">
+
+    <!-- Mobile step bar -->
+    <div class="mobile-step-bar" id="mobileStepBar">
+      <div class="mobile-step-pip active" id="mob1"></div>
+      <div class="mobile-step-pip" id="mob2"></div>
+      <div class="mobile-step-pip" id="mob3"></div>
+      <div class="mobile-step-pip" id="mob4"></div>
+      <div class="mobile-step-pip" id="mob5"></div>
+      <span class="mobile-step-label" id="mobileStepLabel">Step 1 of 5</span>
+    </div>
+
+    <!-- Top progress bar -->
+    <div class="form-topbar">
+      <div class="progress-wrap">
+        <div class="progress-label" id="progressLabel">Step 1 of 5 — Your Account</div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:20%"></div></div>
+      </div>
+      <div class="topbar-right">
+        Already a seller? <a href="auth.html">Sign in</a>
+      </div>
+    </div>
+
+    <!-- ── FORM BODY ── -->
+    <div class="form-body">
+
+      <!-- ═══ STEP 1: Account ═══ -->
+      <div class="step-panel active" id="step1">
+        <div class="step-eyebrow">Step 1 of 5</div>
+        <h1 class="step-title">Create your account</h1>
+        <p class="step-sub">Your account details are kept private. Only your seller name and verified badge are visible to buyers.</p>
+
+        <div class="field-group">
+          <div class="field-row">
+            <div class="field">
+              <label>First Name <span class="req">*</span></label>
+              <input type="text" id="firstName" placeholder="e.g. Thandeka" autocomplete="given-name"/>
+              <span class="field-error" id="firstName-err">Please enter your first name.</span>
+            </div>
+            <div class="field">
+              <label>Last Name <span class="req">*</span></label>
+              <input type="text" id="lastName" placeholder="e.g. Mokoena" autocomplete="family-name"/>
+              <span class="field-error" id="lastName-err">Please enter your last name.</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Email Address <span class="req">*</span></label>
+            <input type="email" id="email" placeholder="you@email.com" autocomplete="email"/>
+            <span class="field-hint">We'll send your verification link here.</span>
+            <span class="field-error" id="email-err">Please enter a valid email address.</span>
+          </div>
+
+          <div class="field">
+            <label>Mobile Number <span class="req">*</span></label>
+            <div class="phone-wrap">
+              <div class="phone-prefix">🇿🇦 +27</div>
+              <input type="tel" id="phone" placeholder="71 234 5678" autocomplete="tel"/>
+            </div>
+            <span class="field-hint">Used for OTP verification and buyer contact.</span>
+            <span class="field-error" id="phone-err">Please enter a valid SA mobile number.</span>
+          </div>
+
+          <div class="field">
+            <label>Password <span class="req">*</span></label>
+            <input type="password" id="password" placeholder="Minimum 8 characters"/>
+            <div class="pw-strength"><div class="pw-strength-fill" id="pwFill"></div></div>
+            <div class="pw-strength-label" id="pwLabel">Enter a password</div>
+            <span class="field-error" id="password-err">Password must be at least 8 characters.</span>
+          </div>
+
+          <div class="field">
+            <label>Confirm Password <span class="req">*</span></label>
+            <input type="password" id="confirmPw" placeholder="Re-enter your password"/>
+            <span class="field-error" id="confirmPw-err">Passwords do not match.</span>
+          </div>
+
+          <div class="toggle-field" id="termsToggle" onclick="toggleCheck(this)">
+            <div class="toggle-check" id="termsCheck"></div>
+            <div class="toggle-text">
+              <div class="toggle-label">I agree to the Terms of Service & Privacy Policy</div>
+              <div class="toggle-sub">By creating an account you agree to our <a href="#" style="color:var(--leaf);text-decoration:underline;">Terms of Service</a>, <a href="#" style="color:var(--leaf);text-decoration:underline;">Privacy Policy</a>, and <a href="#" style="color:var(--leaf);text-decoration:underline;">POPIA Notice</a>.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-nav">
+          <button class="btn-back" disabled><span class="btn-back-arrow">←</span> Back</button>
+          <button class="btn-next" onclick="goNext(1)">Continue <span>→</span></button>
+        </div>
+      </div>
+
+      <!-- ═══ STEP 2: Seller Profile ═══ -->
+      <div class="step-panel" id="step2">
+        <div class="step-eyebrow">Step 2 of 5</div>
+        <h1 class="step-title">Set up your seller profile</h1>
+        <p class="step-sub">This is what buyers will see. A complete profile builds trust and gets you more sales.</p>
+
+        <div class="field-group">
+          <div class="field">
+            <label>Seller / Shop Name <span class="req">*</span></label>
+            <input type="text" id="shopName" placeholder="e.g. Thandi's Closet or Sipho Electronics"/>
+            <span class="field-hint">This name appears on all your listings and your verified badge.</span>
+            <span class="field-error" id="shopName-err">Please enter a shop name.</span>
+          </div>
+
+          <div class="field">
+            <label>Short Bio <span class="opt">(optional but recommended)</span></label>
+            <textarea id="bio" placeholder="Tell buyers a little about what you sell and where you're based..."></textarea>
+            <span class="field-hint">Max 200 characters. Shows on your public profile.</span>
+          </div>
+
+          <div class="field">
+            <label>What do you sell? <span class="req">*</span> <span class="opt">Pick all that apply</span></label>
+            <div class="card-grid card-grid-3" id="categoryGrid">
+              <div class="selector-card" onclick="toggleCard(this,'category')"><div class="card-check">✓</div><div class="card-icon">👕</div><div><div class="card-label">Clothing & Fashion</div></div></div>
+              <div class="selector-card" onclick="toggleCard(this,'category')"><div class="card-check">✓</div><div class="card-icon">📱</div><div><div class="card-label">Electronics</div></div></div>
+              <div class="selector-card" onclick="toggleCard(this,'category')"><div class="card-check">✓</div><div class="card-icon">🪡</div><div><div class="card-label">Handmade & Crafts</div></div></div>
+              <div class="selector-card" onclick="toggleCard(this,'category')"><div class="card-check">✓</div><div class="card-icon">🏠</div><div><div class="card-label">Home & Furniture</div></div></div>
+              <div class="selector-card" onclick="toggleCard(this,'category')"><div class="card-check">✓</div><div class="card-icon">🍱</div><div><div class="card-label">Food & Groceries</div></div></div>
+              <div class="selector-card" onclick="toggleCard(this,'category')"><div class="card-check">✓</div><div class="card-icon">📦</div><div><div class="card-label">Other / Mixed</div></div></div>
+            </div>
+            <span class="field-error" id="category-err">Please select at least one category.</span>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label>Province <span class="req">*</span></label>
+              <div class="select-wrap">
+                <select id="province">
+                  <option value="">Select province…</option>
+                  <option>Gauteng</option>
+                  <option>Western Cape</option>
+                  <option>KwaZulu-Natal</option>
+                  <option>Eastern Cape</option>
+                  <option>Limpopo</option>
+                  <option>Mpumalanga</option>
+                  <option>North West</option>
+                  <option>Free State</option>
+                  <option>Northern Cape</option>
+                </select>
+              </div>
+              <span class="field-error" id="province-err">Please select your province.</span>
+            </div>
+            <div class="field">
+              <label>Township / Area <span class="req">*</span></label>
+              <input type="text" id="township" placeholder="e.g. Soweto, Khayelitsha…"/>
+              <span class="field-error" id="township-err">Please enter your area.</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Platform Language <span class="req">*</span></label>
+            <div class="lang-grid" id="langGrid">
+              <div class="lang-pill selected" onclick="selectLang(this)">English</div>
+              <div class="lang-pill" onclick="selectLang(this)">isiZulu</div>
+              <div class="lang-pill" onclick="selectLang(this)">Sesotho</div>
+              <div class="lang-pill" onclick="selectLang(this)">Setswana</div>
+              <div class="lang-pill" onclick="selectLang(this)">isiXhosa</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Profile Photo <span class="opt">(optional)</span></label>
+            <div class="upload-zone" id="profilePhotoZone">
+              <input type="file" accept="image/*" onchange="handleFileUpload(this,'profilePhotoPreview','profileFileName')"/>
+              <div class="upload-icon">📸</div>
+              <div class="upload-title">Upload a profile photo</div>
+              <div class="upload-sub">JPG or PNG, max 5MB. Buyers trust sellers with a face.</div>
+            </div>
+            <div class="upload-preview" id="profilePhotoPreview">
+              <span>📷</span>
+              <span class="upload-preview-name" id="profileFileName"></span>
+              <button class="upload-preview-remove" onclick="removeFile('profilePhotoPreview','profileFileName')">Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-nav">
+          <button class="btn-back" onclick="goBack(2)"><span class="btn-back-arrow">←</span> Back</button>
+          <button class="btn-next" onclick="goNext(2)">Continue <span>→</span></button>
+        </div>
+      </div>
+
+      <!-- ═══ STEP 3: Identity Verification ═══ -->
+      <div class="step-panel" id="step3">
+        <div class="step-eyebrow">Step 3 of 5</div>
+        <h1 class="step-title">Verify your identity</h1>
+        <p class="step-sub">FICA verification gives your listings a trust badge. Verified sellers earn more — buyers feel safe spending more with someone they can confirm is real.</p>
+
+        <div class="info-box">
+          <span class="info-icon">ℹ️</span>
+          <div class="info-text"><strong>Why we verify:</strong> South African law (FICA) requires identity checks for digital financial services. Your documents are encrypted, never sold, and used only for verification.</div>
+        </div>
+
+        <div class="field-group">
+          <div class="field">
+            <label>SA ID Number <span class="req">*</span></label>
+            <input type="text" id="idNumber" placeholder="13-digit SA ID number" maxlength="13"/>
+            <span class="field-hint">Your ID number is never shown publicly.</span>
+            <span class="field-error" id="idNumber-err">Please enter a valid 13-digit SA ID number.</span>
+          </div>
+
+          <div class="field">
+            <label>Date of Birth <span class="req">*</span></label>
+            <input type="date" id="dob"/>
+            <span class="field-hint">Must match your ID document.</span>
+            <span class="field-error" id="dob-err">Please enter your date of birth.</span>
+          </div>
+
+          <div class="field">
+            <label>Upload ID Documents <span class="req">*</span></label>
+            <div class="id-upload-grid">
+              <div class="id-upload-card" id="idFrontCard">
+                <input type="file" accept="image/*,application/pdf" onchange="handleIDUpload(this,'idFrontCard','ID Front')"/>
+                <div class="id-card-icon">🪪</div>
+                <div class="id-card-title">SA ID — Front</div>
+                <div class="id-card-sub">Photo, smartcard front, or passport</div>
+                <div class="id-card-done">✓ Uploaded</div>
+              </div>
+              <div class="id-upload-card" id="idBackCard">
+                <input type="file" accept="image/*,application/pdf" onchange="handleIDUpload(this,'idBackCard','ID Back')"/>
+                <div class="id-card-icon">🪪</div>
+                <div class="id-card-title">SA ID — Back</div>
+                <div class="id-card-sub">Smartcard back (if applicable)</div>
+                <div class="id-card-done">✓ Uploaded</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Selfie with ID <span class="req">*</span></label>
+            <div class="upload-zone" id="selfieZone">
+              <input type="file" accept="image/*" capture="user" onchange="handleFileUpload(this,'selfiePreview','selfieFileName')"/>
+              <div class="upload-icon">🤳</div>
+              <div class="upload-title">Take a selfie holding your ID</div>
+              <div class="upload-sub">Must clearly show your face and ID document. Good lighting helps.</div>
+            </div>
+            <div class="upload-preview" id="selfiePreview">
+              <span>📷</span>
+              <span class="upload-preview-name" id="selfieFileName"></span>
+              <button class="upload-preview-remove" onclick="removeFile('selfiePreview','selfieFileName')">Remove</button>
+            </div>
+            <span class="field-error" id="selfie-err">Please upload a selfie with your ID.</span>
+          </div>
+
+          <div class="field">
+            <label>Proof of Address <span class="opt">(optional but speeds up approval)</span></label>
+            <div class="upload-zone">
+              <input type="file" accept="image/*,application/pdf" onchange="handleFileUpload(this,'addressPreview','addressFileName')"/>
+              <div class="upload-icon">📄</div>
+              <div class="upload-title">Upload proof of address</div>
+              <div class="upload-sub">Utility bill, bank statement, or letter not older than 3 months.</div>
+            </div>
+            <div class="upload-preview" id="addressPreview">
+              <span>📄</span>
+              <span class="upload-preview-name" id="addressFileName"></span>
+              <button class="upload-preview-remove" onclick="removeFile('addressPreview','addressFileName')">Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-nav">
+          <button class="btn-back" onclick="goBack(3)"><span class="btn-back-arrow">←</span> Back</button>
+          <button class="btn-next" onclick="goNext(3)">Continue <span>→</span></button>
+        </div>
+      </div>
+
+      <!-- ═══ STEP 4: Payment Setup ═══ -->
+      <div class="step-panel" id="step4">
+        <div class="step-eyebrow">Step 4 of 5</div>
+        <h1 class="step-title">Set up your digital wallet</h1>
+        <p class="step-sub">Buyers pay into your MzansiMarket wallet. Once a sale is confirmed, funds are released. Cash out anytime to your bank account or mobile money.</p>
+
+        <div class="info-box">
+          <span class="info-icon">💸</span>
+          <div class="info-text"><strong>How payouts work:</strong> Sales go to your MzansiMarket wallet first. From there you can cash out to your bank (1–2 business days) or withdraw via mobile money instantly.</div>
+        </div>
+
+        <div class="field-group">
+          <div class="field">
+            <label>Payout Method <span class="req">*</span></label>
+            <div class="card-grid card-grid-2" id="payoutGrid">
+              <div class="selector-card selected" onclick="selectPayout(this,'bank')">
+                <div class="card-check">✓</div>
+                <div class="card-icon">🏦</div>
+                <div>
+                  <div class="card-label">Bank Account</div>
+                  <div class="card-sublabel">EFT, 1–2 business days</div>
+                </div>
+              </div>
+              <div class="selector-card" onclick="selectPayout(this,'mobile')">
+                <div class="card-check">✓</div>
+                <div class="card-icon">📲</div>
+                <div>
+                  <div class="card-label">Mobile Money</div>
+                  <div class="card-sublabel">Instant — MTN, Vodacom</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bank fields -->
+          <div id="bankFields">
+            <div class="field-group">
+              <div class="field">
+                <label>Bank Name <span class="req">*</span></label>
+                <div class="select-wrap">
+                  <select id="bankName">
+                    <option value="">Select your bank…</option>
+                    <option>ABSA</option>
+                    <option>Standard Bank</option>
+                    <option>FNB / First National Bank</option>
+                    <option>Nedbank</option>
+                    <option>Capitec</option>
+                    <option>African Bank</option>
+                    <option>TymeBank</option>
+                    <option>Discovery Bank</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <label>Account Holder Name <span class="req">*</span></label>
+                  <input type="text" id="accountName" placeholder="Full name on account"/>
+                </div>
+                <div class="field">
+                  <label>Account Type <span class="req">*</span></label>
+                  <div class="select-wrap">
+                    <select id="accountType">
+                      <option value="">Select…</option>
+                      <option>Cheque / Current</option>
+                      <option>Savings</option>
+                      <option>Transmission</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="field">
+                <label>Account Number <span class="req">*</span></label>
+                <input type="text" id="accountNumber" placeholder="e.g. 1234567890"/>
+                <span class="field-hint">Your account number is encrypted and never shown to buyers.</span>
+              </div>
+              <div class="field">
+                <label>Branch Code <span class="req">*</span></label>
+                <input type="text" id="branchCode" placeholder="e.g. 632005"/>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile money fields (hidden by default) -->
+          <div id="mobileFields" style="display:none;">
+            <div class="field-group">
+              <div class="field">
+                <label>Mobile Money Provider <span class="req">*</span></label>
+                <div class="card-grid card-grid-2">
+                  <div class="selector-card" onclick="toggleCard(this,'provider')"><div class="card-check">✓</div><div class="card-icon">📶</div><div><div class="card-label">MTN MoMo</div></div></div>
+                  <div class="selector-card" onclick="toggleCard(this,'provider')"><div class="card-check">✓</div><div class="card-icon">🔴</div><div><div class="card-label">Vodacom M-Pesa</div></div></div>
+                </div>
+              </div>
+              <div class="field">
+                <label>Mobile Money Number <span class="req">*</span></label>
+                <div class="phone-wrap">
+                  <div class="phone-prefix">🇿🇦 +27</div>
+                  <input type="tel" placeholder="71 234 5678"/>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="warn-box">
+            <span style="font-size:1rem;flex-shrink:0;margin-top:0.05rem;">⚠️</span>
+            <div class="warn-text"><strong>Double-check your banking details.</strong> Incorrect account numbers may result in failed payouts. We're not able to reverse transfers to incorrect accounts.</div>
+          </div>
+
+          <div class="toggle-field" onclick="toggleCheck(this)">
+            <div class="toggle-check"></div>
+            <div class="toggle-text">
+              <div class="toggle-label">I confirm these banking details are correct and belong to me</div>
+              <div class="toggle-sub">False banking details may result in account suspension and legal action.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-nav">
+          <button class="btn-back" onclick="goBack(4)"><span class="btn-back-arrow">←</span> Back</button>
+          <button class="btn-next" onclick="goNext(4)">Review Application <span>→</span></button>
+        </div>
+      </div>
+
+      <!-- ═══ STEP 5: Review ═══ -->
+      <div class="step-panel" id="step5">
+        <div class="step-eyebrow">Step 5 of 5</div>
+        <h1 class="step-title">Review your application</h1>
+        <p class="step-sub">Everything look right? Once you submit, our team will review your identity documents within 24 hours.</p>
+
+        <div class="review-card">
+          <div class="review-section-title">
+            Account Details
+            <button class="review-edit" onclick="goToStep(1)">Edit</button>
+          </div>
+          <div class="review-rows">
+            <div class="review-row">
+              <span class="review-key">Full Name</span>
+              <span class="review-val" id="rev-name">—</span>
+            </div>
+            <div class="review-row">
+              <span class="review-key">Email</span>
+              <span class="review-val" id="rev-email">—</span>
+            </div>
+            <div class="review-row">
+              <span class="review-key">Mobile</span>
+              <span class="review-val" id="rev-phone">—</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-section-title">
+            Seller Profile
+            <button class="review-edit" onclick="goToStep(2)">Edit</button>
+          </div>
+          <div class="review-rows">
+            <div class="review-row">
+              <span class="review-key">Shop Name</span>
+              <span class="review-val" id="rev-shop">—</span>
+            </div>
+            <div class="review-row">
+              <span class="review-key">Location</span>
+              <span class="review-val" id="rev-location">—</span>
+            </div>
+            <div class="review-row">
+              <span class="review-key">Categories</span>
+              <span class="review-val" id="rev-categories">—</span>
+            </div>
+            <div class="review-row">
+              <span class="review-key">Language</span>
+              <span class="review-val" id="rev-lang">English</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-section-title">
+            Identity Verification
+            <button class="review-edit" onclick="goToStep(3)">Edit</button>
+          </div>
+          <div class="review-rows">
+            <div class="review-row">
+              <span class="review-key">SA ID Number</span>
+              <span class="review-val" id="rev-id">—</span>
+            </div>
+            <div class="review-row">
+              <span class="review-key">Documents</span>
+              <span class="review-val"><span class="review-badge">📋 3 files uploaded</span></span>
+            </div>
+            <div class="review-row">
+              <span class="review-key">Verification Status</span>
+              <span class="review-val"><span class="review-badge" style="background:#FFF9E6;border-color:rgba(212,160,23,0.3);color:#7A5A00;">⏳ Pending review (24 hrs)</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-section-title">
+            Payment Setup
+            <button class="review-edit" onclick="goToStep(4)">Edit</button>
+          </div>
+          <div class="review-rows">
+            <div class="review-row">
+              <span class="review-key">Payout Method</span>
+              <span class="review-val" id="rev-payout">Bank Account</span>
+            </div>
+            <div class="review-row">
+              <span class="review-key">Bank</span>
+              <span class="review-val" id="rev-bank">—</span>
+            </div>
+            <div class="review-row">
+              <span class="review-key">Account</span>
+              <span class="review-val" id="rev-account">—</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-nav">
+          <button class="btn-back" onclick="goBack(5)"><span class="btn-back-arrow">←</span> Back</button>
+          <button class="btn-next btn-submit" onclick="submitForm()">Submit Application ✓</button>
+        </div>
+      </div>
+
+      <!-- ═══ STEP 6: Success ═══ -->
+      <div class="step-panel" id="step6">
+        <div class="success-screen">
+          <div class="success-icon-wrap">🎉</div>
+          <h1 class="success-title">Application submitted!</h1>
+          <p class="success-sub">Welcome to MzansiMarket. Our team will review your documents within 24 hours. Here's what happens next:</p>
+          <ul class="success-steps">
+            <li class="success-step">
+              <div class="success-step-icon">📧</div>
+              <div class="success-step-text"><strong>Check your email</strong><br>We've sent a verification link to confirm your email address.</div>
+            </li>
+            <li class="success-step">
+              <div class="success-step-icon">🪪</div>
+              <div class="success-step-text"><strong>ID review (24 hrs)</strong><br>Our team will verify your FICA documents and activate your trust badge.</div>
+            </li>
+            <li class="success-step">
+              <div class="success-step-icon">📸</div>
+              <div class="success-step-text"><strong>Post your first listing</strong><br>Once verified, you can list items immediately and start selling.</div>
+            </li>
+            <li class="success-step">
+              <div class="success-step-icon">💸</div>
+              <div class="success-step-text"><strong>Get paid securely</strong><br>Every sale is escrow-protected. Funds arrive in your wallet on confirmation.</div>
+            </li>
+          </ul>
+          <button class="btn-next" onclick="window.location.href='mzansimarket.html'" style="font-size:1rem;padding:1rem 2.5rem;">
+            Go to Homepage
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /form-body -->
+  </main>
+</div>
+
+<script>
+// ══════════════════════════════════════
+// STATE
+// ══════════════════════════════════════
+let currentStep = 1;
+const totalSteps = 5;
+let selectedPayout = 'bank';
+
+const stepLabels = [
+  '', // index 0 unused
+  'Your Account',
+  'Seller Profile',
+  'Identity Verification',
+  'Payment Setup',
+  'Review & Submit'
+];
+
+// ══════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════
+function goNext(fromStep) {
+  if (!validateStep(fromStep)) return;
+  if (fromStep === totalSteps) { submitForm(); return; }
+  goToStep(fromStep + 1);
+}
+
+function goBack(fromStep) {
+  goToStep(fromStep - 1, true);
+}
+
+function goToStep(n, isBack = false) {
+  const prev = document.getElementById('step' + currentStep);
+  const next = document.getElementById('step' + n);
+  if (!next) return;
+
+  prev.classList.remove('active');
+  next.classList.remove('back');
+  if (isBack) next.classList.add('back');
+  next.classList.add('active');
+
+  if (n > currentStep) {
+    // Mark previous as done
+    updateStepNav(currentStep, 'done');
+  } else {
+    // Going back — un-done the current
+    updateStepNav(currentStep, '');
+  }
+  currentStep = n;
+  updateStepNav(currentStep, 'active');
+  updateProgress(n);
+  if (n === 5) populateReview();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateStepNav(n, state) {
+  const item = document.querySelector(`[data-step="${n}"]`);
+  if (!item) return;
+  item.classList.remove('active', 'done');
+  if (state) item.classList.add(state);
+  if (state === 'done') {
+    item.querySelector('.step-nav-icon').innerHTML = '✓';
+  } else {
+    item.querySelector('.step-nav-icon').innerHTML = n;
+  }
+}
+
+function updateProgress(n) {
+  const pct = (n / totalSteps) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent =
+    `Step ${n} of ${totalSteps} — ${stepLabels[n]}`;
+
+  // Mobile pips
+  for (let i = 1; i <= totalSteps; i++) {
+    const pip = document.getElementById('mob' + i);
+    if (!pip) continue;
+    pip.classList.remove('active', 'done');
+    if (i === n) pip.classList.add('active');
+    else if (i < n) pip.classList.add('done');
+  }
+  const lbl = document.getElementById('mobileStepLabel');
+  if (lbl) lbl.textContent = `Step ${n} of ${totalSteps}`;
+}
+
+// ══════════════════════════════════════
+// VALIDATION
+// ══════════════════════════════════════
+function validateStep(step) {
+  let valid = true;
+
+  if (step === 1) {
+    valid &= requireField('firstName', 'firstName-err', v => v.trim().length > 0);
+    valid &= requireField('lastName',  'lastName-err',  v => v.trim().length > 0);
+    valid &= requireField('email',     'email-err',     v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+    valid &= requireField('phone',     'phone-err',     v => /^\d{9,10}$/.test(v.replace(/\s/g,'')));
+    valid &= requireField('password',  'password-err',  v => v.length >= 8);
+
+    const pw  = document.getElementById('password').value;
+    const cpw = document.getElementById('confirmPw').value;
+    if (pw !== cpw) {
+      showErr('confirmPw', 'confirmPw-err');
+      valid = false;
+    } else hideErr('confirmPw', 'confirmPw-err');
+
+    if (!document.getElementById('termsToggle').classList.contains('checked')) {
+      alert('Please accept the Terms of Service to continue.');
+      valid = false;
+    }
+  }
+
+  if (step === 2) {
+    valid &= requireField('shopName', 'shopName-err', v => v.trim().length > 0);
+    valid &= requireField('province', 'province-err', v => v !== '');
+    valid &= requireField('township', 'township-err', v => v.trim().length > 0);
+    const anyCategory = document.querySelectorAll('#categoryGrid .selector-card.selected').length > 0;
+    if (!anyCategory) {
+      document.getElementById('category-err').classList.add('show');
+      valid = false;
+    } else document.getElementById('category-err').classList.remove('show');
+  }
+
+  if (step === 3) {
+    valid &= requireField('idNumber', 'idNumber-err', v => /^\d{13}$/.test(v));
+    valid &= requireField('dob', 'dob-err', v => v !== '');
+  }
+
+  return !!valid;
+}
+
+function requireField(id, errId, test) {
+  const el = document.getElementById(id);
+  const val = el ? el.value : '';
+  if (!test(val)) { showErr(id, errId); return false; }
+  hideErr(id, errId); return true;
+}
+function showErr(id, errId) {
+  const el = document.getElementById(id);
+  const err = document.getElementById(errId);
+  if (el)  el.classList.add('error');
+  if (err) err.classList.add('show');
+}
+function hideErr(id, errId) {
+  const el = document.getElementById(id);
+  const err = document.getElementById(errId);
+  if (el)  el.classList.remove('error');
+  if (err) err.classList.remove('show');
+}
+
+// Live clear errors on input
+document.querySelectorAll('input, select, textarea').forEach(el => {
+  el.addEventListener('input', () => {
+    el.classList.remove('error');
+    const errEl = document.getElementById(el.id + '-err');
+    if (errEl) errEl.classList.remove('show');
+  });
+});
+
+// ══════════════════════════════════════
+// TOGGLE / SELECTOR HELPERS
+// ══════════════════════════════════════
+function toggleCard(el, group) {
+  el.classList.toggle('selected');
+}
+
+function selectLang(el) {
+  document.querySelectorAll('.lang-pill').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function toggleCheck(el) {
+  el.classList.toggle('checked');
+  const check = el.querySelector('.toggle-check');
+  if (check) check.innerHTML = el.classList.contains('checked') ? '✓' : '';
+}
+
+function selectPayout(el, type) {
+  selectedPayout = type;
+  document.querySelectorAll('#payoutGrid .selector-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('bankFields').style.display   = type === 'bank'   ? 'block' : 'none';
+  document.getElementById('mobileFields').style.display = type === 'mobile' ? 'block' : 'none';
+}
+
+// ══════════════════════════════════════
+// FILE UPLOADS
+// ══════════════════════════════════════
+function handleFileUpload(input, previewId, nameId) {
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+  const preview = document.getElementById(previewId);
+  const nameEl  = document.getElementById(nameId);
+  if (preview) preview.classList.add('show');
+  if (nameEl)  nameEl.textContent = file.name;
+}
+
+function removeFile(previewId, nameId) {
+  const preview = document.getElementById(previewId);
+  const nameEl  = document.getElementById(nameId);
+  if (preview) preview.classList.remove('show');
+  if (nameEl)  nameEl.textContent = '';
+}
+
+function handleIDUpload(input, cardId) {
+  if (!input.files || !input.files[0]) return;
+  document.getElementById(cardId).classList.add('uploaded');
+}
+
+// ══════════════════════════════════════
+// PASSWORD STRENGTH
+// ══════════════════════════════════════
+document.getElementById('password').addEventListener('input', function() {
+  const v = this.value;
+  const fill = document.getElementById('pwFill');
+  const lbl  = document.getElementById('pwLabel');
+  let score = 0;
+  if (v.length >= 8)  score++;
+  if (v.length >= 12) score++;
+  if (/[A-Z]/.test(v)) score++;
+  if (/[0-9]/.test(v)) score++;
+  if (/[^A-Za-z0-9]/.test(v)) score++;
+
+  const levels = [
+    { w:'0%',   bg:'transparent', txt:'Enter a password' },
+    { w:'25%',  bg:'#D94040',     txt:'Weak' },
+    { w:'50%',  bg:'#E8B84B',     txt:'Fair' },
+    { w:'75%',  bg:'#D4A017',     txt:'Good' },
+    { w:'100%', bg:'#3A9B5C',     txt:'Strong ✓' },
+  ];
+  const lvl = Math.min(score, 4);
+  fill.style.width      = levels[lvl].w;
+  fill.style.background = levels[lvl].bg;
+  lbl.textContent       = levels[lvl].txt;
+  lbl.style.color       = levels[lvl].bg;
+});
+
+// ══════════════════════════════════════
+// REVIEW POPULATION
+// ══════════════════════════════════════
+function populateReview() {
+  const g = id => (document.getElementById(id) || {}).value || '—';
+
+  document.getElementById('rev-name').textContent =
+    [g('firstName'), g('lastName')].filter(v => v !== '—').join(' ') || '—';
+  document.getElementById('rev-email').textContent    = g('email');
+  document.getElementById('rev-phone').textContent    = '+27 ' + g('phone');
+  document.getElementById('rev-shop').textContent     = g('shopName');
+  document.getElementById('rev-location').textContent =
+    [g('township'), g('province')].filter(v => v !== '—').join(', ') || '—';
+
+  const cats = [...document.querySelectorAll('#categoryGrid .selector-card.selected')]
+    .map(c => c.querySelector('.card-label').textContent);
+  document.getElementById('rev-categories').textContent = cats.length ? cats.join(', ') : '—';
+
+  const lang = document.querySelector('.lang-pill.selected');
+  document.getElementById('rev-lang').textContent = lang ? lang.textContent : 'English';
+
+  const idNum = g('idNumber');
+  document.getElementById('rev-id').textContent = idNum !== '—'
+    ? idNum.slice(0, 6) + '·······' : '—';
+
+  document.getElementById('rev-payout').textContent = selectedPayout === 'bank' ? 'Bank Account' : 'Mobile Money';
+  document.getElementById('rev-bank').textContent    = g('bankName');
+
+  const acc = g('accountNumber');
+  document.getElementById('rev-account').textContent = acc !== '—'
+    ? '····' + acc.slice(-4) : '—';
+}
+
+// ══════════════════════════════════════
+// SUBMIT
+// ══════════════════════════════════════
+function submitForm() {
+  // Hide step 5, show success
+  document.getElementById('step5').classList.remove('active');
+  document.getElementById('step6').classList.add('active');
+  // Update nav
+  updateStepNav(5, 'done');
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('progressLabel').textContent = 'Application submitted!';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Nav scroll
+window.addEventListener('scroll', () => {
+  // nothing needed — topbar is sticky within the right panel
+});
+
+// Init
+updateStepNav(1, 'active');
+</script>
+<script src="js/app.js"></script>
+<script src="js/auth-modal-inject.js"></script>
+<script src="js/onboarding-connect.js"></script>
+</body>
+</html>
